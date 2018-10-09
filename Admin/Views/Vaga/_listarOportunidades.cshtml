@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Admin.Models.VagaViewModel>
+
+@{
+    ViewBag.Title = "_listarOportunidades";
+}
+
+
+
+
+    <div class="card stacked-form">
+        <div class="card-header ">
+            <h4 class="card-title">Escolha o evento</h4>
+        </div>
+        <div class="card-body table-full-width table-responsive">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Profissional</th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                @item.Nome
+                            </td>
+                            <td>
+                                @item.ProfissionalNome
+                            </td>
+                            <td>
+                                <div class="bootstrap-switch-on bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate" style="width: 72px;"><div class="bootstrap-switch-container" style="width: 122px; margin-left: 0px;"><span class="bootstrap-switch-handle-on bootstrap-switch-info" style="width: 50px;"></span><span class="bootstrap-switch-label" style="width: 30px;">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-info" style="width: 50px;"></span><input type="checkbox" checked="" data-toggle="switch" data-on-color="info" data-off-color="info" data-on-text="" data-off-text=""></div></div>
+                            </td>
+                        </tr>
+
+
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer ">
+        </div>
+    </div>

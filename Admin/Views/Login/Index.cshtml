@@ -1,0 +1,182 @@
+﻿
+@{
+    Layout = null;
+    var response = ViewData["TemporariaMensagem"];
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="~/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="~/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>StaffPro</title>
+    @*<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />*@
+
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+
+    <!-- CSS Files -->
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/light-bootstrap-dashboard.css" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="~/Content/demo.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="">
+        <div class="wrapper">
+
+            <div class="full-page">
+                <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+                <div class="content ">
+                    <div class="container">
+                        <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+                           
+                                <form class="form" id="cad" method="post" action="Index">
+                                <div class="card card-login card-hidden">
+                                    <div class="tela-logo">
+                                        <img class="" style=" width:100%;" src="~/img/tela-login-so-logo.png" />
+                                    </div>
+                                    <div class="card-body ">
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label>Login</label>
+                                                <input name="login" type="text" placeholder="E-mail" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Senha</label>
+                                                <input name="senha" type="password" placeholder="Senha" class="form-control">
+                                            </div>
+                                            <div class="form-group">
+                                                <label> @response</label>
+                                               
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer ml-auto mr-auto">
+
+                                        <button type="button" id="btnCadastrar" class="btn btn-primary btn-wd">Entrar</button>
+                                    </div>
+                                </div>
+                                </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="~/Scripts/Core/jquery.3.2.1.min.js"></script>
+
+    <script src="~/Scripts/Core/popper.min.js"></script>
+    <script src="~/Scripts/Core/bootstrap.min.js"></script>
+    <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+    <script src="~/Scripts/Plugins/bootstrap-switch.js"></script>
+
+    <!--  Chartist Plugin  -->
+    <script src="~/js/plugins/chartist.min.js"></script>
+    <!--  Notifications Plugin    -->
+    <script src="~/Scripts/Plugins/chartist.min.js"></script>
+    <!--  jVector Map  -->
+    <script src="~/Scripts/Plugins/jquery-jvectormap.js"></script>
+    <!--  Plugin for Date Time Picker and Full Calendar Plugin-->
+    <script src="~/Scripts/Plugins/moment.min.js"></script>
+    <!--  DatetimePicker   -->
+    <script src="~/Scripts/Plugins/bootstrap-datetimepicker.js"></script>
+    <!--  Sweet Alert  -->
+    <script src="~/Scripts/Plugins/sweetalert2.min.js"></script>
+    <!--  Tags Input  -->
+    <script src="~/Scripts/Plugins/bootstrap-tagsinput.js"></script>
+    <!--  Sliders  -->
+    <script src="~/Scripts/Plugins/nouislider.js"></script>
+    <!--  Bootstrap Select  -->
+    <script src="~/Scripts/Plugins/bootstrap-selectpicker.js"></script>
+    <!--  jQueryValidate  -->
+    <script src="~/Scripts/Plugins/jquery.validate.min.js"></script>
+    <!--  Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+    <script src="~/Scripts/Plugins/jquery.bootstrap-wizard.js"></script>
+    <!--  Bootstrap Table Plugin -->
+    <script src="~/Scripts/Plugins/bootstrap-table.js"></script>
+    <!--  DataTable Plugin -->
+    <script src="~/Scripts/Plugins/jquery.dataTables.min.js"></script>
+    <!--  Full Calendar   -->
+    <script src="~/Scripts/Plugins/fullcalendar.min.js"></script>
+    <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="~/Scripts/light-bootstrap-dashboard.js"></script>
+    <!-- Light Dashboard DEMO methods, don't include it in your project! -->
+    <script src="~/Scripts/demo.js"></script>
+    <script>
+        $(document).ready(function () {
+            demo.checkFullPageBackgroundImage();
+
+            setTimeout(function () {
+                // after 1000 ms we add the class animated to the login/register card
+                $('.card').removeClass('card-hidden');
+            }, 700);
+        });</script>
+
+
+    <style>
+        .full-page {
+            background-image: url('/img/background-1440x960.png');
+            background-size: 100%;
+            height: 100%;
+        }
+
+        body {
+        }
+
+        .tela-logo {
+            width: 75%;
+            margin-top: 2%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .card {
+            border: 50px;
+            border-color: white;
+            width: 270px;
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+0,7db9e8+100&1+0,1+49,1+49,0.7+99,0.7+99,0+100 */
+            background: -moz-linear-gradient(top, rgba(30,87,153,1) 0%, rgba(77,135,192,1) 49%, rgba(124,184,231,0.7) 99%, rgba(125,185,232,0) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top, rgba(30,87,153,1) 0%,rgba(77,135,192,1) 49%,rgba(124,184,231,0.7) 99%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom, rgba(30,87,153,1) 0%,rgba(77,135,192,1) 49%,rgba(124,184,231,0.7) 99%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#007db9e8',GradientType=0 ); /* IE6-9 */
+        }
+
+            .card label {
+                color: white;
+            }
+
+        .card-login {
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+    </style>
+
+</body>
+<!--   Core JS Files   -->
+
+</html>
+<link href="~/Content/jquery.loading.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.loading.js"></script>
+<script>
+    $('#btnCadastrar').click(function () {
+        $('html').loading({
+            theme: 'dark',
+            message: 'Aguarde...'
+            
+        });
+        $('#cad').submit();
+    });
+
+
+
+</script>
+
+

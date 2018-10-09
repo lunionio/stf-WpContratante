@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewBag.Title = "Cadastro de Usuário";
+}
+@model Admin.Models.UsuarioViewModel
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
+
+            <div class="card-header ">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" style="width:100%">
+                        <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">CADASTRAR DE USUÁRIOS</a>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+
+                        @using (Html.BeginForm("Cadastro", "Usuario", FormMethod.Post, new { @class = "form-horizontal" }))
+                        {
+                            @Html.HiddenFor(u => u.ID)
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" for="Nome">Nome do Usário</label>
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(u => u.Nome, new { placeholder = "Nome do usuário", name = "Nome", @class = "form-control" })
+                                        @Html.ValidationMessageFor(u => u.Nome)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" for="Login">E-mail/Login</label>
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(u => u.Login, new { placeholder = "E-mail do usuário", name = "email", type = "email", @class = "form-control" })
+                                        @Html.ValidationMessageFor(u => u.Login)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" for="Senha">Senha</label>
+                                    <div class="col-md-9">
+                                        @Html.TextBoxFor(u => u.Senha, new { placeholder = "Senha do usuário", name = "senha", type = "password", @class = "form-control" })
+                                        @Html.ValidationMessageFor(u => u.Senha)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-md-3 control-label" for="Perfis">Perfil</label>
+                                    <div class="col-md-5">
+                                        @Html.DropDownListFor(u => u.Perfil, (IEnumerable<SelectListItem>)ViewBag.Perfis, new { @class = "form-control perfis" })
+                                        @Html.ValidationMessageFor(u => u.Perfil)
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <div class="col-md-3"></div>
+                                    <div class="col-md-9">
+                                        <button type="button" id="btnCadastrar" class="btn btn-fill btn-primary">Salvar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@{ bool result = (ViewData["Resultado"] != null); }
+
+@section Scripts
+{
+
+
+    <script>
+
+    let t = @Json.Encode(Convert.ToBoolean(result));
+        $("#miolo").addClass("card-wizard");
+
+        $('#btnCadastrar').on('click', function () {
+
+        $('body').loading({
+            theme: 'dark',
+            message: 'Aguarde...'
+
+        });
+
+        $.when($('.form-horizontal').submit()).done(function (x) {
+
+        });
+
+
+    });
+
+    </script>
+
+}

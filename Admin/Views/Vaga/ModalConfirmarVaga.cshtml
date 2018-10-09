@@ -1,0 +1,73 @@
+﻿@model Admin.Models.VagaViewModel
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-body">
+
+                <ul class="nav nav-tabs" style="margin-top:-10px">
+                    <li class="nav-item" style="width:100%">
+                        <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">
+                            DESEJA PUBLICAR ESTA OPORTUNIDADE?
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="">
+
+                                <table id="bootstrap-table" class="table">
+                                    <tr>
+                                        <td class="table-active" colspan="1"><strong>Nome</strong></td>
+                                        <td colspan="5"> @Model.Nome</td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td class="table-active" colspan="1"> <strong>Endereço</strong></td>
+                                        <td colspan="3"> @Model.Rua,@Model.Numero -  @Model.Bairro - @Model.Cidade / @Model.Uf - CEP: @Model.Cep </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="table-active" colspan="1"> <strong>Data</strong></td>
+                                        <td colspan="3">  @Model.Date início ás @Model.Hora </td>
+                                    </tr>
+
+                                </table>
+
+                                <table class="table">
+
+                                    <tr>
+                                        <td class="table-active" colspan="3"> <strong>Profissional</strong></td>
+                                        <td class="table-active" colspan="1"> <strong>Quantidade</strong></td>
+                                        <td class="table-active" colspan="1"> <strong>Valor Unitário </strong></td>
+                                        <td class="table-active" colspan="1"> <strong>TOTAL </strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"> @Model.ProfissionalNome </td>
+                                        <td colspan="1">@Model.Qtd  </td>
+                                        <td colspan="1"> @Model.Valor </td>
+                                        <td colspan="1"> @Model.Total </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                        <button type="button" id="btnAgora" onclick="PublicarAgora()" style="margin:5px; margin-top:10px" class="btn btn-wd btn-default">Publicar Agora</button>
+                        @*<button type="button" id="btnDepois" style="margin:5px; margin-top:10px" class="btn btn-wd btn-default" data-dismiss="modal">Publicar Agora</button>*@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

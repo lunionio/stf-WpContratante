@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Cadastro de Vaga";
+
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
+            <div class="card-header ">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" style="width:100%">
+                        <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">CADASTRAR VAGA</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card-body ">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <form method="get" action="/" class="form-horizontal">
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">NOME DO EVENTO</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="nome" name="Nome" placeholder="Digite o nome do evento" class="form-control">
+                                            @*<small class="form-text text-muted">A block of help text that breaks onto a new line.</small>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="pnEndereco">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">CEP</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="cep" name="CEP" placeholder="00000-000" class="form-control">
+                                            @*<small class="form-text text-muted">A block of help text that breaks onto a new line.</small>*@
+                                        </div>
+                                        <label class="col-sm-3 control-label">ENDEREÇO</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" id="rua" name="Rua" placeholder="" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="pnEndereco">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">NÚMERO </label>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="numero" name="Numero" placeholder="EX 500" class="form-control">
+                                        </div>
+                                        <label class="col-sm-3 control-label">COMPLEMENTO</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" id="complemento" name="Complemento" placeholder="EX Apto 100" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="pnEndereco">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">REFERÊNCIA </label>
+                                        <div class="col-sm-10">
+                                            <input type="text" id="referencia" name="Numero" placeholder="Prox ao..." class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset class="pnEndereco">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">BAIRRO</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="bairro" name="Bairro" placeholder="" class="form-control">
+                                        </div>
+                                        <label class="col-sm-2 control-label">CIDADE</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="cidade" name="CIdade" placeholder="São Paulo" disabled="disabled" class="form-control">
+                                        </div>
+                                        <label class="col-sm-2 control-label">UF</label>
+                                        <div class="col-sm-2">
+                                            <input type="text" id="uf" name="UF" placeholder="SP" disabled="disabled" class="form-control">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="col-sm-2 control-label">DATA</label>
+                                        <div class="col-md-2">
+                                            <input type="date" id="data" required name="Data" class="form-control datepicker">
+                                        </div>
+                                        <label class="col-sm-3 control-label">HORA DE INÍCIO</label>
+                                        <div class="col-md-2">
+                                            <input id="txtHoraInicio" type="time" required ame="Data" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="">
+                                <div class="form-group">
+                                    <div id="loadSelect" class="row">
+                                        <label class="col-sm-2 control-label">ÁREA DE ATUAÇÃO</label>
+                                        <div class="col-md-4">
+                                            <select id="atuacao" data-title="Selecione" name="currency"
+                                                    class="selectpicker" data-style="btn-default btn-outline"
+                                                    data-menu-style="dropdown-blue">
+                                                <option value="0">Selecione</option>
+                                            </select>
+                                        </div>
+                                        <label class="col-sm-2 pnProfissional control-label">PROFISSIONAL</label>
+                                        <div class="col-md-4">
+                                            <select id="profissional" name="Profissional" data-title="Selecione"
+                                                    name="currency" class="selectpicker pnProfissional" data-style="btn-default btn-outline"
+                                                    data-menu-style="dropdown-blue">
+                                                <option value="0">Selecione</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="pnValores col-sm-1 control-label">VALOR</label>
+                                        <div class="pnValores col-md-2">
+                                            <input type="text" id="valor" required name="Valor" class="form-control">
+                                        </div>
+                                        <label class="pnValores col-sm-3 control-label">QTD PROFISSIONAIS</label>
+                                        <div class="pnValore[s col-md-1">
+                                            <input type="number" id="qtd" placeholder="1" required ame="Qtd" class="form-control">
+
+                                        </div>
+                                        <label class=" pnValores col-sm-3 control-label"><strong>VALOR TOTAL</strong></label>
+                                        <div class=" pnValores col-md-2">
+                                            <input type="text" id="total" disabled="disabled" class="form-control">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+
+
+                        </form>
+                        <div class="row">
+                            <button id="cadastrar" class="pnValores btn btn-default btn-wd">Cadastrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<div id="modal"></div>
+
+
+@section Scripts
+{
+    <script src="~/Scripts/Plugins/moment.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/Pages/VagaCadastrar.js"></script>
+}

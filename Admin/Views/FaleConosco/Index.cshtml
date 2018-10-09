@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
+            <div class="card-header ">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" style="width:100%">
+                        <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">FALE CONOSCO</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body ">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <form method="get" action="/" class="form-horizontal">
+                            <fieldset class="">
+                                <div class="form-group">
+                                    <div id="loadSelect" class="row">
+                                        <label class="col-sm-2 control-label">TIPO DE ASSUNTO</label>
+                                        <div class="col-md-7">
+                                            <select id="assunto" data-title="Selecione" name="currency"
+                                                    class="selectpicker" data-style="btn-default btn-outline"
+                                                    data-menu-style="dropdown-blue">
+                                                <option value="0">Selecione</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="pnValores col-sm-2 control-label">E-MAIL*</label>
+                                        <div class="pnValores col-md-7">
+                                            <input type="text" id="email" value="@ViewBag.email" disabled="disabled" required name="email" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <label class="pnValores col-sm-2 control-label">MENSAGEM</label>
+                                        <div class="pnValores col-md-7">
+                                            <textarea rows="40" name="mensagem" id="mensagem" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card-footer ">
+                <button id="enviar" class="pnValores btn btn-default btn-wd">ENVIAR</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="modal"></div>
+
+
+<style>
+    #mensagem {
+        height: 200px;
+    }
+</style>
+
+@section Scripts
+{
+    <script src="~/Scripts/Plugins/sweetalert2.min.js"></script>
+    <script src="~/Scripts/Pages/FaleConosco.js"></script>
+}
+

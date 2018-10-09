@@ -1,0 +1,109 @@
+﻿@model IEnumerable<Admin.Models.EstruturaViewModel>
+<div class="sidebar menu-lateral " data-color="blue" data-image="/img/sidebar-4.jpg">
+    <div class="logo">
+        <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+        </a>
+        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+            <img src="~/Img/tela-login-so-logo.png" width="100px" />
+
+        </a>
+    </div>
+    <div class="sidebar-wrapper">
+        <div class="user">
+            <div class="info">
+                <div class="photo">
+                    <img src="~/img/avatar.png" />
+                </div>
+                <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+                    <span>
+                        Nome
+                        <b class="caret"></b>
+                    </span>
+                </a>
+                <div class="collapse" id="collapseExample">
+                    <ul class="nav">
+                        <li>
+                            <a href="#pablo">
+                                <span class="sidebar-mini">C</span>
+                                <span class="sidebar-normal">Configurações</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#pablo">
+                                <span class="sidebar-mini">S</span>
+                                <span class="sidebar-normal">Sair</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav">
+            @if (Model != null && Model.Count() > 0)
+            {
+                foreach (var m in Model)
+                {
+
+
+                    @*<li class="nav-item ">
+                        <a class="nav-link" href="../dashboard.html">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>*@
+
+                    <li class="nav-item">
+                        @if (m.UrlManual == null || m.UrlManual == "")
+                        {
+                            <a class="nav-link collapsed" data-toggle="collapse" href="#@m.ID" aria-expanded="false">
+                                <i class="@m.ImagemMenu"></i>
+                                <p>
+                                    @m.Nome
+                                    <b class="caret"></b>
+                                </p>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="nav-link" href="@Url.Action(m.UrlManual)">
+                                <i class="@m.ImagemMenu"></i>
+                                <p>
+                                    @m.Nome
+
+                                </p>
+                            </a>
+                        }
+
+
+
+                        @if (m.SubMenus != null && m.SubMenus.Count() > 0)
+                        {
+                            <div class="collapse" id="@m.ID" style="">
+                                <ul class="nav">
+                                    @foreach (var s in m.SubMenus)
+                                    {
+                                        <li class="nav-item ">
+                                            <a class="nav-link" href="@Url.Action(s.UrlManual.Split('/')[2], s.UrlManual.Split('/')[1])">
+                                                <span calss="sidebar-normal">@s.Nome</span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                    @*else
+                {
+                    <li class="nav-item ">
+                        <a class="nav-link" href="@Url.Action(m.UrlManual.Split('/')[2], m.UrlManual.Split('/')[1])">
+                            <i class="@m.ImagemMenu"></i>
+                            <p>@m.Nome</p>
+                        </a>
+                    </li>
+                }*@
+                }
+            }
+        </ul>
+    </div>
+</div>

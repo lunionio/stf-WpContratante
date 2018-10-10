@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Admin.Models.EstruturaViewModel>
+﻿@model IEnumerable<Admin.Models.Estrutura>
 <div class="sidebar menu-lateral " data-color="blue" data-image="/img/sidebar-4.jpg">
     <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-mini">
@@ -44,20 +44,11 @@
             {
                 foreach (var m in Model)
                 {
-
-
-                    @*<li class="nav-item ">
-                        <a class="nav-link" href="../dashboard.html">
-                            <i class="nc-icon nc-chart-pie-35"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>*@
-
                     <li class="nav-item">
-                        @if (m.UrlManual == null || m.UrlManual == "")
+                        @if (string.IsNullOrEmpty(m.UrlManual))
                         {
                             <a class="nav-link collapsed" data-toggle="collapse" href="#@m.ID" aria-expanded="false">
-                                <i class="@m.ImagemMenu"></i>
+                                <i class="@m.Imagem"></i>
                                 <p>
                                     @m.Nome
                                     <b class="caret"></b>
@@ -67,7 +58,7 @@
                         else
                         {
                             <a class="nav-link" href="@Url.Action(m.UrlManual)">
-                                <i class="@m.ImagemMenu"></i>
+                                <i class="@m.Imagem"></i>
                                 <p>
                                     @m.Nome
 
@@ -75,16 +66,14 @@
                             </a>
                         }
 
-
-
-                        @if (m.SubMenus != null && m.SubMenus.Count() > 0)
+                        @if (m.SubEstruturas != null && m.SubEstruturas.Count() > 0)
                         {
                             <div class="collapse" id="@m.ID" style="">
                                 <ul class="nav">
-                                    @foreach (var s in m.SubMenus)
+                                    @foreach (var s in m.SubEstruturas)
                                     {
                                         <li class="nav-item ">
-                                            <a class="nav-link" href="@Url.Action(s.UrlManual.Split('/')[2], s.UrlManual.Split('/')[1])">
+                                            <a class="nav-link" href="@Url.Action(s.Action, s.Controller)">
                                                 <span calss="sidebar-normal">@s.Nome</span>
                                             </a>
                                         </li>
@@ -93,15 +82,6 @@
                             </div>
                         }
                     </li>
-                    @*else
-                {
-                    <li class="nav-item ">
-                        <a class="nav-link" href="@Url.Action(m.UrlManual.Split('/')[2], m.UrlManual.Split('/')[1])">
-                            <i class="@m.ImagemMenu"></i>
-                            <p>@m.Nome</p>
-                        </a>
-                    </li>
-                }*@
                 }
             }
         </ul>

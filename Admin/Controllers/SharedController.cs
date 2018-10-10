@@ -22,39 +22,15 @@ namespace Admin.Controllers
         [ChildActionOnly]
         public ActionResult GetMenus()
         {
-            var model = default(IList<EstruturaViewModel>);
-            #region comentario
-            //using (var client = new WebClient())
-            //{
-            //    var jss = new JavaScriptSerializer();
-            //    var url = ConfigurationManager.AppSettings["UrlAPI"];
-            //    var serverUrl = $"{ url }/Seguranca/Principal/buscarEstruturas/{ PixCoreValues.IDCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
+            var tipoAcoes = GetTipoAcoes();
+            var model = GetEstruturas(tipoAcoes);
 
-            //    //Id Permissão passar no bpdy POST
+            return PartialView("PartialMenu", model);
+        }
 
-
-            //    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-            //    var response = client.DownloadString(new Uri(serverUrl));
-            //    var result = jss.Deserialize<List<EstruturaViewModel>>(response).OrderBy(r => r.Ordem).ToList();
-
-            //    if (result != null && result.Count() > 0)
-            //    {
-            //        model = new List<EstruturaViewModel>();
-            //        foreach (var r in result)
-            //        {
-            //            r.SubMenus = result.Where(x => x.IdPai.Equals(r.ID)).OrderBy(x => x.Ordem);
-
-            //            if (r.IdPai == 0)
-            //            {
-            //                model.Add(r);
-            //            }
-            //        }
-            //    }
-            //}
-
-            //ViewData["Menus"] = model ?? new List<EstruturaViewModel>();
-            #endregion
-
+        private IEnumerable<Estrutura> GetEstruturas(IEnumerable<int> tipoAcoes)
+        {
+            var model = default(IList<Estrutura>);
             using (var client = new WebClient())
             {
                 var jss = new JavaScriptSerializer();
@@ -64,8 +40,8 @@ namespace Admin.Controllers
 
                 object envio = new
                 {
-                    idPermissao = 4,
-                    idCliente = PixCoreValues.IDCliente,
+                    PixCoreValues.UsuarioLogado.idCliente,
+                    idTipoAcoes = tipoAcoes,
                 };
 
                 var data = jss.Serialize(envio);
@@ -74,20 +50,42 @@ namespace Admin.Controllers
 
                 if (result != null && result.Count() > 0)
                 {
-                    model = new List<EstruturaViewModel>();
+                    model = new List<Estrutura>();
                     foreach (var r in result)
                     {
-                        r.SubMenus = result.Where(x => x.IdPai.Equals(r.ID)).OrderBy(x => x.Ordem);
-
-                        if (r.IdPai == 0)
+                        r.SubMenus = result.Where(e => e.IdPai.Equals(r.ID)).OrderBy(x => x.Ordem);
+                        
+                        if(r.IdPai == 0) //TODO: Melhorar para sub-estrutura com filhos...
                         {
-                            model.Add(r);
+                            var estrutura = new Estrutura(r.ID, r.UrlManual, r.Imagem, r.Nome)
+                            {
+                                SubEstruturas = r.SubMenus.Select(s => new Estrutura(s.ID, s.UrlManual, s.Imagem, s.Nome))
+                            };
+
+                            model.Add(estrutura);
                         }
                     }
                 }
             }
 
-            return PartialView("PartialMenu", model);
+            return model;
+        }
+
+        private IEnumerable<int> GetTipoAcoes()
+        {
+            using (var client = new WebClient())
+            {
+                var url = ConfigurationManager.AppSettings["UrlAPI"];
+                var serverUrl = $"{ url }/Permissao/GetPermissoesPorUsuario/{ PixCoreValues.UsuarioLogado.IdUsuario }";
+                var result = client.DownloadString(serverUrl);
+
+                var jss = new JavaScriptSerializer();
+                var permissao = jss.Deserialize<Permissao>(result);
+
+                var tipoAcoes = permissao.idTipoAcao.Split(',');
+
+                return tipoAcoes.Select(id => Convert.ToInt32(id));
+            }
         }
     }
 }

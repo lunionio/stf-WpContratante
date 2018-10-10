@@ -163,6 +163,7 @@
     <Compile Include="Helppers\PixCore.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ClienteViewModel.cs" />
+    <Compile Include="Models\Estrutura.cs" />
     <Compile Include="Models\EstruturaViewModel.cs" />
     <Compile Include="Models\FaleconoscoVIewModel.cs" />
     <Compile Include="Models\Faleconosco\Atendimento.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Models\OportunidadeViewModel.cs" />
     <Compile Include="Models\PageViewModel.cs" />
     <Compile Include="Models\Perfil.cs" />
+    <Compile Include="Models\Permissao.cs" />
     <Compile Include="Models\PermissaoViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />

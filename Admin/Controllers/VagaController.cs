@@ -54,7 +54,7 @@ namespace Admin.Controllers
         }
 
         public PartialViewResult _listarOportunidades()
-        {
+        {//ESSE contratante
             var usuario = PixCoreValues.UsuarioLogado;
             var jss = new JavaScriptSerializer();
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
@@ -124,6 +124,7 @@ namespace Admin.Controllers
                     PixCoreValues.UsuarioLogado.IdUsuario;
 
                 vaga.status = 1;
+                vaga.IdEmpresa = PixCoreValues.UsuarioLogado.idEmpresa;
 
                 var op = Oportundiade.Convert(vaga);
 

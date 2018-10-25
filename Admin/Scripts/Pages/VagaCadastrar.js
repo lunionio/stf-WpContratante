@@ -91,7 +91,7 @@ function VagaViewModel() {
         Atuacao: $('#atuacao').val(),
         Profissional: $('#profissional option:selected').val(),
         ProfissionalNome: $('#profissional option:selected').text(),
-        Qtd: $('#qtd').val(),
+        //Qtd: $('#qtd').val(),
         Total: $('#total').val()
     }
     return VagaViewModel;

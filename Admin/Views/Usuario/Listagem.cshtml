@@ -53,29 +53,31 @@
                             <th>Nome</th>
                             <th>Apelido</th>
                             <th>Perfil</th>
+                            <th>Empresa</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var user in Model)
                         {
-                            <tr>
-                                <td>
-                                    <input type="checkbox" />
-                                </td>
-                                <td>@user.ID</td>
-                                <td>@user.Nome</td>
-                                <td>@user.SobreNome</td>
-                                <td>@user.Perfil</td>
-                                <td class="td-actions text-right">
-                                    <a href="@Url.Action("Editar", "Usuario", new { user.ID })" rel="tooltip" title="" class="btn btnAcao btn-success btn-link btn-xs" data-original-title="Editar">
-                                        <i class="nc-icon nc-credit-card"></i>
-                                    </a>
-                                    <a href="@Url.Action("Excluir", "Usuario", new { user.ID })" rel="tooltip" title="" class="btn btnAcao btn-danger btn-link btn-xs" data-original-title="Remover">
-                                        <i class="nc-icon nc-simple-remove"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" />
+                            </td>
+                            <td>@user.ID</td>
+                            <td>@user.Nome</td>
+                            <td>@user.SobreNome</td>
+                            <td>@user.Perfil</td>
+                            <td>@user.IdEmpresa</td>
+                            <td class="td-actions text-right">
+                                <a href="@Url.Action("Editar", "Usuario", new { user.ID })" rel="tooltip" title="" class="btn btnAcao btn-success btn-link btn-xs" data-original-title="Editar">
+                                    <i class="nc-icon nc-credit-card"></i>
+                                </a>
+                                <a href="@Url.Action("Excluir", "Usuario", new { user.ID })" rel="tooltip" title="" class="btn btnAcao btn-danger btn-link btn-xs" data-original-title="Remover">
+                                    <i class="nc-icon nc-simple-remove"></i>
+                                </a>
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>

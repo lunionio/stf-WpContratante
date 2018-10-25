@@ -443,6 +443,7 @@
     <Content Include="Sass\lbd\_variables.scss" />
     <Content Include="Sass\light-bootstrap-dashboard.scss" />
     <Content Include="fonts\nucleo-icons.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\chartist.min.js" />
     <Content Include="Scripts\Core\bootstrap.min.js" />

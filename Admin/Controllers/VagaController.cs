@@ -1,6 +1,5 @@
 ﻿using Admin.Helppser;
 using Admin.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,7 +49,7 @@ namespace Admin.Controllers
         
         public PartialViewResult ModalConfirmarVaga(VagaViewModel model)
         {
-            return PartialView(model);
+            return PartialV iew(model);
         }
 
         public PartialViewResult _listarOportunidades()

@@ -12,7 +12,7 @@ namespace Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(string login, string senha)
+        public ActionResult Login(string login, string senha)
         {
             var collection = new LoginViewModel
             {

@@ -33,8 +33,9 @@
                 <div class="content ">
                     <div class="container">
                         <div class="col-md-4 col-sm-6 ml-auto mr-auto">
-                           
-                                <form class="form" id="cad" method="post" action="Index">
+
+                            @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { id = "cad" }))
+                            {
                                 <div class="card card-login card-hidden">
                                     <div class="tela-logo">
                                         <img class="" style=" width:100%;" src="~/img/tela-login-so-logo.png" />
@@ -51,7 +52,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label> @response</label>
-                                               
+
                                             </div>
 
                                         </div>
@@ -61,9 +62,9 @@
                                         <button type="button" id="btnCadastrar" class="btn btn-primary btn-wd">Entrar</button>
                                     </div>
                                 </div>
-                                </form>
-                            
-                        </div>
+                            }
+
+                            </div>
                     </div>
                 </div>
             </div>

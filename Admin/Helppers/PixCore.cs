@@ -93,9 +93,10 @@ namespace Admin.Helppser
                 {
                     if (Convert.ToBoolean(Usuario.VAdmin))
                     {
-                        user.idCliente = 1;
+                        user.idCliente = Usuario.idCliente;
                         user.idPerfil = Usuario.PerfilUsuario;
                         user.IdUsuario = (int)Usuario.ID;
+                        user.idEmpresa = Usuario.IdEmpresa;
 
                         if (current.Request.Cookies["UsuarioLogado"] != null)
                         {

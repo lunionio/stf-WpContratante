@@ -47,7 +47,7 @@ namespace Admin.Controllers
                 var data = jss.Serialize(envio);
                 var response = client.UploadString(serverUrl, "POST", data);
                 var result = jss.Deserialize<List<EstruturaViewModel>>(response).OrderBy(r => r.Ordem).ToList();
-
+                result = result.Where(x => x.Tipo == 2).ToList();
                 if (result != null && result.Count() > 0)
                 {
                     model = new List<Estrutura>();

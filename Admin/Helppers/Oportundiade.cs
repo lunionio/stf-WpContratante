@@ -23,7 +23,7 @@ namespace Admin.Helppser
                 Descricao = (vaga.Rua + ". " + vaga.Numero + ". " + vaga.Bairro + " - " + vaga.Cidade + " /" +
                 vaga.Uf + " (" + vaga.Cep + ")"),
                 Estado = vaga.Uf,
-                CEP = vaga.Cep.ToString(),
+                CEP = vaga.Cep,
             };
 
             return new OportunidadeViewModel

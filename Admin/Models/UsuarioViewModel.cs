@@ -16,5 +16,6 @@ namespace Admin.Models
         public int IdEmpresa { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Perfil é obrigatório")]
         public string Perfil { get; set; }
+        public string Cargo { get; set; }
     }
 }

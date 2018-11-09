@@ -149,6 +149,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Attributes\NoDirectAccessAttribute.cs" />
+    <Compile Include="Controllers\CheckInController.cs" />
     <Compile Include="Controllers\FaleConoscoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -336,6 +337,7 @@
     <Content Include="Img\margot.jpg" />
     <Content Include="Img\mask.png" />
     <Content Include="Img\new_logo.png" />
+    <Content Include="Img\Ripple-1s-200px.gif" />
     <Content Include="Img\sidebar-1.jpg" />
     <Content Include="Img\sidebar-2.jpg" />
     <Content Include="Img\sidebar-3.jpg" />
@@ -470,6 +472,7 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\nouislider.min.js" />
+    <Content Include="Scripts\Pages\checkin.js" />
     <Content Include="Scripts\Pages\FaleConosco.js" />
     <Content Include="Scripts\Pages\VagaCadastrar.js" />
     <Content Include="Scripts\Pages\VagaIndex.js" />
@@ -527,6 +530,7 @@
     <Content Include="Views\Vaga\_listarOportunidades.cshtml" />
     <Content Include="Views\Vaga\_vincularPorifissionais.cshtml" />
     <Content Include="Views\Vaga\_lsitarProfissionais.cshtml" />
+    <Content Include="Views\CheckIn\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

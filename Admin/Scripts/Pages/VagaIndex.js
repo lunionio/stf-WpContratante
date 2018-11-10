@@ -28,8 +28,6 @@ function LoadingStop(elemento) {
     $(elemento).loading('stop');
 }
 
-
-
 function getOportunidades() {
 
     var Url = "vaga/_listarOportunidades";

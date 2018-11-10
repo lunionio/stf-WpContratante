@@ -162,6 +162,7 @@
     <Compile Include="Helppers\FaleConosco.cs" />
     <Compile Include="Helppers\Oportundiade.cs" />
     <Compile Include="Helppers\PixCore.cs" />
+    <Compile Include="Helppers\ServiceHelper.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\ClienteViewModel.cs" />
     <Compile Include="Models\Estrutura.cs" />
@@ -176,7 +177,13 @@
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Permissao.cs" />
     <Compile Include="Models\PermissaoViewModel.cs" />
+    <Compile Include="Models\Profissional.cs" />
+    <Compile Include="Models\ProfissionalServico.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
+    <Compile Include="Models\Servico.cs" />
+    <Compile Include="Models\Telefone.cs" />
+    <Compile Include="Models\UserStatus.cs" />
+    <Compile Include="Models\UserXOportunidade.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
     <Compile Include="Models\VagaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

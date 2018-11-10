@@ -20,6 +20,7 @@
                         <th>Nome</th>
                         <th>Profissional</th>
                         <th></th>
+                        <th></th>
 
                     </tr>
                 </thead>
@@ -42,14 +43,13 @@
                                 @item.ProfissionalNome
                             </td>
                             <td>
+                                <a class="btn btn-primary" href="/CheckIn/Index?optId=@item.Id">CheckIn</a>
+                            </td>
+                            <td>
                                 <div class="bootstrap-switch-on bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate" style="width: 72px;"><div class="bootstrap-switch-container" style="width: 122px; margin-left: 0px;"><span class="bootstrap-switch-handle-on bootstrap-switch-info" style="width: 50px;"></span><span class="bootstrap-switch-label" style="width: 30px;">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-info" style="width: 50px;"></span><input type="checkbox" checked="" data-toggle="switch" data-on-color="info" data-off-color="info" data-on-text="" data-off-text=""></div></div>
                             </td>
                         </tr>
-
-
                     }
-
-
                 </tbody>
             </table>
         </div>

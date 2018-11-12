@@ -171,6 +171,8 @@
     <Compile Include="Models\Faleconosco\Atendimento.cs" />
     <Compile Include="Models\Faleconosco\Status.cs" />
     <Compile Include="Models\Faleconosco\Ticket.cs" />
+    <Compile Include="Models\Financeiro\Extrato.cs" />
+    <Compile Include="Models\Financeiro\Status.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\OportunidadeViewModel.cs" />
     <Compile Include="Models\PageViewModel.cs" />

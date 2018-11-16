@@ -160,6 +160,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helppers\FaleConosco.cs" />
+    <Compile Include="Helppers\FinanceiroHelper.cs" />
     <Compile Include="Helppers\Oportundiade.cs" />
     <Compile Include="Helppers\PixCore.cs" />
     <Compile Include="Helppers\ServiceHelper.cs" />

@@ -20,7 +20,6 @@ namespace Admin.Controllers
         {
             return View();
         }
-
         
         public ActionResult Cadastrar()
         {
@@ -33,12 +32,12 @@ namespace Admin.Controllers
             vaga.status = 1;
             vaga.DataEvento = Convert.ToDateTime(vaga.Date);
 
-            if (VerifcaSaldoCliente(vaga.Valor))
+            if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
             {
                 var op = SaveVaga(vaga);
                 if (op != null && op.ID > 0)
                 {
-                    LancaTransacoes(op);
+                    FinanceiroHelper.LancaTransacoes(op, PixCoreValues.UsuarioLogado);
                     return Json("ok");
                 }
                 else
@@ -55,12 +54,12 @@ namespace Admin.Controllers
         public ActionResult PublicarMaisTarde(VagaViewModel vaga)
         {
             vaga.status = 2;
-            if (VerifcaSaldoCliente(vaga.Valor))
+            if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
             {
                 var op = SaveVaga(vaga);
                 if (op != null && op.ID > 0)
                 {
-                    LancaTransacoes(op);
+                    FinanceiroHelper.LancaTransacoes(op, PixCoreValues.UsuarioLogado);
                     return RedirectToAction("Gerenciar");
                 }
                 else
@@ -189,79 +188,5 @@ namespace Admin.Controllers
                 throw new Exception("Não foi possível salvar o usuário.", e);
             }
         }  
-
-        private bool VerifcaSaldoCliente(decimal valorVaga)
-        {
-            var usuario = PixCoreValues.UsuarioLogado;
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpFinanceiro/BuscarSaldo/" + usuario.idCliente + "/" + usuario.IdUsuario;
-
-            var envio = new
-            {
-                usuario.idCliente,
-                destino = usuario.idEmpresa
-            };
-
-            var helper = new ServiceHelper();
-            var result = helper.Post<object>(url, envio);
-
-            var saldo = Convert.ToDecimal(result);
-
-            return saldo >= valorVaga;
-        }
-
-        private void LancaTransacoes(OportunidadeViewModel vaga)
-        {
-            IList<Extrato> extratos = new List<Extrato>();
-            for (int i = 0; i < vaga.Quantidade; i++)
-            {
-                var valor1 = (vaga.Valor) * -1;
-
-                var extrato1 = new Extrato(valor1 , 2, 1, PixCoreValues.UsuarioLogado.idEmpresa.ToString(), 
-                    PixCoreValues.UsuarioLogado.idEmpresa.ToString(), vaga.ID, Status.Aprovado)
-                {
-                    Ativo = true,
-                    DataCriacao = DateTime.UtcNow,
-                    DataEdicao = DateTime.UtcNow,
-                    Descricao = "Debitando valor da vaga.",
-                    IdCliente = PixCoreValues.IDCliente,
-                    Nome = "Débito",
-                    Status = 1,
-                    UsuarioCriacao = PixCoreValues.UsuarioLogado.IdUsuario,
-                    UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario,
-                };
-
-                var valor2 = vaga.Valor;
-
-                var extrato2 = new Extrato(valor2, 2, 1, PixCoreValues.UsuarioLogado.idEmpresa.ToString(),
-                    "16", vaga.ID, Status.Bloqueado)
-                {
-                    Ativo = true,
-                    DataCriacao = DateTime.UtcNow,
-                    DataEdicao = DateTime.UtcNow,
-                    Descricao = "Disponibilizando valor da vaga.",
-                    IdCliente = PixCoreValues.IDCliente,
-                    Nome = "Pagamento",
-                    Status = 1,
-                    UsuarioCriacao = PixCoreValues.UsuarioLogado.IdUsuario,
-                    UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario,
-                };
-
-                extratos.Add(extrato1);
-                extratos.Add(extrato2);
-            }
-
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpFinanceiro/AlocarCredito/" + PixCoreValues.UsuarioLogado.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
-
-            var envio = new
-            {
-                extratos,
-            };
-
-            var helper = new ServiceHelper();
-            var result = helper.Post<object>(url, envio);
-        }
     }
 }

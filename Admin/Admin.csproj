@@ -153,6 +153,7 @@
     <Compile Include="Controllers\FaleConoscoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RelatoriosController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VagaController.cs" />
@@ -182,6 +183,7 @@
     <Compile Include="Models\PermissaoViewModel.cs" />
     <Compile Include="Models\Profissional.cs" />
     <Compile Include="Models\ProfissionalServico.cs" />
+    <Compile Include="Models\RelatorioViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
     <Compile Include="Models\Servico.cs" />
     <Compile Include="Models\Telefone.cs" />
@@ -541,6 +543,7 @@
     <Content Include="Views\Vaga\_vincularPorifissionais.cshtml" />
     <Content Include="Views\Vaga\_lsitarProfissionais.cshtml" />
     <Content Include="Views\CheckIn\Index.cshtml" />
+    <Content Include="Views\Relatorios\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

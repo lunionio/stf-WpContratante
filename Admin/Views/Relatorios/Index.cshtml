@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "RELATÓRIOS";
+    ViewBag.PageTitle = "RELATÓRIO";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
+
+            <div class="card-header text-center">
+                <h4 class="text-center">Relatório</h4>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <a href="@Url.Action("Gerar", "Relatorios")" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Gerar Relatório</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

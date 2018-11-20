@@ -21,6 +21,7 @@
                         <th>Profissional</th>
                         <th></th>
                         <th></th>
+                        <th></th>
 
                     </tr>
                 </thead>
@@ -29,26 +30,44 @@
                     @foreach (var item in Model)
                     {
 
-                        <tr>
-                            <td>
-                                @item.Id
-                            </td>
-                            <td>
-                                @item.DataEvento.ToShortDateString()
-                            </td>
-                            <td>
-                                @item.Nome
-                            </td>
-                            <td>
-                                @item.ProfissionalNome
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" href="/CheckIn/Index?optId=@item.Id">CheckIn</a>
-                            </td>
-                            <td>
-                                <div class="bootstrap-switch-on bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate" style="width: 72px;"><div class="bootstrap-switch-container" style="width: 122px; margin-left: 0px;"><span class="bootstrap-switch-handle-on bootstrap-switch-info" style="width: 50px;"></span><span class="bootstrap-switch-label" style="width: 30px;">&nbsp;</span><span class="bootstrap-switch-handle-off bootstrap-switch-info" style="width: 50px;"></span><input type="checkbox" checked="" data-toggle="switch" data-on-color="info" data-off-color="info" data-on-text="" data-off-text=""></div></div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td>
+                            @item.DataEvento.ToShortDateString()
+                        </td>
+                        <td>
+                            @item.Nome
+                        </td>
+                        <td>
+                            @item.ProfissionalNome
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="/CheckIn/Index?optId=@item.Id">CheckIn</a>
+                        </td>
+                        <td>
+                            <div class="bootstrap-switch-on bootstrap-switch bootstrap-switch-wrapper bootstrap-switch-animate" style="width: 72px;">
+                                <div class="bootstrap-switch-container" style="width: 122px; margin-left: 0px;">
+                                    <span class="bootstrap-switch-handle-on bootstrap-switch-info" style="width: 50px;"></span>
+                                    <span class="bootstrap-switch-label" style="width: 30px;">&nbsp;</span>
+                                    <span class="bootstrap-switch-handle-off bootstrap-switch-info" style="width: 50px;"></span>
+                                    <input type="checkbox" checked="" data-toggle="switch" data-on-color="info" data-off-color="info" data-on-text="" data-off-text="">
+                                </div>
+                            </div>
+                        </td>
+                        <td class="td-actions text-right">
+                            <a onclick="getModalMatch(@item.Id)" class="btn btn-link btn-primary table-action view">
+                                <i class="nc-icon nc-single-02" />
+                            </a>
+                            <a class="btn btn-link btn-success table-action view" href="@Url.Action("Cadastrar", "Vaga", item)">
+                                <i class="nc-icon nc-tap-01" />
+                            </a>
+                            @*<a class="btn btn-link btn-danger table-action view" href="@Url.Action("Remover", "Vaga", item)">
+                                <i class="nc-icon nc-simple-remove" />
+                            </a>*@
+                        </td>
+                    </tr>
                     }
                 </tbody>
             </table>

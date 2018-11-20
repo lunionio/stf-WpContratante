@@ -26,7 +26,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpRelatorios/OptsStaffPro/" + usuario.idCliente + "/" +
+            var url = keyUrl + "/Seguranca/WpRelatorios/OptsContratantes/" + usuario.idCliente + "/" +
                 PixCoreValues.UsuarioLogado.IdUsuario;
 
             var envio = new

@@ -22,7 +22,7 @@ function PublicarAgora() {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": "PublicarAgora",
+        "url": "/Vaga/PublicarAgora",
         "method": "POST",
         "data": vaga
     }
@@ -74,13 +74,14 @@ function VagaViewModel() {
     var data = $('#data').val();
     var dataEvento = Date.parse(data);
     var VagaViewModel = {
+        Id: $('#vagaId').val(),
         Nome: $('#nome').val(),
         Cep: $('#cep').val(),
         Rua: $('#rua').val(),
         Bairro: $('#bairro').val(),
         Numero: $('#numero').val(),
         Cidade: $('#cidade').val(),
-        Date: $('#data').val(),
+        Date: data,
         Complemento: $('#complemento').val(),
         Referencia: $('#referencia').val(),
         Uf: $('#uf').val(),
@@ -92,8 +93,13 @@ function VagaViewModel() {
         Profissional: $('#profissional option:selected').val(),
         ProfissionalNome: $('#profissional option:selected').text(),
         //Qtd: $('#qtd').val(),
-        Total: $('#total').val()
-    }
+        Total: $('#total').val(),
+        IdEmpresa: $('#empresas option:selected').val(),
+        EnderecoId: $('#endId').val(),
+        DataCriacao: $('#vagaData').val(),
+        EnderecoDataCriacao: $('#enderecoData').val()
+    };
+
     return VagaViewModel;
 }
 
@@ -283,12 +289,13 @@ function carregaModal() {
     LoadingInit('body');
     var vagaViewModel = VagaViewModel();
     var settings = {
-        "url": "ModalConfirmarVaga",
+        "url": "/Vaga/ModalConfirmarVaga",
         "method": "POST",
         "data": vagaViewModel
     }
 
     $.ajax(settings).done(function (response) {
+
         $('#modal').html(response);
         $('#myModal').modal('show');
         LoadingBodyStop();

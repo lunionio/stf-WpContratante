@@ -8,8 +8,6 @@ namespace Admin.Models
     public class RelatorioViewModel
     {
         public string Codigo { get; set; }
-        public string Cliente { get; set; }
-        public string Cnpj { get; set; }
         public string Titulo { get; set; }
         public string CriadoEm { get; set; }
         public string DataEvento { get; set; }

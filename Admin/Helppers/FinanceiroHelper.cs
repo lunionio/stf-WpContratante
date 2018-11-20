@@ -86,5 +86,46 @@ namespace Admin.Helppers
             var helper = new ServiceHelper();
             var result = helper.Post<object>(url, envio);
         }
+
+        public static void LancaTransacoes(decimal valor, string origem, int tipoOrigem,
+           string destino, int tipoDestino, int natureza, int tipo, string descricao, LoginViewModel usuario, int idOpt = 0)
+
+        {
+            IList<Extrato> extratos = new List<Extrato>();
+
+            var extrato = new Extrato(valor, natureza, tipo, origem, destino, Status.Aprovado)
+            {
+                Ativo = true,
+                DataCriacao = DateTime.UtcNow,
+                DataEdicao = DateTime.UtcNow,
+                Descricao = descricao,
+                IdCliente = usuario.idCliente,
+                Nome = descricao,
+                Status = 1,
+                UsuarioCriacao = usuario.IdUsuario,
+                UsuarioEdicao = usuario.IdUsuario,
+                TipoOrigem = tipoOrigem,
+                TipoDestino = tipoDestino,
+            };
+
+            if (idOpt > 0)
+            {
+                extrato.CodigoExterno = idOpt;
+            }
+
+            extratos.Add(extrato);
+
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpFinanceiro/AlocarCredito/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                extratos,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<object>(url, envio);
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -20,10 +21,15 @@ namespace Admin.Controllers
         {
             return View();
         }
-        
-        public ActionResult Cadastrar()
+
+        public ActionResult Cadastrar(VagaViewModel model)
         {
-            return View();
+            if (model != null)
+            {
+                return View(model);
+            }
+
+            return View(new VagaViewModel());
         }
 
         [HttpPost]
@@ -78,51 +84,8 @@ namespace Admin.Controllers
         }
 
         public PartialViewResult _listarOportunidades()
-        {//ESSE contratante
-            var usuario = PixCoreValues.UsuarioLogado;
-            var jss = new JavaScriptSerializer();
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorEmpresa/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
-
-            var envio = new
-            {
-                usuario.idEmpresa,
-            };
-
-            var data = jss.Serialize(envio);
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-                streamWriter.Write(data);
-                streamWriter.Flush();
-                streamWriter.Close();
-            }
-
-            var oportunidades = default(IEnumerable<OportunidadeViewModel>);
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                if (string.IsNullOrEmpty(result)
-                    || "null".Equals(result.ToLower()))
-                {
-                    throw new Exception("Ouve um erro durante o processo.");
-                }
-
-                oportunidades = jss.Deserialize<IEnumerable<OportunidadeViewModel>>(result);
-            }
-
-            IList<VagaViewModel> vagas = new List<VagaViewModel>();
-
-            foreach (var o in oportunidades)
-            {
-                vagas.Add(new VagaViewModel() { Id = o.ID, Nome = o.Nome, ProfissionalNome = o.DescProfissional });
-            }
+        {
+            var vagas = GetOportunidades(PixCoreValues.UsuarioLogado.idEmpresa);
 
             return PartialView(vagas);
         }
@@ -187,6 +150,277 @@ namespace Admin.Controllers
             {
                 throw new Exception("Não foi possível salvar o usuário.", e);
             }
-        }  
+        }
+
+        public PartialViewResult ModalMatch(int optId)
+        {
+            var userXOportunidades = GetProfissionaisByOpt(optId);
+
+            var op = GetOportunidade(optId);
+            ViewBag.OptNome = op.Nome;
+
+            var profissionais = GetProfissionais(userXOportunidades.Select(x => x.UserId));
+            var users = GetUsers(profissionais.Select(x => x.Profissional.IdUsuario));
+
+            IList<ProfissionalViewModel> models = new List<ProfissionalViewModel>();
+
+            foreach (var item in profissionais)
+            {
+                var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario))?.Nome;
+                var model = new ProfissionalViewModel(item.Profissional.ID, user, item.Servico.Nome, item.Profissional.Telefone.Numero,
+                    item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(), item.Profissional.Email, item.Profissional.IdUsuario, item.Profissional.Endereco)
+                {
+                    StatusId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.Status.ID,
+                    UserXOportunidadeId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.ID,
+                    OportunidadeId = op.Id,
+                    Valor = op.Valor,
+                };
+
+                models.Add(model);
+            }
+
+            return PartialView(models);
+        }
+
+        private IEnumerable<UserXOportunidade> GetProfissionaisByOpt(int idOpt)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/WpOportunidades/BuscarUsuariosPorOportunidade/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
+
+                var envio = new
+                {
+                    idOpt,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<UserXOportunidade>>(url, envio);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível completar a operação.", e);
+            }
+        }
+
+        public VagaViewModel GetOportunidade(int id)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorID/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                id,
+            };
+
+            var helper = new ServiceHelper();
+            var o = helper.Post<OportunidadeViewModel>(url, envio);
+
+            var vaga = new VagaViewModel()
+            {
+                Id = o.ID,
+                Nome = o.Nome,
+                ProfissionalNome = o.DescProfissional,
+                Qtd = o.Quantidade,
+                Valor = o.Valor,
+                DataEvento = o.DataOportunidade,
+                IdEmpresa = o.IdEmpresa
+            };
+
+            return vaga;
+        }
+
+        private IEnumerable<ProfissionalServico> GetProfissionais(IEnumerable<int> ids)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorIds/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
+
+                var envio = new
+                {
+                    usuario.idCliente,
+                    ids,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<ProfissionalServico>>(url, envio);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível completar a operação.", e);
+            }
+        }
+
+        private IEnumerable<UsuarioViewModel> GetUsers(IEnumerable<int> ids)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/Principal/BuscarUsuarios/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
+
+                var envio = new
+                {
+                    usuario.idCliente,
+                    ids,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<UsuarioViewModel>>(url, envio);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível completar a operação.", e);
+            }
+        }
+
+        //public ActionResult Remover(VagaViewModel model)
+        //{
+        //    try
+        //    {
+        //        var usuario = PixCoreValues.UsuarioLogado;
+        //        var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+        //        var url = keyUrl + "/Seguranca/WpOportunidades/DeletarOportunidade/" + usuario.idCliente + "/" +
+        //            PixCoreValues.UsuarioLogado.IdUsuario;
+
+        //        var op = Oportundiade.Convert(model);
+
+        //        var envio = new
+        //        {
+        //            oportunidade = op,
+        //        };
+
+        //        var helper = new ServiceHelper();
+        //        var resut = helper.Post<object>(url, envio);
+
+        //        //var oportunidades = GetOportunidades(op.IdEmpresa);
+
+        //        return View("Index");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        ViewBag.ErrorMessage = "Não foi possível desativar a oportunidade.";
+        //        return View("Index");
+        //    }
+        //}
+
+        private static IList<VagaViewModel> GetOportunidades(int? idEmpresa)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorEmpresa/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                idEmpresa,
+            };
+
+            var helper = new ServiceHelper();
+            var oportunidades = helper.Post<IEnumerable<OportunidadeViewModel>>(url, envio);
+
+            IList<VagaViewModel> vagas = new List<VagaViewModel>();
+
+            foreach (var o in oportunidades)
+            {
+                vagas.Add(new VagaViewModel(o.ID, o.Nome, o.Endereco.CEP, o.Endereco.Local, o.Endereco.Bairro, o.Endereco.Cidade,
+                    o.Endereco.Estado, o.HoraInicio, o.Valor, o.TipoProfissional, o.DescProfissional, o.Endereco.NumeroLocal,
+                    (o.Valor * o.Quantidade).ToString(), o.Quantidade, o.Endereco.Complemento, o.Endereco.Complemento,
+                    o.DataOportunidade.ToShortDateString(), o.Status, o.IdEmpresa, o.IdCliente, o.TipoServico)
+                {
+                    EnderecoId = o.Endereco.ID,
+                    EnderecoDataCriacao = o.Endereco.DataCriacao.ToShortDateString(),
+                    DataCriacao = o.DataCriacao.ToShortDateString()
+                });
+            }
+
+            return vagas;
+        }
+
+        [HttpPost]
+        public string Match(UserXOportunidade userXOportunidade)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/WpOportunidades/CanditarOportunidade/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
+
+                var pServico = GetProfissionais(new List<int>() { userXOportunidade.UserId }).SingleOrDefault();
+                var user = GetUsers(new List<int>() { pServico.Profissional.IdUsuario }).SingleOrDefault();
+                var op = GetOportunidade(userXOportunidade.OportunidadeId);
+
+                var candidatos = GetProfissionaisByOpt(userXOportunidade.OportunidadeId);
+                var qtdCandAprovados = candidatos.Where(c => c.OportunidadeId.Equals(op.Id) && c.StatusID == 1).Count();
+
+                if (op.Qtd > qtdCandAprovados && userXOportunidade.StatusID != 3)
+                {
+                    if (!FinanceiroHelper.VerifcaSaldoCliente(op.Valor, PixCoreValues.UsuarioLogado))
+                    {
+                        return "Saldo insuficiente para a contratação.";
+                    }
+
+                    var envio = new
+                    {
+                        userXOportunidade,
+                    };
+
+                    var helper = new ServiceHelper();
+                    var o = helper.Post<object>(url, envio);
+
+                    if (userXOportunidade.StatusID == 1) //Aprovado
+                    {
+                        FinanceiroHelper.LancaTransacoes(op.Valor * -1, "16", 3,
+                            "16", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
+
+                        FinanceiroHelper.LancaTransacoes(op.Valor, "16", 3,
+                            pServico.Profissional.ID.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
+                    }
+
+                    return JsonConvert.SerializeObject(new ProfissionalViewModel(pServico.Profissional.ID, user.Nome, pServico.Servico.Nome, pServico.Profissional.Telefone.Numero,
+                        pServico.Profissional.Telefone.ID, pServico.Profissional.DataNascimento.ToShortDateString(), pServico.Profissional.Email, pServico.Profissional.IdUsuario, pServico.Profissional.Endereco)
+                    {
+                        Valor = op.Valor,
+                    });
+                }
+
+                //Reprovando os demais profissionais
+                var profissionais = candidatos.Where(c => c.OportunidadeId.Equals(op.Id) && c.StatusID == 2);
+                foreach (var item in profissionais)
+                {
+                    item.StatusID = 3;
+
+                    var envio = new
+                    {
+                        userXOportunidade = item,
+                    };
+
+                    var helper = new ServiceHelper();
+                    var o = helper.Post<object>(url, envio);
+                }
+
+
+                return "Não é possível aprovar mais profissionais para essa vaga.";
+            }
+            catch (Exception e)
+            {
+                return "Não foi possível completar a operação.";
+            }
+        }
     }
 }

@@ -7,6 +7,16 @@ namespace Admin.Models.Financeiro
 {
     public class Extrato : Base
     {
+        public Extrato(decimal valor, int natureza, int tipo, string origem, string destino, Status status)
+        {
+            Valor = valor;
+            NaturezaId = natureza;
+            TipoId = tipo;
+            Origem = origem;
+            Destino = destino;
+            StatusId = status;
+        }
+
         public Extrato(decimal valor, int naturezaId, int tipoId, string origem, string destino, int? codigoExterno, Status statusId)
         {
             Valor = valor;

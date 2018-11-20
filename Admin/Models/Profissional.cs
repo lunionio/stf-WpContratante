@@ -8,5 +8,6 @@ namespace Admin.Models
         public int IdUsuario { get; set; }
         public DateTime DataNascimento { get; set; }
         public Telefone Telefone { get; set; }
+        public Endereco Endereco { get; set; }    
     }
 }

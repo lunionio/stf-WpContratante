@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Admin.Models.ProfissionalViewModel>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title">
+                    @ViewBag.OptNome
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+
+
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="contratar-tab" href="#">Contratar</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="contratados-tab" href="#">Contratados</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="contratar" role="tabpanel" aria-labelledby="contratar-tab">
+                                <div class="card stacked-form">
+                                    <div class="card-header ">
+                                        <h4 class="card-title"></h4>
+                                    </div>
+                                    <div class="card-body table-full-width table-responsive">
+                                        <table id="tbContratar" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Profissional</th>
+                                                    <th>Especialidade</th>
+                                                    <th>Local</th>
+                                                    <th>Valor</th>
+                                                    <th>Avaliação</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    if (item.StatusId != null && item.StatusId == 2) //Aguardando
+                                                    {
+                                                        <tr id="@item.Id">
+                                                            <td>
+                                                                @item.Id
+                                                            </td>
+                                                            <td>
+                                                                @item.Nome
+                                                            </td>
+                                                            <td>
+                                                                @item.Especialidade
+                                                            </td>
+                                                            <td>
+                                                                @item.Endereco.Local
+                                                            </td>
+                                                            <td>
+                                                                @item.Valor
+                                                            </td>
+                                                            <td>
+                                                                Avaliação
+                                                            </td>
+                                                            <td>
+                                                                <a class="btn btn-link btn-success table-action view" onclick="aprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.Id)">
+                                                                    <i class="nc-icon nc-circle-09" />
+                                                                </a>
+                                                                <a class="btn btn-link btn-danger table-action view" onclick="reprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.Id)">
+                                                                    <i class="nc-icon nc-simple-remove" />
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer ">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="contratados" role="tabpanel" aria-labelledby="contratados-tab">
+                                <div class="card stacked-form">
+                                    <div class="card-header ">
+                                        <h4 class="card-title"></h4>
+                                    </div>
+                                    <div class="card-body table-full-width table-responsive">
+                                        <table id="tbContratados" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Profissional</th>
+                                                    <th>Especialidade</th>
+                                                    <th>Local</th>
+                                                    <th>Valor</th>
+                                                    <th>Avaliação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model)
+                                                {
+                                                    if (item.StatusId != null && item.StatusId == 1) //Aprovado
+                                                    {
+                                                        <tr id="@item.Id">
+                                                            <td>
+                                                                @item.Id
+                                                            </td>
+                                                            <td>
+                                                                @item.Nome
+                                                            </td>
+                                                            <td>
+                                                                @item.Especialidade
+                                                            </td>
+                                                            <td>
+                                                                @item.Endereco.Local
+                                                            </td>
+                                                            <td>
+                                                                @item.Valor
+                                                            </td>
+                                                            <td>
+                                                                Avaliação
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="card-footer ">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#contratados-tab').click(function () {
+        $('#contratar-tab').removeClass('active');
+        $(this).addClass('active');
+        $('#contratar').removeClass('show active');
+        $('#contratados').addClass('show active');
+    });
+
+    $('#contratar-tab').click(function () {
+        $('#contratados-tab').removeClass('active');
+        $(this).addClass('active');
+        $('#contratados').removeClass('show active');
+        $('#contratar').addClass('show active');
+    });
+    
+</script>

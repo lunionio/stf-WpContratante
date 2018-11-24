@@ -166,7 +166,10 @@
     <Compile Include="Helppers\PixCore.cs" />
     <Compile Include="Helppers\ServiceHelper.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\CheckIn.cs" />
+    <Compile Include="Models\CheckInViewModel.cs" />
     <Compile Include="Models\ClienteViewModel.cs" />
+    <Compile Include="Models\DadosBancarios.cs" />
     <Compile Include="Models\EmpresaViewModel.cs" />
     <Compile Include="Models\Estrutura.cs" />
     <Compile Include="Models\EstruturaViewModel.cs" />
@@ -183,8 +186,10 @@
     <Compile Include="Models\Permissao.cs" />
     <Compile Include="Models\PermissaoViewModel.cs" />
     <Compile Include="Models\Profissional.cs" />
+    <Compile Include="Models\ProfissionalFormacao.cs" />
     <Compile Include="Models\ProfissionalServico.cs" />
     <Compile Include="Models\ProfissionalViewModel.cs" />
+    <Compile Include="Models\RelatorioModel.cs" />
     <Compile Include="Models\RelatorioViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
     <Compile Include="Models\Servico.cs" />
@@ -547,6 +552,9 @@
     <Content Include="Views\CheckIn\Index.cshtml" />
     <Content Include="Views\Relatorios\Index.cshtml" />
     <Content Include="Views\Vaga\ModalMatch.cshtml" />
+    <Content Include="Views\Usuario\Editar.cshtml" />
+    <Content Include="Views\Vaga\ModalProfissional.cshtml" />
+    <Content Include="Views\Vaga\ModalCheckIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -3,6 +3,8 @@
     ViewBag.Title = "RELATÓRIOS";
     ViewBag.PageTitle = "RELATÓRIO";
 }
+
+@model IList<Admin.Models.RelatorioModel>
 <div class="row">
     <div class="col-md-12">
         <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
@@ -12,11 +14,130 @@
             </div>
             <div class="card-body">
                 <div class="tab-content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-5" for="email">Relatorios</label>
+                                <div class="col-sm-7">
+                                    <select id="relatorios" class="form-control chosen-select">
+                                        <option value="0">Selecione</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.Id">@item.Nome</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="tbRelatorio" hidden class="table table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th> Codigo             </th>
+                                        <th> Titulo             </th>
+                                        <th> CriadoEm    </th>
+                                        <th> DataEvento     </th>
+                                        <th> Endereco       </th>
+                                        <th> Categoria          </th>
+                                        <th> Profissional   </th>
+                                        <th> Valor          </th>
+                                        <th> Quantidade         </th>
+                                        <th> Total              </th>
+                                        <th> Candidatos             </th>
+                                        <th> Aprovados      </th>
+                                        <th> Reprovados          </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-                        <a href="@Url.Action("Gerar", "Relatorios")" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Gerar Relatório</a>
+                        <a href="#" id="download" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Gerar Relatório</a>
+                    </div>
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <a id="mostrar" href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Mostar Relatório</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="~/Scripts/Plugins/chosen.jquery.js"></script>
+    <script src="~/Scripts/jquery.datatables.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".chosen-select").chosen({ no_results_text: "Nada encontrado!" });
+            $(".chosen-select").chosen({ allow_single_deselect: true });
+        });
+
+        $('#download').click(function () {
+            var r = $('#relatorios option:selected').val();
+            window.location.href = '@Url.Action("Gerar", "Relatorios")/' + '?relatorioId=' + r;
+        });
+
+        $('#mostrar').click(function () {
+            var r = $('#relatorios option:selected').val();
+
+            let Url = "/Relatorios/Relatorios?relatorioId=" + r;
+            let settings = {
+                "async": true,
+                "crossDomain": true,
+                "url": Url,
+                "method": "GET"
+            };
+
+            $.ajax(settings).done(function (response) {
+                $('#tbRelatorio tbody').empty();
+                $("#tbRelatorio").removeAttr("hidden");
+                var result = response;
+                $.each(result, function (index, element, array) {
+                    $("#tbRelatorio > tbody").append("<tr>" +
+                        "<td>" + element.Codigo + "</td>" +
+                        "<td>" + element.Titulo + "</td>" +
+                        "<td>" + element.CriadoEm + "</td>" +
+                        "<td>" + element.DataEvento + "</td>" +
+                        "<td>" + element.CriadoEm + "</td>" +
+                        "<td>" + element.Endereco + "</td>" +
+                        "<td>" + element.Categoria + "</td>" +
+                        "<td>" + element.Profissional + "</td>" +
+                        "<td>" + element.Valor + "</td>" +
+                        "<td>" + element.Quantidade + "</td>" +
+                        "<td>" + element.Total + "</td>" +
+                        "<td>" + element.Candidatos + "</td>" +
+                        "<td>" + element.Aprovados + "</td>" +
+                        "<td>" + element.Reprovados + "</td>" +
+                        "</tr>");
+                });
+
+                $("#tbRelatorio").DataTable({
+                    "pagingType": "numbers",
+                    "columnDefs": [{
+                        "targets": '_all',
+                        "orderable": false,
+                    }],
+                    "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
+                        "<'row'" +
+                        "<'col-sm-6'l>" +
+                        "<'col-sm-6'p>" +
+                        ">" +
+                        ">" + '<"clear">',
+                    "oLanguage": {
+                        "sLengthMenu": "_MENU_",
+                        "sZeroRecords": "Nada encontrado",
+                        "sInfo": "Mostrando oágina _PAGE_ de _PAGES_",
+                        "sInfoEmpty": "Nenhum dado para mostrar",
+                        "sInfoFiltered": "(Filtrado de _MAX_ registros)",
+                        "sSearch": "Pesquisar:",
+                    },
+                });
+            });
+        });
+    </script>
+}

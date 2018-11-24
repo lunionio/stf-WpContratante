@@ -97,6 +97,8 @@ namespace Admin.Helppser
                         user.idPerfil = Usuario.PerfilUsuario;
                         user.IdUsuario = (int)Usuario.ID;
                         user.idEmpresa = Usuario.IdEmpresa;
+                        user.Nome = Usuario.Nome;
+                        user.Avatar = Usuario.Avatar;
 
                         if (current.Request.Cookies["UsuarioLogado"] != null)
                         {
@@ -197,6 +199,29 @@ namespace Admin.Helppser
                 //TODO: Necessário? página criada localmente via html...
                 //HttpContext.Current.Response.StatusCode = 404;
             }
+        }
+
+        public static void AtualizarUsuarioLogado(UsuarioViewModel usuario)
+        {
+            var login = new LoginViewModel()
+            {
+                idCliente = usuario.idCliente,
+                idPerfil = usuario.PerfilUsuario,
+                IdUsuario = usuario.ID,
+                idEmpresa = usuario.IdEmpresa,
+                Nome = usuario.Nome,
+                Avatar = usuario.Avatar,
+            };
+
+            HttpContext.Current.Response.Cookies["UsuarioLogado"].Value = null;
+            HttpContext.Current.Response.Cookies["UsuarioLogado"].Value = new JavaScriptSerializer().Serialize(login);
+        }
+
+        public static void Sair()
+        {
+            var current = HttpContext.Current;
+            current.Request.Cookies["UsuarioLogado"].Value = null;
+            current.Request.Cookies["IdCliente"].Value = null;
         }
     }
 }

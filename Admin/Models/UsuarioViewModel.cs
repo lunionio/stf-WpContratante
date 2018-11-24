@@ -17,5 +17,6 @@ namespace Admin.Models
         [Required(AllowEmptyStrings = false, ErrorMessage = "Perfil é obrigatório")]
         public string Perfil { get; set; }
         public string Cargo { get; set; }
+        public string Avatar { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Admin.Models
 {
@@ -8,6 +9,12 @@ namespace Admin.Models
         public int IdUsuario { get; set; }
         public DateTime DataNascimento { get; set; }
         public Telefone Telefone { get; set; }
-        public Endereco Endereco { get; set; }    
+        public Endereco Endereco { get; set; }
+        public IList<ProfissionalFormacao> Formacoes { get; set; }
+
+        public Profissional()
+        {
+
+        }
     }
 }

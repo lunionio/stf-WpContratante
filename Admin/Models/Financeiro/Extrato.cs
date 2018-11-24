@@ -39,5 +39,10 @@ namespace Admin.Models.Financeiro
         public DateTime DataFim { get; set; }
         public int TipoDestino { get; set; }
         public int TipoOrigem { get; set; }
+
+        public Extrato()
+        {
+
+        }
     }
 }

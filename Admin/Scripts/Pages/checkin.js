@@ -51,7 +51,7 @@ function getQrCode() {
 
     setTimeout(function () {
         getQrCode();
-    }, 60000);
+    }, 10000);
 }
 
 $(document).ready(getQrCode());

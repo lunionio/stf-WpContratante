@@ -179,6 +179,8 @@ namespace Admin.Controllers
                 models.Add(model);
             }
 
+            ViewBag.CheckIns = GetProfissionaisQueFizeramCheckIn(optId);
+
             return PartialView(models);
         }
 
@@ -288,35 +290,35 @@ namespace Admin.Controllers
             }
         }
 
-        //public ActionResult Remover(VagaViewModel model)
-        //{
-        //    try
-        //    {
-        //        var usuario = PixCoreValues.UsuarioLogado;
-        //        var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-        //        var url = keyUrl + "/Seguranca/WpOportunidades/DeletarOportunidade/" + usuario.idCliente + "/" +
-        //            PixCoreValues.UsuarioLogado.IdUsuario;
+        public ActionResult Remover(VagaViewModel model)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/WpOportunidades/DeletarOportunidade/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
 
-        //        var op = Oportundiade.Convert(model);
+                var op = Oportundiade.Convert(model);
 
-        //        var envio = new
-        //        {
-        //            oportunidade = op,
-        //        };
+                var envio = new
+                {
+                    oportunidade = op,
+                };
 
-        //        var helper = new ServiceHelper();
-        //        var resut = helper.Post<object>(url, envio);
+                var helper = new ServiceHelper();
+                var resut = helper.Post<object>(url, envio);
 
-        //        //var oportunidades = GetOportunidades(op.IdEmpresa);
+                var oportunidades = GetOportunidades(op.IdEmpresa);
 
-        //        return View("Index");
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        ViewBag.ErrorMessage = "Não foi possível desativar a oportunidade.";
-        //        return View("Index");
-        //    }
-        //}
+                return View("Index");
+            }
+            catch (Exception e)
+            {
+                ViewBag.ErrorMessage = "Não foi possível desativar a oportunidade.";
+                return View("Index");
+            }
+        }
 
         private static IList<VagaViewModel> GetOportunidades(int? idEmpresa)
         {
@@ -421,6 +423,217 @@ namespace Admin.Controllers
             {
                 return "Não foi possível completar a operação.";
             }
+        }
+
+        public ActionResult ModalProfissional(int pId)
+        {
+            var p = GetProfissional(pId);
+            p.Profissional.Formacoes = GetFormacoes(p.Profissional.ID);
+            var u = GetUsuario(p.Profissional.IdUsuario);
+
+            var profissional = new ProfissionalViewModel()
+            {
+                Nome = p.Profissional.Nome,
+                Avatar = u.Avatar,
+                AreaAtuacao = p.Servico.Nome,
+                Telefone = p.Profissional.Telefone.Numero,
+                Formacoes = p.Profissional.Formacoes.Select(f => f.Nome),
+                Referencia = p.Profissional.Descricao,
+            };
+
+            return PartialView(profissional);
+        }
+
+        private ProfissionalServico GetProfissional(int id)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorId/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idProfissional = id,
+            };
+
+            var helper = new ServiceHelper();
+            var p = helper.Post<ProfissionalServico>(url, envio);
+
+            return p;
+        }
+
+        private IList<ProfissionalFormacao> GetFormacoes(int pId)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/wpProfissionais/buscarFormacoes/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idProfissional = pId,
+            };
+
+            var helper = new ServiceHelper();
+            var formacoes = helper.Post<IList<ProfissionalFormacao>>(url, envio);
+
+            return formacoes;
+        }
+
+        private UsuarioViewModel GetUsuario(int id)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/Principal/BuscarUsuarioPorId/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idUsuario = id,
+            };
+
+            var helper = new ServiceHelper();
+            var u = helper.Post<UsuarioViewModel>(url, envio);
+
+            return u;
+        }
+
+        public ActionResult ModalCheckIn(int pId)
+        {
+            var p = GetProfissional(pId);
+            p.Profissional.Formacoes = GetFormacoes(p.Profissional.ID);
+            var u = GetUsuario(p.Profissional.IdUsuario);
+            var d = GetDadosBancarios(p.Profissional.ID);
+
+            var profissional = new ProfissionalViewModel()
+            {
+                Nome = p.Profissional.Nome,
+                Avatar = u.Avatar,
+                AreaAtuacao = p.Servico.Nome,
+                Telefone = p.Profissional.Telefone.Numero,
+                Formacoes = p.Profissional.Formacoes.Select(f => f.Nome),
+                Referencia = p.Profissional.Descricao,
+                Agencia = d.Agencia,
+                Conta = d.Conta,
+                Banco = d.Banco,
+            };
+
+            return PartialView(profissional);
+        }
+
+        public DadosBancarios GetDadosBancarios(int profissionalId)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpFinanceiro/BuscarDadosBancariosPorUsuario/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                codigoExterno = profissionalId
+            };
+
+            var helper = new ServiceHelper();
+            var dados = helper.Post<DadosBancarios>(url, envio);
+
+            return dados;
+        }
+
+        private IEnumerable<CheckInViewModel> GetProfissionaisQueFizeramCheckIn(int oportunidadeId)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpCheckIn/BuscarPorIdExterno/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idExterno = oportunidadeId,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<IEnumerable<CheckIn>>(url, envio);
+
+            var profissionais = GetProfissionais(result.Select(x => x.IdUsuario));
+            var users = GetUsers(profissionais.Select(x => x.Profissional.IdUsuario));
+            var extratos = GetExtratos(oportunidadeId);
+
+            IList<CheckInViewModel> response = new List<CheckInViewModel>();
+
+            foreach (var item in profissionais)
+            {
+                var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario));
+                var ck = result.FirstOrDefault(c => c.IdUsuario.Equals(item.Profissional.ID));
+                var extrato = extratos.FirstOrDefault(e => e.Destino.Equals(item.Profissional.ID.ToString()));
+
+                var checkin = new CheckInViewModel()
+                {
+                    Id = item.Profissional.ID,
+                    OportunidadeId = oportunidadeId,
+                    Hora = ck.DataCriacao,
+                    Nome = user.Nome,
+                    StatusPagamento = (int)extrato.StatusId,
+                };
+
+                response.Add(checkin);
+            }
+
+            return response;
+        }
+
+        private IEnumerable<Extrato> GetExtratos(int codigoExterno)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpFinanceiro/BuscaExtratos/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var envio = new
+            {
+                extrato = new
+                {
+                    CodigoExterno = codigoExterno,
+                    TipoDestino = 1
+                },
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<IEnumerable<Extrato>>(url, envio);
+
+            return result.Where(r => r.StatusId != Models.Financeiro.Status.Aguardando);
+        }
+
+        [HttpPost]
+        public string LiberarPagamentos(IEnumerable<CheckInViewModel> models)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpFinanceiro/LiberarPagto/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
+
+            var result = string.Empty;
+            foreach (var model in models)
+            {
+                var envio = new
+                {
+                    usuario.idCliente,
+                    codigoExterno = model.OportunidadeId,
+                    destino = model.Id,
+                    tipoDestino = 1
+                };
+
+                var helper = new ServiceHelper();
+                var response = helper.Post<object>(url, envio);
+
+                result = Convert.ToString(response);
+            }
+
+            return result;
         }
     }
 }

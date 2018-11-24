@@ -41,6 +41,12 @@ namespace Admin.Models
         public string Avatar { get; set; }
         public int UsuarioId { get; set; }
         public int? StatusId { get; set; }
+        public string AreaAtuacao { get; set; }
+        public IEnumerable<string> Formacoes { get; set; }
+        public string Referencia { get; set; }
+        public string Banco { get; set; }
+        public string Agencia { get; set; }
+        public string Conta { get; set; }
 
         public int OportunidadeId { get; set; }
         public int? UserXOportunidadeId { get; set; }

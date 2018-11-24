@@ -1,4 +1,5 @@
 ﻿using Admin.Controllers.Attributes;
+using Admin.Helppers;
 using Admin.Helppser;
 using Admin.Models;
 using System;
@@ -262,6 +263,59 @@ namespace Admin.Controllers
             catch (Exception e)
             {
                 throw new Exception("Não foi possível salvar o usuário.", e);
+            }
+        }
+
+        public ActionResult EditarUsuario()
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/Principal/BuscarUsuarioPorId/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idUsuario = usuario.IdUsuario,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<UsuarioViewModel>(url, envio);
+
+            ViewBag.Perfis = new SelectList(GetPermissoes());
+
+            return View("Editar", result);
+        }
+
+        public ActionResult AltararUsuario(UsuarioViewModel model)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/Principal/salvarUsuario/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+                model.UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario;
+                model.Ativo = true;
+                model.idCliente = _idCliente;
+                model.Status = 1;
+
+                var envio = new
+                {
+                    usuario = model,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<UsuarioViewModel>(url, envio);
+
+                PixCoreValues.AtualizarUsuarioLogado(result);
+
+                ViewBag.Perfis = new SelectList(GetPermissoes());
+
+                return RedirectToAction("EditarUsuario");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível editar o usuário.", e);
             }
         }
     }

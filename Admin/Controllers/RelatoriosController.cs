@@ -19,10 +19,46 @@ namespace Admin.Controllers
         // GET: Relatorios
         public ActionResult Index()
         {
-            return View();
+            var relatorios = GetRelatorios();
+            return View(relatorios);
         }
 
-        public ActionResult Gerar()
+        public ActionResult Gerar(int relatorioId)
+        {
+            if (relatorioId == 2)
+            {
+                var result = GetOptRelatorios();
+
+                var json = JsonConvert.SerializeObject(result);
+                var dt = (DataTable)JsonConvert.DeserializeObject(json, typeof(DataTable));
+
+                var sb = new StringBuilder();
+                var columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+                sb.AppendLine(string.Join(",", columnNames));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    var fields = row.ItemArray.Select(field => field.ToString());
+                    sb.AppendLine(string.Join(",", fields));
+                }
+
+                var fileBytes = Encoding.UTF8.GetBytes(sb.ToString());
+                using (var ms = new MemoryStream(fileBytes))
+                {
+                    var bytes = ms.ToArray();
+                    Response.Clear();
+                    Response.ContentType = "application/force-download";
+                    Response.AddHeader("content-disposition", "attachment;    filename=Relatorio.csv");
+                    Response.BinaryWrite(bytes);
+                    Response.End();
+                }
+            }
+
+            var relatorios = GetRelatorios();
+            return View("Index", relatorios);
+        }
+
+        private static IEnumerable<RelatorioViewModel> GetOptRelatorios()
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
@@ -36,32 +72,36 @@ namespace Admin.Controllers
 
             var helper = new ServiceHelper();
             var result = helper.Post<IEnumerable<RelatorioViewModel>>(url, envio);
+            return result;
+        }
 
-            var json = JsonConvert.SerializeObject(result);
-            var dt = (DataTable)JsonConvert.DeserializeObject(json, typeof(DataTable));
+        private static IList<RelatorioModel> GetRelatorios()
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpRelatorios/buscarRelatorios/" + usuario.idCliente + "/" +
+                PixCoreValues.UsuarioLogado.IdUsuario;
 
-            var sb = new StringBuilder();
-            var columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
-            sb.AppendLine(string.Join(",", columnNames));
-
-            foreach (DataRow row in dt.Rows)
+            var envio = new
             {
-                var fields = row.ItemArray.Select(field => field.ToString());
-                sb.AppendLine(string.Join(",", fields));
+                tipo = 2,
+            };
+
+            var helper = new ServiceHelper();
+            var relatorios = helper.Post<IList<RelatorioModel>>(url, envio);
+            return relatorios;
+        }
+
+        [HttpGet]
+        public JsonResult Relatorios(int relatorioId)
+        {
+            if (relatorioId == 2)
+            {
+                var result = Json(GetOptRelatorios().ToList(), JsonRequestBehavior.AllowGet);
+                return result;
             }
 
-            var fileBytes = Encoding.UTF8.GetBytes(sb.ToString());
-            using (var ms = new MemoryStream(fileBytes))
-            {
-                var bytes = ms.ToArray();
-                Response.Clear();
-                Response.ContentType = "application/force-download";
-                Response.AddHeader("content-disposition", "attachment;    filename=Relatorio.csv");
-                Response.BinaryWrite(bytes);
-                Response.End();
-            }
-
-            return View("Index");
+            return Json("Nenhum relatório gerado.", JsonRequestBehavior.AllowGet);
         }
     }
 }

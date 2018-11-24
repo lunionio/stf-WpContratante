@@ -1,4 +1,5 @@
-﻿
+﻿let pagamentosParaLiberar = [];
+
 $("#linhaPadrao").remove();
 
 $('.carousel').carousel();
@@ -232,5 +233,66 @@ function reprovarProfissional(userXOpt, optId, userId) {
         catch {
             alert(response);
         }
+    });
+}
+
+function getProfissional(id) {
+    var Url = "/Vaga/ModalProfissional?pId=" + id;
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": Url,
+        "method": "GET"
+    };
+
+    $.ajax(settings).done(function (response) {
+        $('#modalProfissional').html(response);
+        $('#profissionalModal').modal('show');
+    });
+}
+
+function guardaCache(optId, profissionalId) {
+    pagamentosParaLiberar.forEach(function (item, index, array) {
+        if (item.Id === profissionalId) {
+            array.splice(index, 1);
+        }
+    });
+
+    let pagamento = {
+        Id: profissionalId,
+        OportunidadeId: optId,
+        Status: $('#' + optId + ' option:selected').text(),
+        StatusPagamento: $('#' + optId + ' option:selected').val()
+    };
+
+    pagamentosParaLiberar.push(pagamento);
+}
+
+function liberarPagamentos() {
+    let settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "/Vaga/LiberarPagamentos",
+        "method": "POST",
+        "data": { models: pagamentosParaLiberar }
+    };
+
+    $.ajax(settings).done(function (response) {
+        alert(response);
+    });
+}
+
+function getModalCheckIn(profissionalId) {
+    var Url = "/Vaga/ModalCheckIn?pId=" + profissionalId;
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": Url,
+        "method": "GET"
+    };
+
+    $.ajax(settings).done(function (response) {
+        $('#modalCheckIn').html(response);
+        $('#checkinModal').modal('show');
     });
 }

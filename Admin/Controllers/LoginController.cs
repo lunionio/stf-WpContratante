@@ -79,5 +79,12 @@ namespace Admin.Controllers
                 return null;
             }
         }
+
+        public ActionResult Sair()
+        {
+            PixCoreValues.Sair();
+
+            return RedirectToAction("Index", "Login");
+        }
     }
 }

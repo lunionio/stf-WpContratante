@@ -52,7 +52,7 @@
                     <thead>
                         <tr>
                             <th class="text-center">Nome</th>
-                            <th class="text-center">Cargo</th>
+                            <th class="text-center">E-mail</th>
                             <th class="text-center">Credencial</th>
                             <th class="text-center"></th>
                         </tr>
@@ -62,7 +62,7 @@
                         {
                             <tr class="text-center">
                                 <td>@user.Nome</td>
-                                <td>@user.Cargo</td>
+                                <td>@user.Login</td>
                                 <td>@user.Perfil</td>
                                 <td class="td-actions text-right">
                                     <a href="@Url.Action("Editar", "Usuario", new { user.ID })" rel="tooltip" title="" class="btn btnAcao btn-success btn-link btn-xs" data-original-title="Editar">

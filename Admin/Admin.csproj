@@ -197,6 +197,7 @@
     <Compile Include="Models\UserStatus.cs" />
     <Compile Include="Models\UserXOportunidade.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
+    <Compile Include="Models\UsuarioXPerfil.cs" />
     <Compile Include="Models\VagaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

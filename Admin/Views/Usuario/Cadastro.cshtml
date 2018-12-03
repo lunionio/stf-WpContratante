@@ -21,6 +21,7 @@
                         @using (Html.BeginForm("Cadastro", "Usuario", FormMethod.Post, new { @class = "form-horizontal" }))
                         {
                             @Html.HiddenFor(u => u.ID)
+                            @Html.HiddenFor(u => u.UsuarioXPerfil.Id)
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-md-3 control-label" for="Nome">Nome do Usário</label>

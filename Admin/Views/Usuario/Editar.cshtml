@@ -54,7 +54,7 @@
                                 <div class="row">
                                     <label class="col-md-3 control-label" for="Perfis">Credencial</label>
                                     <div class="col-md-3">
-                                        @Html.HiddenFor(u => u.PerfilUsuario)
+                                        @Html.HiddenFor(u => u.UsuarioXPerfil.IdPerfil)
                                         @Html.DropDownListFor(u => u.Perfil, (IEnumerable<SelectListItem>)ViewBag.Perfis, new { @class = "form-control perfis", @disabled = "disabled" })
                                     </div>
                                     <div class="col-md-6"></div>

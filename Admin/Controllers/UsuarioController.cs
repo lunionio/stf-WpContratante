@@ -37,7 +37,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Perfil/GetAllPerfil/" + usuario.idCliente;
+                var url = keyUrl + "/Perfil/GetAllPerfil/" + _idCliente;
 
                 var helper = new ServiceHelper();
                 var result = helper.Get<IEnumerable<Perfil>>(url);
@@ -156,8 +156,14 @@ namespace Admin.Controllers
                 var url = ConfigurationManager.AppSettings["UrlAPI"];
                 var serverUrl = $"{ url }/Seguranca/Principal/BuscarUsuarioPorId/{ _idCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
 
+                var envio = new
+                {
+                    idCliente,
+                    idUsuario = id,
+                };
+
                 var helper = new ServiceHelper();
-                var result = helper.Get<UsuarioViewModel>(serverUrl);
+                var result = helper.Post<UsuarioViewModel>(serverUrl, envio);
 
                 result.UsuarioXPerfil = GetPerfilUsuario(result.ID);
 
@@ -229,8 +235,13 @@ namespace Admin.Controllers
                 var url = ConfigurationManager.AppSettings["UrlAPI"];
                 var serverUrl = $"{ url }/Seguranca/Principal/buscarUsuario/{ _idCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
 
+                var envio = new
+                {
+                    idCliente
+                };
+
                 var helper = new ServiceHelper();
-                var result = helper.Get<IEnumerable<UsuarioViewModel>>(serverUrl);
+                var result = helper.Post<IEnumerable<UsuarioViewModel>>(serverUrl, envio);
 
                 var usuariosXPerfis = GetPerfisUsuarios(result.Select(u => u.ID));
                 var perfis = GetPerfis();
@@ -240,15 +251,15 @@ namespace Admin.Controllers
                     item.UsuarioXPerfil = usuariosXPerfis.FirstOrDefault(x => x.IdUsuario.Equals(item.ID));
                     if (item.UsuarioXPerfil != null)
                     {
-                        item.Perfil = perfis.FirstOrDefault(p => p.ID.Equals(item.UsuarioXPerfil.IdPerfil)).Nome;
+                        item.Perfil = perfis.FirstOrDefault(p => p.ID.Equals(item.UsuarioXPerfil.IdPerfil))?.Nome;
                     }
                 }
 
-                return result;
+                return result.Where(u => u.Ativo && u.Status != 9);
             }
             catch (Exception e)
             {
-                throw new Exception("Não foi possível listar os usuários.", e);
+                return new List<UsuarioViewModel>();
             }
         }
 
@@ -256,22 +267,22 @@ namespace Admin.Controllers
         {
             try
             {
-                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/Principal/DeletarUsuario/" + usuario.idCliente + "/" + PixCoreValues.UsuarioLogado.IdUsuario;
-                object envio = new
+                if (PixCoreValues.UsuarioLogado.IdUsuario.Equals(usuario.ID))
                 {
-                    usuario = new
-                    {
-                        idUsuario = usuario.ID
-                    }
-                };
+                    return false;
+                }
 
-                var helper = new ServiceHelper();
-                var result = helper.Post<object>(url, envio);
+                usuario.Ativo = false;
+                usuario.Status = 9;
 
-                DesvincularPerfil(usuario.ID);
+                var result = SaveUsuario(usuario);
 
-                return true;
+                if (result.Status == 9 && !result.Ativo)
+                {
+                    return true;
+                }
+
+                return false;
             }
             catch (Exception e)
             {
@@ -306,6 +317,7 @@ namespace Admin.Controllers
             var result = helper.Post<UsuarioViewModel>(url, envio);
 
             result.UsuarioXPerfil = GetPerfilUsuario(result.ID);
+            result.Perfil = GetPerfil(result.UsuarioXPerfil.IdPerfil).Nome;
 
             ViewBag.Perfis = new SelectList(GetPerfis().Select(p => p.Nome));
 

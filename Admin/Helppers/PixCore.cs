@@ -216,6 +216,8 @@ namespace Admin.Helppser
 
         public static void AtualizarUsuarioLogado(UsuarioViewModel usuario)
         {
+            usuario.UsuarioXPerfil = GetPerfilUsuario(usuario.ID);
+
             var login = new LoginViewModel()
             {
                 idCliente = usuario.idCliente,

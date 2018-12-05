@@ -17,7 +17,7 @@ $('#btnAgora').on('click', function () {
 
 function PublicarAgora() {
 
-    LoadingInitBase('.body');
+    LoadingInitBase('body');
     var vaga = VagaViewModel();
     var settings = {
         "async": true,
@@ -25,7 +25,7 @@ function PublicarAgora() {
         "url": "/Vaga/PublicarAgora",
         "method": "POST",
         "data": vaga
-    }
+    };
 
     $.ajax(settings).done(function (response) {
         if (response == "ok") {
@@ -34,6 +34,7 @@ function PublicarAgora() {
         }
         else {
             alert(response);
+            LoadingStop('body');
         }
     });
 }
@@ -83,7 +84,7 @@ function VagaViewModel() {
         Cidade: $('#cidade').val(),
         Date: data,
         Complemento: $('#complemento').val(),
-        Referencia: $('#referencia').val(),
+        Referencia: $('#complemento').val(),
         Uf: $('#uf').val(),
         DataEvento: dataEvento,
         Hora: $('#txtHoraInicio').val(),
@@ -197,8 +198,8 @@ function LoadingInitBase(elemento) {
     });
 }
 
-function LoadingStop() {
-    $('.card-body').loading('stop');
+function LoadingStop(elemento) {
+    $(elemento).loading('stop');
 }
 
 function LoadingBodyStop() {
@@ -260,14 +261,14 @@ function preencherEndereco(cep) {
         "data": "{\"cep\": \"" + cep + "\"}"
     }
 
-    LoadingInit('.card-body');
+    LoadingInit('body');
     $.ajax(settings).done(function (response) {
         if (response.endereco == '' || response.endereco == null) {
             demo.showNotification('top', 'right', 'Por favor digite um CEP válido!');
             limpaEndereco();
             desbloqueiaEndereco();
             $("#cep").focus();
-            LoadingStop();
+            LoadingStop('body');
         }
         else {
             $('#rua').val(response.endereco);
@@ -276,7 +277,7 @@ function preencherEndereco(cep) {
             $('#uf').val(response.uf);
 
             bloqueiaEndereco();
-            LoadingStop();
+            LoadingStop('body');
         }
 
     });
@@ -323,10 +324,10 @@ function controlarPaineis() {
     });
 
     getForm().atuacao.on("change", function () {
-        LoadingInitBase('.card-body');
+        LoadingInitBase('body');
         getProfissionalPorAtuacao($(this).val());
         $(".pnProfissional").fadeIn();
-        LoadingStop();
+        LoadingStop('body');
     });
 
     getForm().profissional.on("change", function () {

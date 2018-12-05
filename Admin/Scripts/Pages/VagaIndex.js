@@ -7,12 +7,9 @@ $('.carousel').carousel();
 LoadPanels();
 
 function LoadPanels() {
-    Loading('.content');
     getOportunidades();
-    getProfissionais()
-    getVinculoProfissional();
-    LoadingStop('.content');
-
+    //getProfissionais();
+    //getVinculoProfissional();
 }
 
 function Loading(elemento) {
@@ -27,7 +24,7 @@ function LoadingStop(elemento) {
 }
 
 function getOportunidades() {
-
+    Loading('body');
     var Url = "/Vaga/_listarOportunidades";
     var settings = {
         "async": true,
@@ -62,6 +59,8 @@ function getOportunidades() {
                 "sSearch": "Pesquisar:",
             },
         });
+
+        LoadingStop('body');
     });
 }
 
@@ -176,7 +175,6 @@ function aprovarProfissional(userXOpt, optId, userId) {
     };
 
     $.ajax(settings).done(function (response) {
-        try {
             var p = JSON.parse(response);
 
             if (p.Id == undefined) {
@@ -195,10 +193,6 @@ function aprovarProfissional(userXOpt, optId, userId) {
                     'Avaliação'
                 ]).draw(false);
             }
-        }
-        catch {
-            alert(response);
-        }
     });
 }
 
@@ -219,7 +213,6 @@ function reprovarProfissional(userXOpt, optId, userId) {
     };
 
     $.ajax(settings).done(function (response) {
-        try {
             var p = JSON.parse(response);
 
             if (p.Id == undefined) {
@@ -229,10 +222,6 @@ function reprovarProfissional(userXOpt, optId, userId) {
                 let table = $('#tbContratar').DataTable();
                 table.row("#" + userId).remove().draw();
             }
-        }
-        catch {
-            alert(response);
-        }
     });
 }
 

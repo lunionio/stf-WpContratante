@@ -202,7 +202,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-chosen.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chosen-sprite%402x.png" />
+    <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\demo.css" />
     <Content Include="Content\documentation.css" />
@@ -465,6 +468,10 @@
     <Content Include="Sass\lbd\_variables.scss" />
     <Content Include="Sass\light-bootstrap-dashboard.scss" />
     <Content Include="fonts\nucleo-icons.woff2" />
+    <Content Include="Content\bootstrap-chosen-variables.less" />
+    <Content Include="Content\bootstrap-chosen-variables.scss" />
+    <Content Include="Content\bootstrap-chosen.less" />
+    <Content Include="Content\bootstrap-chosen.scss" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\chartist.min.js" />
@@ -494,6 +501,7 @@
     <Content Include="Scripts\nouislider.min.js" />
     <Content Include="Scripts\Pages\checkin.js" />
     <Content Include="Scripts\Pages\FaleConosco.js" />
+    <Content Include="Scripts\Pages\relatorios.js" />
     <Content Include="Scripts\Pages\VagaCadastrar.js" />
     <Content Include="Scripts\Pages\VagaIndex.js" />
     <Content Include="Scripts\perfect-scrollbar.jquery.min.js" />
@@ -504,6 +512,7 @@
     <Content Include="Scripts\Plugins\bootstrap-table.js" />
     <Content Include="Scripts\Plugins\bootstrap-tagsinput.js" />
     <Content Include="Scripts\Plugins\chartist.min.js" />
+    <Content Include="Scripts\Plugins\chosen.jquery.js" />
     <Content Include="Scripts\Plugins\fullcalendar.min.js" />
     <Content Include="Scripts\Plugins\jasny-bootstrap.min.js" />
     <Content Include="Scripts\Plugins\jquery-jvectormap.js" />

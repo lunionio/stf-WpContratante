@@ -22,7 +22,8 @@ namespace Admin.Helppers
                 Email = faleConosco.Email,
                 Descricao = faleConosco.Mensagem,
                 Origem = "Admin Contratante",
-                TicketStatusID = 1 //Status Aberto
+                TicketStatusID = 1, //Status Aberto
+                Assunto = faleConosco.AssuntoNome,
             };
 
         }

@@ -33,8 +33,9 @@
                     <div class="container">
                         <div class="col-md-4 col-sm-6 ml-auto mr-auto">
 
-                            @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { id = "cad" }))
-                            {
+                            @*@using (Html.BeginForm("Login", "Login", FormMethod.Post, new { id = "cad" }))*@
+                            
+                            <form id="cad" autocomplete="on" action="Login/Login" method="post">
                                 <div class="card card-login card-hidden">
                                     <div class="tela-logo">
                                         <img class="" style=" width:100%;" src="~/img/tela-login-so-logo.png" />
@@ -43,15 +44,14 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label>Login</label>
-                                                <input name="login" type="text" placeholder="E-mail" class="form-control">
+                                                <input name="login" id="login" type="text" placeholder="E-mail" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label>Senha</label>
-                                                <input name="senha" type="password" placeholder="Senha" class="form-control">
+                                                <input id="senha" name="senha" type="password" placeholder="Senha" class="form-control">
                                             </div>
                                             <div>
                                                 <h6>
-                                                    <span class="label label-warning">@TempData["LoginMessage"]</span>
                                                 </h6>
                                             </div>
                                         </div>
@@ -61,7 +61,7 @@
                                         <button type="button" id="btnCadastrar" class="btn btn-primary btn-wd">Entrar</button>
                                     </div>
                                 </div>
-                            }
+                            </form>
 
                             </div>
                     </div>
@@ -166,8 +166,15 @@
 <link href="~/Content/jquery.loading.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.loading.js"></script>
 <script>
+   
+    
+
+    $('#senha').change(function () {
+        $('#btnCadastrar').Focus();
+    });
+
     $('#btnCadastrar').click(function () {
-        $('html').loading({
+        $('body').loading({
             theme: 'dark',
             message: 'Aguarde...'
             

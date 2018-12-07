@@ -13,12 +13,12 @@
                 <h4 class="text-center">Relatório</h4>
             </div>
             <div class="card-body">
-                <div class="tab-content">
+                
                     <form class="form-horizontal">
                         <div class="form-group">
                             <div class="row">
-                                <label class="control-label col-sm-5" for="email">Relatorios</label>
-                                <div class="col-sm-7">
+                                <label class="control-label col-sm-2" for="email">Relatorios</label>
+                                <div class="col-sm-6">
                                     <select id="relatorios" class="form-control chosen-select">
                                         <option value="0">Selecione</option>
                                         @foreach (var item in Model)
@@ -30,9 +30,21 @@
                             </div>
                         </div>
                     </form>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table id="tbRelatorio" hidden class="table table-hover table-responsive">
+
+                    <div class="row botoes">
+                        <label class=" control-label col-sm-2" for="email"></label>
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                            <a href="#" id="download" style="margin:2px" class="btn btn-primary" role="button" aria-pressed="true">Exportar</a>
+                        </div>
+                        <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                            <a id="mostrar" href="#" style="margin:2px" class="btn btn-primary" role="button" aria-pressed="true">Visualizar</a>
+                        </div>
+                    </div>
+
+
+                    <div " class="row">
+                        <div style="overflow:auto;" class="">
+                            <table  id="tbRelatorio" hidden class="table table-hover table-responsive">
                                 <thead>
                                     <tr>
                                         <th> Codigo             </th>
@@ -56,13 +68,8 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-                        <a href="#" id="download" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Gerar Relatório</a>
-                    </div>
-                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
-                        <a id="mostrar" href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Mostar Relatório</a>
-                    </div>
-                </div>
+
+           
             </div>
         </div>
     </div>

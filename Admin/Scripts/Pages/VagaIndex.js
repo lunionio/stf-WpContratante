@@ -65,6 +65,8 @@ function getOportunidades() {
 }
 
 function getProfissionais() {
+    Loading('body');
+
     var Url = "vaga/_lsitarProfissionais";
     var settings = {
         "async": true,
@@ -77,10 +79,13 @@ function getProfissionais() {
         $('#profissionais').hide();
         $('#profissionais').html(response);
         $('#profissionais').fadeIn();
+        LoadingStop('body');
     });
 }
 
 function getVinculoProfissional() {
+    Loading('body');
+
     var Url = "vaga/_vincularPorifissionais";
     var settings = {
         "async": true,
@@ -93,11 +98,12 @@ function getVinculoProfissional() {
         $('#vinculoProfissionais').hide();
         $('#vinculoProfissionais').html(response);
         $('#vinculoProfissionais').fadeIn();
-
+        LoadingStop('body');
     });
 }
 
 function getModalMatch(idOpt) {
+    Loading('body');
 
     var Url = "vaga/ModalMatch?optId=" + idOpt;
     var settings = {
@@ -155,6 +161,8 @@ function getModalMatch(idOpt) {
                 "sSearch": "Pesquisar:",
             },
         });
+
+        LoadingStop('body');
     });
 }
 
@@ -175,24 +183,24 @@ function aprovarProfissional(userXOpt, optId, userId) {
     };
 
     $.ajax(settings).done(function (response) {
-            var p = JSON.parse(response);
+        var p = JSON.parse(response);
 
-            if (p.Id == undefined) {
-                alert(response);
-            }
-            else {
-                let table = $('#tbContratar').DataTable();
-                table.row("#" + userId).remove().draw();
-                var contratados = $('#tbContratados').DataTable();
-                var row = contratados.row.add([
-                    p.Id,
-                    p.Nome,
-                    p.Especialidade,
-                    p.Endereco.Local,
-                    p.Valor,
-                    'Avaliação'
-                ]).draw(false);
-            }
+        if (p.Id == undefined) {
+            swal(response, "", "ERROR");
+        }
+        else {
+            let table = $('#tbContratar').DataTable();
+            table.row("#" + userId).remove().draw();
+            var contratados = $('#tbContratados').DataTable();
+            var row = contratados.row.add([
+                p.Id,
+                p.Nome,
+                p.Especialidade,
+                p.Endereco.Local,
+                p.Valor,
+                'Avaliação'
+            ]).draw(false);
+        }
     });
 }
 
@@ -212,20 +220,25 @@ function reprovarProfissional(userXOpt, optId, userId) {
         "data": obj
     };
 
-    $.ajax(settings).done(function (response) {
-            var p = JSON.parse(response);
+    Loading('body');
 
-            if (p.Id == undefined) {
-                alert(response);
-            }
-            else {
-                let table = $('#tbContratar').DataTable();
-                table.row("#" + userId).remove().draw();
-            }
+    $.ajax(settings).done(function (response) {
+        var p = JSON.parse(response);
+
+        if (p.Id == undefined) {
+            swal(response, "", "ERROR");
+        }
+        else {
+            let table = $('#tbContratar').DataTable();
+            table.row("#" + userId).remove().draw();
+        }
+        LoadingStop('body');
     });
 }
 
 function getProfissional(id) {
+    Loading('body');
+
     var Url = "/Vaga/ModalProfissional?pId=" + id;
     var settings = {
         "async": true,
@@ -237,6 +250,7 @@ function getProfissional(id) {
     $.ajax(settings).done(function (response) {
         $('#modalProfissional').html(response);
         $('#profissionalModal').modal('show');
+        LoadingStop('body');
     });
 }
 
@@ -258,6 +272,8 @@ function guardaCache(optId, profissionalId) {
 }
 
 function liberarPagamentos() {
+    Loading('body');
+
     let settings = {
         "async": true,
         "crossDomain": true,
@@ -267,11 +283,15 @@ function liberarPagamentos() {
     };
 
     $.ajax(settings).done(function (response) {
-        alert(response);
+
+        LoadingStop('body');
+        swal(response, "", "success");
+
     });
 }
 
 function getModalCheckIn(profissionalId) {
+    Loading('body');
     var Url = "/Vaga/ModalCheckIn?pId=" + profissionalId;
     var settings = {
         "async": true,
@@ -283,5 +303,7 @@ function getModalCheckIn(profissionalId) {
     $.ajax(settings).done(function (response) {
         $('#modalCheckIn').html(response);
         $('#checkinModal').modal('show');
+        LoadingStop('body');
+
     });
 }

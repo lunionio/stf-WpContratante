@@ -8,7 +8,27 @@ $('#download').click(function () {
     window.location.href = 'Gerar?relatorioId=' + r;
 });
 
+
+$('.botoes').hide();
+
+//comprotamento do select option
+$('#relatorios ').change(function () {
+    $('.botoes').fadeIn();
+});
+
+
 $('#mostrar').click(function () {
+    $('body').loading({
+        theme: 'dark',
+        message: 'Aguarde...',
+        onStart: function (loading) {
+            loading.overlay.slideDown(400);
+        },
+        onStop: function (loading) {
+            loading.overlay.slideUp(400);
+        }
+    });
+
     var r = $('#relatorios option:selected').val();
 
     let Url = "/Relatorios/Relatorios?relatorioId=" + r;
@@ -29,7 +49,6 @@ $('#mostrar').click(function () {
                 "<td>" + element.Titulo + "</td>" +
                 "<td>" + element.CriadoEm + "</td>" +
                 "<td>" + element.DataEvento + "</td>" +
-                "<td>" + element.CriadoEm + "</td>" +
                 "<td>" + element.Endereco + "</td>" +
                 "<td>" + element.Categoria + "</td>" +
                 "<td>" + element.Profissional + "</td>" +
@@ -40,6 +59,10 @@ $('#mostrar').click(function () {
                 "<td>" + element.Aprovados + "</td>" +
                 "<td>" + element.Reprovados + "</td>" +
                 "</tr>");
+
+
+
+            $('body').loading('stop');
         });
 
         $("#tbRelatorio").DataTable({
@@ -62,6 +85,8 @@ $('#mostrar').click(function () {
                 "sInfoFiltered": "(Filtrado de _MAX_ registros)",
                 "sSearch": "Pesquisar:",
             },
+          
         });
+
     });
 });

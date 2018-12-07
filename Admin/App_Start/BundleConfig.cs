@@ -34,14 +34,13 @@ namespace Admin
                   "~/Scripts/bootstrap-notify.js",
                   "~/Scripts/demo.js",
                   "~/Scripts/Plugins/jquery.mask.js",
+                  "~/Scripts/Plugins/sweetalert2.min.js",
                   "~/Scripts/Plugins/bootstrap-selectpicker.js"));
-
-
-
 
             bundles.Add(new StyleBundle("~/bundles/css").Include(
                         "~/Content/bootstrap.min.css",
                         "~/Content/light-bootstrap-dashboard.css",
+                        "~/Sass/lbd/plugins/_sweetalert2.scss",
                         "~/Content/pe-icon-7-stroke.css",
                         "~/Content/Custom.css",
                         "~/Content/jquery.loading.css"));

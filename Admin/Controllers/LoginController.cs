@@ -32,6 +32,11 @@ namespace Admin.Controllers
                 {
                     TempData["LoginMessage"] = string.Empty;
 
+                    if(PixCoreValues.UsuarioLogado.idPerfil == 2 || PixCoreValues.UsuarioLogado.idPerfil == 6)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
                     var op = GetOportunidade();
                     if(op != null)
                     {

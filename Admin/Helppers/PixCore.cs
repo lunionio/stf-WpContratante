@@ -102,15 +102,14 @@ namespace Admin.Helppser
                         user.Avatar = Usuario.Avatar;
                         user.idPerfil = Usuario.UsuarioXPerfil.IdPerfil;
 
-                        if (current.Request.Cookies["UsuarioLogado"] != null)
-                        {
-                            cookievalue = current.Request.Cookies["UsuarioLogado"].ToString();
-                        }
-                        else
-                        {
-                            current.Response.Cookies["UsuarioLogado"].Value = jss.Serialize(user);
-                            current.Response.Cookies["UsuarioLogado"].Expires = DateTime.Now.AddMinutes(30); // add expiry time
-                        }
+                        //if (current.Request.Cookies["UsuarioLogado"] != null)
+                        //{
+                        //    current.Request.Cookies["UsuarioLogado"].Value = string.Empty;
+                        //}
+
+                        current.Response.Cookies["UsuarioLogado"].Value = jss.Serialize(user);
+                        current.Response.Cookies["UsuarioLogado"].Expires = DateTime.Now.AddMinutes(30); // add expiry time
+
                         return true;
                     }
                     else

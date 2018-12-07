@@ -1,6 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Cadastro de Usuário";
+    ViewBag.Title = "CADASTRAR USUÁRIO";
+    ViewBag.PageTitle = "USUÁRIOS";
 }
 @model Admin.Models.UsuarioViewModel
 
@@ -8,12 +9,8 @@
     <div class="col-md-12">
         <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
 
-            <div class="card-header ">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item" style="width:100%">
-                        <a class="nav-link active" href="#tab1" data-toggle="tab" role="tab" aria-controls="tab1" aria-selected="true">CADASTRAR DE USUÁRIOS</a>
-                    </li>
-                </ul>
+            <div class="card-header text-center">
+                <h4 class="text-center">CADASTRAR USUÁRIO</h4>
             </div>
 
 
@@ -24,10 +21,11 @@
                         @using (Html.BeginForm("Cadastro", "Usuario", FormMethod.Post, new { @class = "form-horizontal" }))
                         {
                             @Html.HiddenFor(u => u.ID)
+                            @Html.HiddenFor(u => u.UsuarioXPerfil.Id)
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-md-3 control-label" for="Nome">Nome do Usário</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-7">
                                         @Html.TextBoxFor(u => u.Nome, new { placeholder = "Nome do usuário", name = "Nome", @class = "form-control" })
                                         @Html.ValidationMessageFor(u => u.Nome)
                                     </div>
@@ -36,7 +34,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-md-3 control-label" for="Login">E-mail/Login</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-7">
                                         @Html.TextBoxFor(u => u.Login, new { placeholder = "E-mail do usuário", name = "email", type = "email", @class = "form-control" })
                                         @Html.ValidationMessageFor(u => u.Login)
                                     </div>
@@ -45,7 +43,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <label class="col-md-3 control-label" for="Senha">Senha</label>
-                                    <div class="col-md-9">
+                                    <div class="col-md-7">
                                         @Html.TextBoxFor(u => u.Senha, new { placeholder = "Senha do usuário", name = "senha", type = "password", @class = "form-control" })
                                         @Html.ValidationMessageFor(u => u.Senha)
                                     </div>
@@ -53,18 +51,18 @@
                             </div>
                             <div class="form-group">
                                 <div class="row">
-                                    <label class="col-md-3 control-label" for="Perfis">Perfil</label>
-                                    <div class="col-md-5">
+                                    <label class="col-md-3 control-label" for="Perfis">Credencial</label>
+                                    <div class="col-md-3">
                                         @Html.DropDownListFor(u => u.Perfil, (IEnumerable<SelectListItem>)ViewBag.Perfis, new { @class = "form-control perfis" })
                                         @Html.ValidationMessageFor(u => u.Perfil)
                                     </div>
-                                    <div class="col-md-4"></div>
+                                    <div class="col-md-6"></div>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-md-3"></div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-10"></div>
+                                    <div class="col-md-2">
                                         <button type="button" id="btnCadastrar" class="btn btn-fill btn-primary">Salvar</button>
                                     </div>
                                 </div>

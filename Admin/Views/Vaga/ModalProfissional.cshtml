@@ -1,0 +1,51 @@
+﻿@model Admin.Models.ProfissionalViewModel
+
+<div id="profissionalModal" class="modal fade" role="dialog">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content text-center">
+            <div class="modal-header text-center">
+                <h4 class="modal-title text-center">
+                    @Model.Nome
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <div class="row text-center">
+                            <div class="photo">
+                                <img width="150" height="150" src="@Model.Avatar" class="img-rounded" />
+                            </div>
+                        </div>
+                        <h6>
+                            Area de Atuação
+                        </h6>
+                        <label class="label">@Model.AreaAtuacao</label>
+                        <br />
+                        <h6>
+                            Telefone
+                        </h6>
+                        <label class="label">@Model.Telefone</label>
+                        <br />
+                        <h6>
+                            Formações
+                        </h6>
+                        @foreach (var item in Model.Formacoes)
+                        {
+                            <label class="label">@item</label>
+                        }
+                        <br />
+                        <h6>
+                            Referencia
+                        </h6>
+                        <label class="label">@Model.Referencia</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

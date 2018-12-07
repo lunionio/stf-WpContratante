@@ -1,5 +1,11 @@
-﻿using Admin.Helppser;
+﻿using Admin.Helppers;
+using Admin.Helppser;
 using Admin.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Admin.Controllers
@@ -24,23 +30,66 @@ namespace Admin.Controllers
             {
                 if (PixCoreValues.Login(collection))
                 {
-                    // Response.Redirect(PixCoreValues.defaultSiteUrl);
-                    return Redirect("/home/index");
+                    TempData["LoginMessage"] = string.Empty;
+
+                    if(PixCoreValues.UsuarioLogado.idPerfil == 2 || PixCoreValues.UsuarioLogado.idPerfil == 6)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    var op = GetOportunidade();
+                    if(op != null)
+                    {
+                        return RedirectToAction("Index", "CheckIn", new { optId = op.ID });
+                    }
+
+                    return RedirectToAction("Index", "Vaga");
                 }
                 else
                 {
 
-                    ViewData["TemporariaMensagem"] = "Usuario ou senha invalida";
+                    TempData["LoginMessage"] = "Usuario ou senha invalida";
                     return RedirectToAction("Index");
                 }
             }
-            catch
+            catch(Exception e)
             {
-                ViewData["TemporariaMensagem"] = "Usuario ou senha invalida";
+                TempData["LoginMessage"] = "Usuario ou senha invalida";
                 return RedirectToAction("Index");
             }
+        }
 
-            
+        private static OportunidadeViewModel GetOportunidade()
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorData/" + usuario.idCliente + "/" +
+                    PixCoreValues.UsuarioLogado.IdUsuario;
+
+                var envio = new
+                {
+                    usuario.idCliente,
+                    date = DateTime.UtcNow.ToString("yyyy-dd-MM"),
+                };
+
+                var helper = new ServiceHelper();
+                var oportunidades = helper.Post<IEnumerable<OportunidadeViewModel>>(url, envio);
+
+                return oportunidades.FirstOrDefault();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public ActionResult Sair()
+        {
+            PixCoreValues.Sair();
+
+            return RedirectToAction("Index", "Login");
         }
     }
 }

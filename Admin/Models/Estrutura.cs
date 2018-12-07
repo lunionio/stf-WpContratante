@@ -7,6 +7,11 @@ namespace Admin.Models
 {
     public class Estrutura
     {
+        public Estrutura()
+        {
+
+        }
+
         public Estrutura(int iD, string urlManual, string imagem, string nome)
         {
             ID = iD;

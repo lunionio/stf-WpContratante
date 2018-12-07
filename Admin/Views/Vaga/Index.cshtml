@@ -5,9 +5,9 @@
 
 <div class="row">
 
-    <div id="oportunidades" class="col-md-7"></div>
-    <div id="profissionais" class="col-md-7"></div>
-    <div id="vinculoProfissionais" class="col-md-5"></div>
+    <div id="oportunidades" class="col-md-12"></div>
+    @*<div id="profissionais" class="col-md-7"></div>
+        <div id="vinculoProfissionais" class="col-md-5"></div>*@
 
 
 </div>
@@ -25,9 +25,28 @@
     </div>
 </div>
 
+<div id="modalProfissional">
+    <div id="profissionalModal" class="modal fade" role="dialog">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCheckIn">
+    <div id="checkinModal" class="modal fade" role="dialog">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+
 
 @section Scripts
 {
+    <script src="~/Scripts/jquery.datatables.js"></script>
     <script src="~/Scripts/Pages/VagaIndex.js"></script>
-
 }

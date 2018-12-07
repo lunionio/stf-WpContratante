@@ -1,4 +1,5 @@
-﻿using Admin.Models;
+﻿using Admin.Helppers;
+using Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,7 +32,7 @@ namespace Admin.Helppser
                 var DefaultSiteUrl = protocolo + "://" + url + ":" + porta.ToString() + "/";
                 var current = HttpContext.Current;
 
-                if (current.Request.Cookies["IdCliente"] != null)
+                if (!string.IsNullOrEmpty(current.Request.Cookies["IdCliente"].Value))
                 {
                     var cookiesValido = current.Request.Cookies["IdCliente"].Value;
                     var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -86,6 +87,7 @@ namespace Admin.Helppser
                 var result = client.UploadString(url, "POST", data);
                 UsuarioViewModel Usuario = jss.Deserialize<UsuarioViewModel>(result);
 
+                Usuario.UsuarioXPerfil = GetPerfilUsuario(Usuario.ID);
 
                 var current = HttpContext.Current;
                 string cookievalue;
@@ -94,19 +96,20 @@ namespace Admin.Helppser
                     if (Convert.ToBoolean(Usuario.VAdmin))
                     {
                         user.idCliente = Usuario.idCliente;
-                        user.idPerfil = Usuario.PerfilUsuario;
                         user.IdUsuario = (int)Usuario.ID;
                         user.idEmpresa = Usuario.IdEmpresa;
+                        user.Nome = Usuario.Nome;
+                        user.Avatar = Usuario.Avatar;
+                        user.idPerfil = Usuario.UsuarioXPerfil.IdPerfil;
 
-                        if (current.Request.Cookies["UsuarioLogado"] != null)
-                        {
-                            cookievalue = current.Request.Cookies["UsuarioLogado"].ToString();
-                        }
-                        else
-                        {
-                            current.Response.Cookies["UsuarioLogado"].Value = jss.Serialize(user);
-                            current.Response.Cookies["UsuarioLogado"].Expires = DateTime.Now.AddMinutes(30); // add expiry time
-                        }
+                        //if (current.Request.Cookies["UsuarioLogado"] != null)
+                        //{
+                        //    current.Request.Cookies["UsuarioLogado"].Value = string.Empty;
+                        //}
+
+                        current.Response.Cookies["UsuarioLogado"].Value = jss.Serialize(user);
+                        current.Response.Cookies["UsuarioLogado"].Expires = DateTime.Now.AddMinutes(30); // add expiry time
+
                         return true;
                     }
                     else
@@ -119,6 +122,17 @@ namespace Admin.Helppser
             }
 
 
+        }
+
+        private static UsuarioXPerfil GetPerfilUsuario(int id)
+        {
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = $"{ keyUrl }/Perfil/GetPerfilByUsuario/{ id }";
+
+            var helper = new ServiceHelper();
+            var usuarioXPerfil = helper.Get<UsuarioXPerfil>(url);
+
+            return usuarioXPerfil;
         }
 
         public static LoginViewModel VerificaLogado()
@@ -197,6 +211,31 @@ namespace Admin.Helppser
                 //TODO: Necessário? página criada localmente via html...
                 //HttpContext.Current.Response.StatusCode = 404;
             }
+        }
+
+        public static void AtualizarUsuarioLogado(UsuarioViewModel usuario)
+        {
+            usuario.UsuarioXPerfil = GetPerfilUsuario(usuario.ID);
+
+            var login = new LoginViewModel()
+            {
+                idCliente = usuario.idCliente,
+                idPerfil = usuario.UsuarioXPerfil.IdPerfil,
+                IdUsuario = usuario.ID,
+                idEmpresa = usuario.IdEmpresa,
+                Nome = usuario.Nome,
+                Avatar = usuario.Avatar,
+            };
+
+            HttpContext.Current.Response.Cookies["UsuarioLogado"].Value = null;
+            HttpContext.Current.Response.Cookies["UsuarioLogado"].Value = new JavaScriptSerializer().Serialize(login);
+        }
+
+        public static void Sair()
+        {
+            var current = HttpContext.Current;
+            current.Request.Cookies["UsuarioLogado"].Value = null;
+            current.Request.Cookies["IdCliente"].Value = null;
         }
     }
 }

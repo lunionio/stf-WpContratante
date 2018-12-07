@@ -17,6 +17,11 @@ namespace Admin.Models
         public Endereco Endereco { get; set; }
         public int OportunidadeStatusID { get; set; }
         public int IdEmpresa { get; set; }
+
+        public OportunidadeViewModel()
+        {
+
+        }
     }
 
     public class Endereco : Base

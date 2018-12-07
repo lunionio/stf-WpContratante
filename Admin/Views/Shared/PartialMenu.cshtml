@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Admin.Models.Estrutura>
 <div class="sidebar menu-lateral " data-color="blue" data-image="/img/sidebar-4.jpg">
     <div class="logo">
-        <a href="~/Views/Home/Index.cshtml" class="simple-text logo-mini">
+        <a href="~/Home/Index" class="simple-text logo-mini">
         </a>
-        <a href="~/Views/Home/Index.cshtml" class="simple-text logo-normal">
+        <a href="~/Home/Index" class="simple-text logo-normal">
             <img src="~/Img/tela-login-so-logo.png" width="100px" />
 
         </a>
@@ -12,25 +12,35 @@
         <div class="user">
             <div class="info">
                 <div class="photo">
-                    <img src="~/img/avatar.png" />
+                    @if (Admin.Helppser.PixCoreValues.UsuarioLogado.Avatar != null)
+                    {
+                        <img src="@Admin.Helppser.PixCoreValues.UsuarioLogado.Avatar" class="img-rounded img-circle" />
+                    }
+                    else
+                    {
+                        <img src="~/img/avatar.png" />
+                    }
                 </div>
                 <a data-toggle="collapse" href="#collapseExample" class="collapsed">
                     <span>
-                        Nome
+                        @Admin.Helppser.PixCoreValues.UsuarioLogado.Nome
                         <b class="caret"></b>
                     </span>
                 </a>
                 <div class="collapse" id="collapseExample">
                     <ul class="nav">
                         <li>
-                            <a href="#pablo">
-                                <span class="sidebar-mini">C</span>
+                            <a class="profile-dropdown" href="@Url.Action("EditarUsuario", "Usuario")">
+                                <span class="sidebar-normal">Meus Dados</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="profile-dropdown" href="#">
                                 <span class="sidebar-normal">Configurações</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#pablo">
-                                <span class="sidebar-mini">S</span>
+                            <a class="profile-dropdown" href="@Url.Action("Sair", "Login")">
                                 <span class="sidebar-normal">Sair</span>
                             </a>
                         </li>

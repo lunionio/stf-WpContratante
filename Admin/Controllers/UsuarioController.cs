@@ -1,4 +1,5 @@
 ﻿using Admin.Controllers.Attributes;
+using Admin.Helppers;
 using Admin.Helppser;
 using Admin.Models;
 using System;
@@ -24,35 +25,28 @@ namespace Admin.Controllers
 
         public ActionResult Cadastro()
         {
-            var result = GetPermissoes();
+            var result = GetPerfis().Select(p => p.Nome);
 
             ViewBag.Perfis = new SelectList(result);
             return View();
         }
 
-        private static IEnumerable<string> GetPermissoes()
+        private IEnumerable<Perfil> GetPerfis()
         {
             try
             {
-                IEnumerable<string> result;
-                using (var client = new WebClient())
-                {
-                    var jss = new JavaScriptSerializer();
-                    var url = ConfigurationManager.AppSettings["UrlAPI"];
-                    //var serverUrl = $"{ url }/permissao/getallpermissao/{ _idCliente }"; //TODO: Necessário cadastrar perfil com id do usuário
-                    var serverUrl = $"{ url }/permissao/getallpermissao/{ 1 }";
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var response = client.DownloadString(new Uri(serverUrl));
-                    var permissoes = jss.Deserialize<IEnumerable<PermissaoViewModel>>(response);
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Perfil/GetAllPerfil/" + _idCliente;
 
-                    result = permissoes.Select(p => p.Nome);
-                }
+                var helper = new ServiceHelper();
+                var result = helper.Get<IEnumerable<Perfil>>(url);
 
                 return result;
             }
             catch(Exception e)
             {
-                return new List<string>();
+                return new List<Perfil>();
             }
         }
 
@@ -67,8 +61,8 @@ namespace Admin.Controllers
         {
             try
             {
-                var result = GetPermissoes();
-                ViewBag.Perfis = new SelectList(result);
+                var result = GetPerfis();
+                ViewBag.Perfis = new SelectList(result.Select(p => p.Nome));
 
                 if (! string.IsNullOrEmpty(viewModel.Nome) && !string.IsNullOrEmpty(viewModel.Login) 
                     && !string.IsNullOrEmpty(viewModel.Senha) && !string.IsNullOrEmpty(viewModel.Perfil))
@@ -80,11 +74,24 @@ namespace Admin.Controllers
 
                     viewModel.UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario;
                     viewModel.Ativo = true;
-                    if (SaveUsuario(viewModel))
+                    viewModel.VAdmin = "true";
+                    viewModel.Status = 1;
+                    viewModel.IdEmpresa = PixCoreValues.UsuarioLogado.idEmpresa;
+
+                    var perfil = result.SingleOrDefault(p => p.Nome.Equals(viewModel.Perfil));
+
+                    var user = SaveUsuario(viewModel);
+
+                    if (user.ID > 0)
                     {
-                        ViewData["Resultado"] = new ResultadoViewModel("Usuário cadastrado com sucesso!", true);
-                        ModelState.Clear();
-                        return RedirectToAction("Listagem");
+                        var usuarioXPerfil = VincularPerfil(user.ID, perfil.ID, viewModel.UsuarioXPerfil.Id);
+
+                        if (usuarioXPerfil.Id > 0)
+                        {
+                            ViewData["Resultado"] = new ResultadoViewModel("Usuário cadastrado com sucesso!", true);
+                            ModelState.Clear();
+                            return RedirectToAction("Listagem");
+                        }
                     }
                 }
 
@@ -100,7 +107,7 @@ namespace Admin.Controllers
 
         public ActionResult Editar(int? id)
         {
-            var result = GetPermissoes();
+            var result = GetPerfis().Select(p => p.Nome);
             ViewBag.Perfis = new SelectList(result);
 
             if (id == null)
@@ -118,78 +125,102 @@ namespace Admin.Controllers
         public ActionResult Excluir(int? id)
         {
             
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-                var users = GetUsuarios(_idCliente);
             try
             {
-                var usuario = users.FirstOrDefault(u => u.ID.Equals(id));
+                var usuario = GetUsuario((int)id, _idCliente);
 
                 if (DeleteUsuario(usuario))
                 {
-                    var usuarios = GetUsuarios(_idCliente);
-                    return View("Listagem", usuarios);
+                    return View("Listagem", GetUsuarios(_idCliente));
                 }
 
                 ViewData["ResultadoDelete"] = new ResultadoViewModel("Não foi possível deletar o usuário.", false);
-                return View("Listagem", users);
+                return View("Listagem", GetUsuarios(_idCliente));
             }
             catch(Exception e)
             {
                 ViewData["ResultadoDelete"] = new ResultadoViewModel("Não foi possível deletar o usuário.", false);
-                return View("Listagem", users);
+                return View("Listagem", GetUsuarios(_idCliente));
             }
         }
 
-        private bool SaveUsuario(UsuarioViewModel usuario)
+        public UsuarioViewModel GetUsuario(int id, int idCliente)
+        {
+            try
+            {
+                var url = ConfigurationManager.AppSettings["UrlAPI"];
+                var serverUrl = $"{ url }/Seguranca/Principal/BuscarUsuarioPorId/{ _idCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
+
+                var envio = new
+                {
+                    idCliente,
+                    idUsuario = id,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<UsuarioViewModel>(serverUrl, envio);
+
+                result.UsuarioXPerfil = GetPerfilUsuario(result.ID);
+
+                result.Perfil = GetPerfil(result.UsuarioXPerfil.IdPerfil).Nome;
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível listar os usuários.", e);
+            }
+        }
+
+        private Perfil GetPerfil(int idPerfil)
+        {
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = $"{ keyUrl }/Perfil/GetPerfilByID/{ idPerfil }";
+
+            var helper = new ServiceHelper();
+            var result = helper.Get<Perfil>(url);
+
+            return result;
+        }
+
+        private UsuarioXPerfil GetPerfilUsuario(int usuarioId)
+        {
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = $"{ keyUrl }/Perfil/GetPerfilByUsuario/{ usuarioId }";
+
+            var helper = new ServiceHelper();
+            var usuarioXPerfil = helper.Get<UsuarioXPerfil>(url);
+
+            return usuarioXPerfil;
+        }
+
+        private UsuarioViewModel SaveUsuario(UsuarioViewModel usuario)
         {
             try
             {
                 var jss = new JavaScriptSerializer();
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
                 var url = keyUrl + "/Seguranca/Principal/salvarUsuario/" + usuario.idCliente + "/" + PixCoreValues.UsuarioLogado.IdUsuario;
-                object envio = new 
+
+                var envio = new 
                 {
-                    usuario = new
-                    {
-                        usuario.ID,
-                        usuario.idCliente,
-                        usuario.Nome,
-                        usuario.Login,
-                        usuario.Senha,
-                        usuario.UsuarioCriacao,
-                        usuario.UsuarioEdicao,
-                        usuario.Ativo
-                    }
+                    usuario,
                 };
-                var data = jss.Serialize(envio);
 
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
+                var helper = new ServiceHelper();
+                var result = helper.Post<UsuarioViewModel>(url, envio);
 
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                if ("null".Equals(Convert.ToString(result).ToLower()))
                 {
-                    streamWriter.Write(data);
-                    streamWriter.Flush();
-                    streamWriter.Close();
+                    throw new Exception("Ocorreu um erro durante o processo.");
                 }
 
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result) 
-                        || "null".Equals(result.ToLower()))
-                    {
-                        throw new Exception("Ouve um erro durante o processo.");
-                    }
-                }
-
-                return true;
+                return result;
             }
             catch (Exception e)
             {
@@ -201,21 +232,34 @@ namespace Admin.Controllers
         {
             try
             {
-                using (var client = new WebClient())
-                {
-                    var jss = new JavaScriptSerializer();
-                    var url = ConfigurationManager.AppSettings["UrlAPI"];
-                    var serverUrl = $"{ url }/Seguranca/Principal/buscarUsuario/{ _idCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
-                    client.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var response = client.DownloadString(new Uri(serverUrl));
-                    var result = jss.Deserialize<IEnumerable<UsuarioViewModel>>(response);
+                var url = ConfigurationManager.AppSettings["UrlAPI"];
+                var serverUrl = $"{ url }/Seguranca/Principal/buscarUsuario/{ _idCliente }/{ PixCoreValues.UsuarioLogado.IdUsuario }";
 
-                    return result;
+                var envio = new
+                {
+                    idCliente
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<UsuarioViewModel>>(serverUrl, envio);
+
+                var usuariosXPerfis = GetPerfisUsuarios(result.Select(u => u.ID));
+                var perfis = GetPerfis();
+
+                foreach (var item in result)
+                {
+                    item.UsuarioXPerfil = usuariosXPerfis.FirstOrDefault(x => x.IdUsuario.Equals(item.ID));
+                    if (item.UsuarioXPerfil != null)
+                    {
+                        item.Perfil = perfis.FirstOrDefault(p => p.ID.Equals(item.UsuarioXPerfil.IdPerfil))?.Nome;
+                    }
                 }
+
+                return result.Where(u => u.Ativo && u.Status != 9);
             }
             catch (Exception e)
             {
-                throw new Exception("Não foi possível listar os usuários.", e);
+                return new List<UsuarioViewModel>();
             }
         }
 
@@ -223,45 +267,133 @@ namespace Admin.Controllers
         {
             try
             {
-                var jss = new JavaScriptSerializer();
-                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/Principal/DeletarUsuario/" + usuario.idCliente + "/" + PixCoreValues.UsuarioLogado.IdUsuario;
-                object envio = new
+                if (PixCoreValues.UsuarioLogado.IdUsuario.Equals(usuario.ID))
                 {
-                    usuario = new
-                    {
-                        idUsuario = usuario.ID
-                    }
-                };
-                var data = jss.Serialize(envio);
-
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
-
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    streamWriter.Write(data);
-                    streamWriter.Flush();
-                    streamWriter.Close();
+                    return false;
                 }
 
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                usuario.Ativo = false;
+                usuario.Status = 9;
+
+                var result = SaveUsuario(usuario);
+
+                if (result.Status == 9 && !result.Ativo)
                 {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result)
-                        || "null".Equals(result.ToLower()))
-                    {
-                        throw new Exception("Ouve um erro durante o processo.");
-                    }
+                    return true;
                 }
 
-                return true;
+                return false;
             }
             catch (Exception e)
             {
                 throw new Exception("Não foi possível salvar o usuário.", e);
+            }
+        }
+
+        private void DesvincularPerfil(int id)
+        {
+            var usuarioXPerfil = GetPerfilUsuario(id);
+
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = $"{ keyUrl }/Perfil/DesvincularPerfil/";
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<object>(url, usuarioXPerfil);
+        }
+
+        public ActionResult EditarUsuario()
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/Principal/BuscarUsuarioPorId/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                idUsuario = usuario.IdUsuario,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<UsuarioViewModel>(url, envio);
+
+            result.UsuarioXPerfil = GetPerfilUsuario(result.ID);
+            result.Perfil = GetPerfil(result.UsuarioXPerfil.IdPerfil).Nome;
+
+            ViewBag.Perfis = new SelectList(GetPerfis().Select(p => p.Nome));
+
+            return View("Editar", result);
+        }
+
+        public ActionResult AltararUsuario(UsuarioViewModel model)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/Principal/salvarUsuario/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+                model.UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario;
+                model.Ativo = true;
+                model.idCliente = _idCliente;
+                model.Status = 1;
+
+                var envio = new
+                {
+                    usuario = model,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<UsuarioViewModel>(url, envio);
+
+                PixCoreValues.AtualizarUsuarioLogado(result);
+
+                ViewBag.Perfis = new SelectList(GetPerfis());
+
+                return RedirectToAction("EditarUsuario");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível editar o usuário.", e);
+            }
+        }
+
+        private IEnumerable<UsuarioXPerfil> GetPerfisUsuarios(IEnumerable<int> ids)
+        {
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = $"{ keyUrl }/Perfil/GetUsuariosXPerfis/";
+
+            var helper = new ServiceHelper();
+            var usuariosXPerfis = helper.Post<IEnumerable<UsuarioXPerfil>>(url, ids);
+
+            return usuariosXPerfis;
+        }
+
+        private UsuarioXPerfil VincularPerfil(int usuarioId, int perfilId, int vinculoId = 0)
+        {
+            try
+            {
+                var usuarioXPerfil = new UsuarioXPerfil()
+                {
+                    Id = vinculoId,
+                    DataCriacao = DateTime.UtcNow,
+                    DataEdicao = DateTime.UtcNow,
+                    IdPerfil = perfilId,
+                    IdUsuario = usuarioId,
+                    UsuarioCriacao = PixCoreValues.UsuarioLogado.IdUsuario,
+                    UsuarioEdicao = PixCoreValues.UsuarioLogado.IdUsuario,
+                };
+
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = $"{ keyUrl }/Perfil/SaveUsuarioXPerfil/";
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<UsuarioXPerfil>(url, usuarioXPerfil);
+
+                return result;
+            }
+            catch(Exception e)
+            {
+                return new UsuarioXPerfil();
             }
         }
     }

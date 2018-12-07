@@ -13,7 +13,7 @@ $('#enviar').click(function () {
 });
 
 function preencherTipos() {
-    LoadingStart('card');
+    LoadingStart('body');
 
     var Url = "GetTipos";
     var settings = {
@@ -29,7 +29,7 @@ function preencherTipos() {
             $('#assunto').append('<option value="' + response[i].id + '">' + response[i].nome + '</option>');
             $('#assunto').selectpicker('refresh');
         }
-        LoadingStart('card');
+        LoadingStop('body');
     });
 }
 
@@ -85,18 +85,17 @@ function enviar() {
         "url": "Enviar",
         "method": "POST",
         "data": data
-    }
-
-    
+    };    
 
     $.ajax(settings).done(function (response) {
         var mensagem = "#" + response;
        
-        swal(mensagem, "Recebemos sua solicitação, em breve enntraremos em contato", "success");
+        swal(mensagem, "Recebemos sua solicitação, em breve entraremos em contato", "success");
         //LoadingStop('body');
         setTimeout(function () {
             window.location = "/home/index";
         }, 4500);
 
+        LoadingStop('body');
     });
 }

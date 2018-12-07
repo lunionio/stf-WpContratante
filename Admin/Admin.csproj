@@ -149,9 +149,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Attributes\NoDirectAccessAttribute.cs" />
+    <Compile Include="Controllers\CheckInController.cs" />
     <Compile Include="Controllers\FaleConoscoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RelatoriosController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\VagaController.cs" />
@@ -159,29 +161,51 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helppers\FaleConosco.cs" />
+    <Compile Include="Helppers\FinanceiroHelper.cs" />
     <Compile Include="Helppers\Oportundiade.cs" />
     <Compile Include="Helppers\PixCore.cs" />
+    <Compile Include="Helppers\ServiceHelper.cs" />
     <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\CheckIn.cs" />
+    <Compile Include="Models\CheckInViewModel.cs" />
     <Compile Include="Models\ClienteViewModel.cs" />
+    <Compile Include="Models\DadosBancarios.cs" />
+    <Compile Include="Models\EmpresaViewModel.cs" />
     <Compile Include="Models\Estrutura.cs" />
     <Compile Include="Models\EstruturaViewModel.cs" />
     <Compile Include="Models\FaleconoscoVIewModel.cs" />
     <Compile Include="Models\Faleconosco\Atendimento.cs" />
     <Compile Include="Models\Faleconosco\Status.cs" />
     <Compile Include="Models\Faleconosco\Ticket.cs" />
+    <Compile Include="Models\Financeiro\Extrato.cs" />
+    <Compile Include="Models\Financeiro\Status.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\OportunidadeViewModel.cs" />
     <Compile Include="Models\PageViewModel.cs" />
     <Compile Include="Models\Perfil.cs" />
     <Compile Include="Models\Permissao.cs" />
     <Compile Include="Models\PermissaoViewModel.cs" />
+    <Compile Include="Models\Profissional.cs" />
+    <Compile Include="Models\ProfissionalFormacao.cs" />
+    <Compile Include="Models\ProfissionalServico.cs" />
+    <Compile Include="Models\ProfissionalViewModel.cs" />
+    <Compile Include="Models\RelatorioModel.cs" />
+    <Compile Include="Models\RelatorioViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />
+    <Compile Include="Models\Servico.cs" />
+    <Compile Include="Models\Telefone.cs" />
+    <Compile Include="Models\UserStatus.cs" />
+    <Compile Include="Models\UserXOportunidade.cs" />
     <Compile Include="Models\UsuarioViewModel.cs" />
+    <Compile Include="Models\UsuarioXPerfil.cs" />
     <Compile Include="Models\VagaViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-chosen.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chosen-sprite%402x.png" />
+    <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\demo.css" />
     <Content Include="Content\documentation.css" />
@@ -336,6 +360,7 @@
     <Content Include="Img\margot.jpg" />
     <Content Include="Img\mask.png" />
     <Content Include="Img\new_logo.png" />
+    <Content Include="Img\Ripple-1s-200px.gif" />
     <Content Include="Img\sidebar-1.jpg" />
     <Content Include="Img\sidebar-2.jpg" />
     <Content Include="Img\sidebar-3.jpg" />
@@ -443,6 +468,10 @@
     <Content Include="Sass\lbd\_variables.scss" />
     <Content Include="Sass\light-bootstrap-dashboard.scss" />
     <Content Include="fonts\nucleo-icons.woff2" />
+    <Content Include="Content\bootstrap-chosen-variables.less" />
+    <Content Include="Content\bootstrap-chosen-variables.scss" />
+    <Content Include="Content\bootstrap-chosen.less" />
+    <Content Include="Content\bootstrap-chosen.scss" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\chartist.min.js" />
@@ -470,7 +499,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\nouislider.min.js" />
+    <Content Include="Scripts\Pages\checkin.js" />
     <Content Include="Scripts\Pages\FaleConosco.js" />
+    <Content Include="Scripts\Pages\relatorios.js" />
     <Content Include="Scripts\Pages\VagaCadastrar.js" />
     <Content Include="Scripts\Pages\VagaIndex.js" />
     <Content Include="Scripts\perfect-scrollbar.jquery.min.js" />
@@ -481,6 +512,7 @@
     <Content Include="Scripts\Plugins\bootstrap-table.js" />
     <Content Include="Scripts\Plugins\bootstrap-tagsinput.js" />
     <Content Include="Scripts\Plugins\chartist.min.js" />
+    <Content Include="Scripts\Plugins\chosen.jquery.js" />
     <Content Include="Scripts\Plugins\fullcalendar.min.js" />
     <Content Include="Scripts\Plugins\jasny-bootstrap.min.js" />
     <Content Include="Scripts\Plugins\jquery-jvectormap.js" />
@@ -527,6 +559,12 @@
     <Content Include="Views\Vaga\_listarOportunidades.cshtml" />
     <Content Include="Views\Vaga\_vincularPorifissionais.cshtml" />
     <Content Include="Views\Vaga\_lsitarProfissionais.cshtml" />
+    <Content Include="Views\CheckIn\Index.cshtml" />
+    <Content Include="Views\Relatorios\Index.cshtml" />
+    <Content Include="Views\Vaga\ModalMatch.cshtml" />
+    <Content Include="Views\Usuario\Editar.cshtml" />
+    <Content Include="Views\Vaga\ModalProfissional.cshtml" />
+    <Content Include="Views\Vaga\ModalCheckIn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

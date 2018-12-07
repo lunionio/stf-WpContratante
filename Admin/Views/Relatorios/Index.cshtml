@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "RELATÓRIOS";
+    ViewBag.PageTitle = "RELATÓRIO";
+}
+
+@model IList<Admin.Models.RelatorioModel>
+<div class="row">
+    <div class="col-md-12">
+        <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
+
+            <div class="card-header text-center">
+                <h4 class="text-center">Relatório</h4>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="control-label col-sm-5" for="email">Relatorios</label>
+                                <div class="col-sm-7">
+                                    <select id="relatorios" class="form-control chosen-select">
+                                        <option value="0">Selecione</option>
+                                        @foreach (var item in Model)
+                                        {
+                                            <option value="@item.Id">@item.Nome</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="tbRelatorio" hidden class="table table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th> Codigo             </th>
+                                        <th> Titulo             </th>
+                                        <th> CriadoEm    </th>
+                                        <th> DataEvento     </th>
+                                        <th> Endereco       </th>
+                                        <th> Categoria          </th>
+                                        <th> Profissional   </th>
+                                        <th> Valor          </th>
+                                        <th> Quantidade         </th>
+                                        <th> Total              </th>
+                                        <th> Candidatos             </th>
+                                        <th> Aprovados      </th>
+                                        <th> Reprovados          </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <a href="#" id="download" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Gerar Relatório</a>
+                    </div>
+                    <div class="tab-pane fade show active" id="tab1" role="tabpanel">
+                        <a id="mostrar" href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Mostar Relatório</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Plugins/chosen.jquery.js"></script>
+    <script src="~/Scripts/jquery.datatables.js"></script>
+    <script src="~/Scripts/Pages/relatorios.js"></script>
+}

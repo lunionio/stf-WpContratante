@@ -14,5 +14,7 @@ namespace Admin.Models
         public int IdUsuario { get; set; }
         public string Ativo { get; set; }
         public int idEmpresa { get; set; }
+        public string Nome { get; set; }
+        public string Avatar { get; set; }
     }
 }

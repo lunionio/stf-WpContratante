@@ -8,7 +8,6 @@ namespace Admin.Models
         public string Login { get; set; }
         public string SobreNome { get; set; }
         public string Email { get; set; }
-        public int PerfilUsuario { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Senha é obrigatório")]
         public string Senha { get; set; }
         public string VAdmin { get; set; }
@@ -16,5 +15,8 @@ namespace Admin.Models
         public int IdEmpresa { get; set; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "Perfil é obrigatório")]
         public string Perfil { get; set; }
+        public string Avatar { get; set; }
+
+        public UsuarioXPerfil UsuarioXPerfil { get; set; }
     }
 }

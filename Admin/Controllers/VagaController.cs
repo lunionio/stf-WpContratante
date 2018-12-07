@@ -49,7 +49,7 @@ namespace Admin.Controllers
         
         public PartialViewResult ModalConfirmarVaga(VagaViewModel model)
         {
-            return PartialV iew(model);
+            return PartialView(model);
         }
 
         public PartialViewResult _listarOportunidades()

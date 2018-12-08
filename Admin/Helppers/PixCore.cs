@@ -235,14 +235,14 @@ namespace Admin.Helppser
         {
             var current = HttpContext.Current;
 
-            if (!string.IsNullOrEmpty(current.Request.Cookies["UsuarioLogadoStaff"].Value))
+            if (!string.IsNullOrEmpty(current.Request.Cookies["UsuarioLogado"].Value))
             {
-                current.Request.Cookies["UsuarioLogadoStaff"].Value = null;
+                current.Request.Cookies["UsuarioLogado"].Value = null;
             }
 
-            if (!string.IsNullOrEmpty(current.Request.Cookies["IdClienteStaff"].Value))
+            if (!string.IsNullOrEmpty(current.Request.Cookies["IdCliente"].Value))
             {
-                current.Request.Cookies["IdClienteStaff"].Value = null;
+                current.Request.Cookies["IdCliente"].Value = null;
             }
         }
     }

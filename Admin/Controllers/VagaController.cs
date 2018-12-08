@@ -166,14 +166,16 @@ namespace Admin.Controllers
 
             foreach (var item in profissionais)
             {
-                var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario))?.Nome;
-                var model = new ProfissionalViewModel(item.Profissional.ID, user, item.Servico.Nome, item.Profissional.Telefone.Numero,
-                    item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(), item.Profissional.Email, item.Profissional.IdUsuario, item.Profissional.Endereco)
+                var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario));
+                var model = new ProfissionalViewModel(item.Profissional.ID, user?.Nome, item.Servico.Nome, item.Profissional.Telefone.Numero,
+                    item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(), 
+                    item.Profissional.Email, item.Profissional.IdUsuario, item.Profissional.Endereco)
                 {
                     StatusId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.Status.ID,
                     UserXOportunidadeId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.ID,
                     OportunidadeId = op.Id,
                     Valor = op.Valor,
+                    Avatar = user?.Avatar,
                 };
 
                 models.Add(model);
@@ -391,7 +393,7 @@ namespace Admin.Controllers
                             "16", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
 
                         FinanceiroHelper.LancaTransacoes(op.Valor, "16", 3,
-                            pServico.Profissional.ID.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
+                            pServico.Profissional.ID.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id, Status.Bloqueado);
                     }
 
                     return JsonConvert.SerializeObject(new ProfissionalViewModel(pServico.Profissional.ID, user.Nome, pServico.Servico.Nome, pServico.Profissional.Telefone.Numero,

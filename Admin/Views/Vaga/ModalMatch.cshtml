@@ -52,9 +52,16 @@
                                                     {
                                                         <tr id="@item.Id">
                                                             <td>
-                                                                @item.Id
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        @item.Id
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <img src="@item.Avatar" class="img-circle img-responsive img-rounded" width="25" height="25" />
+                                                                    </div>
+                                                                </div>
                                                             </td>
-                                                            <td>
+                                                            <td onclick="getProfissional(@item.Id)">
                                                                 @item.Nome
                                                             </td>
                                                             <td>
@@ -111,7 +118,14 @@
                                                     {
                                                         <tr id="@item.Id">
                                                             <td>
-                                                                @item.Id
+                                                                <div class="row">
+                                                                    <div class="col-sm-6">
+                                                                        @item.Id
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <img src="@item.Avatar" class="img-circle img-responsive img-rounded" width="25" height="25" />
+                                                                    </div>
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 @item.Nome
@@ -186,7 +200,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">                   
+                <div class="modal-footer">
                 </div>
             </div>
         </div>
@@ -224,5 +238,5 @@
     $('#btnSalvar').click(function () {
         liberarPagamentos();
     });
-    
+
 </script>

@@ -89,12 +89,12 @@ namespace Admin.Helppers
         }
 
         public static void LancaTransacoes(decimal valor, string origem, int tipoOrigem,
-           string destino, int tipoDestino, int natureza, int tipo, string descricao, LoginViewModel usuario, int idOpt = 0)
+           string destino, int tipoDestino, int natureza, int tipo, string descricao, LoginViewModel usuario, int idOpt = 0, Status status = Status.Aprovado)
 
         {
             IList<Extrato> extratos = new List<Extrato>();
 
-            var extrato = new Extrato(valor, natureza, tipo, origem, destino, Status.Aprovado)
+            var extrato = new Extrato(valor, natureza, tipo, origem, destino, status)
             {
                 Ativo = true,
                 DataCriacao = DateTime.UtcNow,

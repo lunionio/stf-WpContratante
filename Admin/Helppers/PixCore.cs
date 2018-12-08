@@ -234,8 +234,16 @@ namespace Admin.Helppser
         public static void Sair()
         {
             var current = HttpContext.Current;
-            current.Request.Cookies["UsuarioLogado"].Value = null;
-            current.Request.Cookies["IdCliente"].Value = null;
+
+            if (!string.IsNullOrEmpty(current.Request.Cookies["UsuarioLogadoStaff"].Value))
+            {
+                current.Request.Cookies["UsuarioLogadoStaff"].Value = null;
+            }
+
+            if (!string.IsNullOrEmpty(current.Request.Cookies["IdClienteStaff"].Value))
+            {
+                current.Request.Cookies["IdClienteStaff"].Value = null;
+            }
         }
     }
 }

@@ -183,24 +183,29 @@ function aprovarProfissional(userXOpt, optId, userId) {
     };
 
     $.ajax(settings).done(function (response) {
-        var p = JSON.parse(response);
+        var p = $.parseJSON(response);
 
-        if (p.Id == undefined) {
-            swal(response, "", "ERROR");
+        if (typeof p == 'object') {
+            if (p.Id == undefined) {
+                swal(response, "", "ERROR");
+            }
+            else {
+                let table = $('#tbContratar').DataTable();
+                table.row("#" + userId).remove().draw();
+                var contratados = $('#tbContratados').DataTable();
+                var row = contratados.row.add([
+                    p.Id,
+                    p.Nome,
+                    p.Especialidade,
+                    p.Endereco.Local,
+                    p.Valor,
+                    'Avaliação'
+                ]).draw(false);
+            }
         }
         else {
-            let table = $('#tbContratar').DataTable();
-            table.row("#" + userId).remove().draw();
-            var contratados = $('#tbContratados').DataTable();
-            var row = contratados.row.add([
-                p.Id,
-                p.Nome,
-                p.Especialidade,
-                p.Endereco.Local,
-                p.Valor,
-                'Avaliação'
-            ]).draw(false);
-        }
+            alert(response);
+        }        
     });
 }
 
@@ -223,15 +228,21 @@ function reprovarProfissional(userXOpt, optId, userId) {
     Loading('body');
 
     $.ajax(settings).done(function (response) {
-        var p = JSON.parse(response);
+        var p = $.parseJSON(response);
 
-        if (p.Id == undefined) {
-            swal(response, "", "ERROR");
+        if (typeof p == 'object') {
+            if (p.Id == undefined) {
+                swal(response, "", "ERROR");
+            }
+            else {
+                let table = $('#tbContratar').DataTable();
+                table.row("#" + userId).remove().draw();
+            }
         }
         else {
-            let table = $('#tbContratar').DataTable();
-            table.row("#" + userId).remove().draw();
+            alert(response);
         }
+        
         LoadingStop('body');
     });
 }

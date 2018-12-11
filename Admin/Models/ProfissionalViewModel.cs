@@ -51,5 +51,7 @@ namespace Admin.Models
         public int OportunidadeId { get; set; }
         public int? UserXOportunidadeId { get; set; }
         public decimal Valor { get; set; }
+        public int JobQuantidade { get; set; }
+        public decimal Avaliacao { get; set; }
     }
 }

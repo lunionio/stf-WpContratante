@@ -23,7 +23,7 @@
                                 <a class="nav-link" id="contratados-tab" href="#">Contratados</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="checkin-tab" href="#">Check-In</a>
+                                <a class="nav-link" id="avaliar-tab" href="#">Avaliar</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -50,7 +50,7 @@
                                                 {
                                                     if (item.StatusId != null && item.StatusId == 2) //Aguardando
                                                     {
-                                                        <tr id="@item.Id">
+                                                        <tr>
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
@@ -74,7 +74,13 @@
                                                                 @item.Valor
                                                             </td>
                                                             <td>
-                                                                Avaliação
+                                                                <select id="@item.Avaliacao" disabled>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(1) ? "selected" : "") value="1">1</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(2) ? "selected" : "") value="2">2</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(3) ? "selected" : "") value="3">3</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(4) ? "selected" : "") value="4">4</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(5) ? "selected" : "") value="5">5</option>
+                                                                </select>
                                                             </td>
                                                             <td>
                                                                 <a class="btn btn-link btn-success table-action view" onclick="aprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.Id)">
@@ -140,7 +146,13 @@
                                                                 @item.Valor
                                                             </td>
                                                             <td>
-                                                                Avaliação
+                                                                <select id="@item.Avaliacao" disabled>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(1) ? "selected" : "") value="1">1</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(2) ? "selected" : "") value="2">2</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(3) ? "selected" : "") value="3">3</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(4) ? "selected" : "") value="4">4</option>
+                                                                    <option @(Convert.ToInt32(item.Avaliacao).Equals(5) ? "selected" : "") value="5">5</option>
+                                                                </select>
                                                             </td>
                                                         </tr>
                                                     }
@@ -152,34 +164,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="checkin" role="tabpanel" aria-labelledby="checkin-tab">
+                            <div class="tab-pane fade" id="avaliacao" role="tabpanel" aria-labelledby="avaliar-tab">
                                 <div class="card stacked-form">
                                     <div class="card-header ">
                                         <h4 class="card-title"></h4>
                                     </div>
                                     <div class="card-body table-full-width table-responsive">
-                                        <table id="tbCheckIn" class="table table-hover">
+                                        <table id="tbAvaliar" class="table table-hover">
                                             <thead>
                                                 <tr>
+                                                    <th>ID</th>
                                                     <th>Nome</th>
-                                                    <th>Hora do Check-In</th>
-                                                    <th>Status Pagamento</th>
+                                                    <th>Avaliação</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach (var item in (ViewBag.CheckIns as IEnumerable<Admin.Models.CheckInViewModel>))
                                                 {
                                                     <tr>
-                                                        <td onclick="getModalCheckIn(@item.Id)">
+                                                        <td>
+                                                            @item.Id
+                                                        </td>
+                                                        <td>
                                                             @item.Nome
                                                         </td>
                                                         <td>
-                                                            @item.Hora.ToString()
-                                                        </td>
-                                                        <td>
-                                                            <select id="@item.OportunidadeId" class="form-control" onchange="guardaCache(@item.OportunidadeId, @item.Id)">
-                                                                <option @( item.StatusPagamento.Equals(1) ? "selected" : "" ) value="1">Aprovado</option>
-                                                                <option @( item.StatusPagamento.Equals(2) ? "selected" : "" ) value="2">Bloquado</option>
+                                                            <select onchange="guardaCache(@item.Id, @item.OportunidadeId)" id="@item.Id">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -191,7 +206,7 @@
                                         <div class="row">
                                             <div class="col-md-10"></div>
                                             <div class="col-md-2">
-                                                <button type="button" id="btnSalvar" class="btn btn-fill btn-primary">Salvar</button>
+                                                <button type="button" id="btnAvaliar" class="btn btn-fill btn-primary">Avaliar todos</button>
                                             </div>
                                         </div>
                                     </div>
@@ -210,33 +225,32 @@
 <script>
     $('#contratados-tab').click(function () {
         $('#contratar-tab').removeClass('active');
-        $('#checkin-tab').removeClass('active');
+        $('#avaliar-tab').removeClass('active');
         $(this).addClass('active');
         $('#contratar').removeClass('show active');
-        $('#checkin').removeClass('show active');
+        $('#avaliacao').removeClass('show active');
         $('#contratados').addClass('show active');
     });
 
     $('#contratar-tab').click(function () {
         $('#contratados-tab').removeClass('active');
-        $('#checkin-tab').removeClass('active');
+        $('#avaliar-tab').removeClass('active');
         $(this).addClass('active');
         $('#contratados').removeClass('show active');
-        $('#checkin').removeClass('show active');
+        $('#avaliacao').removeClass('show active');
         $('#contratar').addClass('show active');
     });
 
-    $('#checkin-tab').click(function () {
+    $('#avaliar-tab').click(function () {
         $('#contratados-tab').removeClass('active');
         $('#contratar-tab').removeClass('active');
         $(this).addClass('active');
         $('#contratados').removeClass('show active');
         $('#contratar').removeClass('show active');
-        $('#checkin').addClass('show active');
+        $('#avaliacao').addClass('show active');
     });
 
-    $('#btnSalvar').click(function () {
-        liberarPagamentos();
+    $('#btnAvaliar').click(function () {
+        avaliarProfissionais();
     });
-
 </script>

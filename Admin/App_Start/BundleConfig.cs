@@ -43,7 +43,9 @@ namespace Admin
                         "~/Sass/lbd/plugins/_sweetalert2.scss",
                         "~/Content/pe-icon-7-stroke.css",
                         "~/Content/Custom.css",
-                        "~/Content/jquery.loading.css"));
+                        "~/Content/jquery.loading.css",
+                        "~/Content/fontawesome-stars-o.css",
+                        "~/Content/fontawesome-stars.css"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.

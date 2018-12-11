@@ -11,6 +11,7 @@ namespace Admin.Models
         public Telefone Telefone { get; set; }
         public Endereco Endereco { get; set; }
         public IList<ProfissionalFormacao> Formacoes { get; set; }
+        public decimal Avaliacao { get; set; }
 
         public Profissional()
         {

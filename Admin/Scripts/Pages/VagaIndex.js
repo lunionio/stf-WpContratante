@@ -1,4 +1,4 @@
-﻿let pagamentosParaLiberar = [];
+﻿let avaliacoes = [];
 
 $("#linhaPadrao").remove();
 
@@ -162,6 +162,17 @@ function getModalMatch(idOpt) {
             },
         });
 
+        //$('select').each(function () {
+        //    var select = $(this);
+        //    console.log(select.attr('id'));
+        //    var avaliacao = select.attr('id');
+        //    select.barrating({
+        //        theme: 'fontawesome-stars',
+        //        initialRating: 5,
+        //        readonly: true
+        //    });
+        //});
+
         LoadingStop('body');
     });
 }
@@ -183,9 +194,10 @@ function aprovarProfissional(userXOpt, optId, userId) {
     };
 
     $.ajax(settings).done(function (response) {
-        var p = $.parseJSON(response);
+        try {
 
-        if (typeof p == 'object') {
+            var p = $.parseJSON(response);
+
             if (p.Id == undefined) {
                 swal(response, "", "ERROR");
             }
@@ -199,13 +211,19 @@ function aprovarProfissional(userXOpt, optId, userId) {
                     p.Especialidade,
                     p.Endereco.Local,
                     p.Valor,
-                    'Avaliação'
+                    '<select id="' + p.Avaliacao + '" disabled>' +
+                        '<option' + Math.floor(p.Avaliacao) == 1 ? "selected" : "" + ' value = "1" > 1</option > ' +
+                        '<option' + Math.floor(p.Avaliacao) == 2 ? "selected" : "" + ' value = "2" > 1</option > ' +
+                        '<option' + Math.floor(p.Avaliacao) == 3 ? "selected" : "" + ' value = "3" > 1</option > ' +
+                        '<option' + Math.floor(p.Avaliacao) == 4 ? "selected" : "" + ' value = "4" > 1</option > ' +
+                        '<option' + Math.floor(p.Avaliacao) == 5 ? "selected" : "" + ' value = "5" > 1</option > ' +
+                    '</select>'
                 ]).draw(false);
             }
         }
-        else {
+        catch (e) {
             alert(response);
-        }        
+        }
     });
 }
 
@@ -265,56 +283,36 @@ function getProfissional(id) {
     });
 }
 
-function guardaCache(optId, profissionalId) {
-    pagamentosParaLiberar.forEach(function (item, index, array) {
-        if (item.Id === profissionalId) {
+function guardaCache(profissionalId, optId) {
+    avaliacoes.forEach(function (item, index, array) {
+        if (item.UsuarioAvaliadoId === profissionalId) {
             array.splice(index, 1);
         }
     });
 
-    let pagamento = {
-        Id: profissionalId,
+    let avaliacao = {
+        UsuarioAvaliadoId: profissionalId,
         OportunidadeId: optId,
-        Status: $('#' + optId + ' option:selected').text(),
-        StatusPagamento: $('#' + optId + ' option:selected').val()
+        Estrelas: $('#' + profissionalId + ' option:selected').text()
     };
 
-    pagamentosParaLiberar.push(pagamento);
+    avaliacoes.push(avaliacao);
 }
 
-function liberarPagamentos() {
-    Loading('body');
-
-    let settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/Vaga/LiberarPagamentos",
-        "method": "POST",
-        "data": { models: pagamentosParaLiberar }
-    };
-
-    $.ajax(settings).done(function (response) {
-
-        LoadingStop('body');
-        swal(response, "", "success");
-
-    });
-}
-
-function getModalCheckIn(profissionalId) {
-    Loading('body');
-    var Url = "/Vaga/ModalCheckIn?pId=" + profissionalId;
+function avaliarProfissionais() {
     var settings = {
         "async": true,
         "crossDomain": true,
-        "url": Url,
-        "method": "GET"
+        "url": "/Vaga/AvaliarProfissional",
+        "method": "POST",
+        "data": { viewModels: avaliacoes }
     };
 
     $.ajax(settings).done(function (response) {
-        $('#modalCheckIn').html(response);
-        $('#checkinModal').modal('show');
-        LoadingStop('body');
+        avaliacoes.forEach(function (item, index, array) {
+            $('#' + item.UsuarioAvaliadoId).prop('disabled', true);
+        });
 
+        alert(response);
     });
 }

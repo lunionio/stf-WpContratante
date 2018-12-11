@@ -165,6 +165,7 @@
     <Compile Include="Helppers\Oportundiade.cs" />
     <Compile Include="Helppers\PixCore.cs" />
     <Compile Include="Helppers\ServiceHelper.cs" />
+    <Compile Include="Models\AvaliacaoViewModel.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\CheckIn.cs" />
     <Compile Include="Models\CheckInViewModel.cs" />
@@ -202,13 +203,23 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bars-1to10.css" />
+    <Content Include="Content\bars-horizontal.css" />
+    <Content Include="Content\bars-movie.css" />
+    <Content Include="Content\bars-pill.css" />
+    <Content Include="Content\bars-reversed.css" />
+    <Content Include="Content\bars-square.css" />
     <Content Include="Content\bootstrap-chosen.css" />
+    <Content Include="Content\bootstrap-stars.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\chosen-sprite%402x.png" />
     <Content Include="Content\chosen-sprite.png" />
+    <Content Include="Content\css-stars.css" />
     <Content Include="Content\Custom.css" />
     <Content Include="Content\demo.css" />
     <Content Include="Content\documentation.css" />
+    <Content Include="Content\fontawesome-stars-o.css" />
+    <Content Include="Content\fontawesome-stars.css" />
     <Content Include="Content\jquery.loading.css" />
     <Content Include="Content\light-bootstrap-dashboard.css" />
     <Content Include="Content\pe-icon-7-stroke.css" />
@@ -472,6 +483,18 @@
     <Content Include="Content\bootstrap-chosen-variables.scss" />
     <Content Include="Content\bootstrap-chosen.less" />
     <Content Include="Content\bootstrap-chosen.scss" />
+    <Content Include="Content\bars-1to10.less" />
+    <Content Include="Content\bars-horizontal.less" />
+    <Content Include="Content\bars-movie.less" />
+    <Content Include="Content\bars-pill.less" />
+    <Content Include="Content\bars-reversed.less" />
+    <Content Include="Content\bars-square.less" />
+    <Content Include="Content\bootstrap-stars.less" />
+    <Content Include="Content\css-stars.less" />
+    <Content Include="Content\fontawesome-stars-o.less" />
+    <Content Include="Content\fontawesome-stars.less" />
+    <Content Include="Content\mixins.less" />
+    <Content Include="Content\variables.less" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\chartist.min.js" />
@@ -514,14 +537,19 @@
     <Content Include="Scripts\Plugins\chartist.min.js" />
     <Content Include="Scripts\Plugins\chosen.jquery.js" />
     <Content Include="Scripts\Plugins\fullcalendar.min.js" />
+    <Content Include="Scripts\Plugins\gulpfile.js" />
     <Content Include="Scripts\Plugins\jasny-bootstrap.min.js" />
     <Content Include="Scripts\Plugins\jquery-jvectormap.js" />
+    <Content Include="Scripts\Plugins\jquery.barrating-spec.js" />
+    <Content Include="Scripts\Plugins\jquery.barrating.js" />
+    <Content Include="Scripts\Plugins\jquery.barrating.min.js" />
     <Content Include="Scripts\Plugins\jquery.bootstrap-wizard.js" />
     <Content Include="Scripts\Plugins\jquery.dataTables.min.js" />
     <Content Include="Scripts\Plugins\jquery.loading.js" />
     <Content Include="Scripts\Plugins\jquery.mask.js" />
     <Content Include="Scripts\Plugins\jquery.validate.min.js" />
     <Content Include="Content\loading.css" />
+    <Content Include="Scripts\Plugins\karma.conf.js" />
     <Content Include="Scripts\Plugins\loading.js" />
     <Content Include="Scripts\Plugins\moment.min.js" />
     <Content Include="Scripts\Plugins\nouislider.js" />
@@ -565,6 +593,7 @@
     <Content Include="Views\Usuario\Editar.cshtml" />
     <Content Include="Views\Vaga\ModalProfissional.cshtml" />
     <Content Include="Views\Vaga\ModalCheckIn.cshtml" />
+    <Content Include="Scripts\Plugins\jquery.barrating.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

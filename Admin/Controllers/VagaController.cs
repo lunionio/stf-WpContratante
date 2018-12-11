@@ -77,7 +77,7 @@ namespace Admin.Controllers
                 return Json("Saldo insuficiente.");
             }
         }
-        
+
         public PartialViewResult ModalConfirmarVaga(VagaViewModel model)
         {
             return PartialView(model);
@@ -168,7 +168,7 @@ namespace Admin.Controllers
             {
                 var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario));
                 var model = new ProfissionalViewModel(item.Profissional.ID, user?.Nome, item.Servico.Nome, item.Profissional.Telefone.Numero,
-                    item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(), 
+                    item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(),
                     item.Profissional.Email, item.Profissional.IdUsuario, item.Profissional.Endereco)
                 {
                     StatusId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.Status.ID,
@@ -176,14 +176,55 @@ namespace Admin.Controllers
                     OportunidadeId = op.Id,
                     Valor = op.Valor,
                     Avatar = user?.Avatar,
+                    Avaliacao = item.Profissional.Avaliacao,
                 };
 
                 models.Add(model);
             }
 
-            ViewBag.CheckIns = GetProfissionaisQueFizeramCheckIn(optId);
+            var checkins = GetProfissionaisQueFizeramCheckIn(optId);
+            ViewBag.CheckIns = checkins;
 
             return PartialView(models);
+        }
+
+        private IEnumerable<AvaliacaoViewModel> GetAvaliacoesByOpt(int optId)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/wpProfissionais/GetAvaliacaoPorOpt/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+                var envio = new
+                {
+                    usuario.idCliente,
+                    idOportunidade = optId
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<AvaliacaoViewModel>>(url, envio);
+
+                var profissionais = GetProfissionais(result.Select(x => x.UsuarioAvaliadoId));
+                var users = GetUsers(profissionais.Select(x => x.Profissional.IdUsuario));
+
+                foreach (var item in result)
+                {
+                    var profissional = profissionais.FirstOrDefault(p => p.Profissional.ID.Equals(item.UsuarioAvaliadoId));
+                    if (profissional != null)
+                    {
+                        item.Nome = profissional?.Profissional.Nome;
+                        item.Avatar = users.FirstOrDefault(u => u.ID.Equals(profissional.Profissional.IdUsuario))?.Avatar;
+                    }
+                }
+
+                return result;
+
+            }
+            catch (Exception e)
+            {
+                return new List<AvaliacaoViewModel>();
+            }
         }
 
         private IEnumerable<UserXOportunidade> GetProfissionaisByOpt(int idOpt)
@@ -246,8 +287,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorIds/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var envio = new
                 {
@@ -432,6 +472,7 @@ namespace Admin.Controllers
             var p = GetProfissional(pId);
             p.Profissional.Formacoes = GetFormacoes(p.Profissional.ID);
             var u = GetUsuario(p.Profissional.IdUsuario);
+            var jobQuantidade = GetJobQuantidade(p.Profissional.ID);
 
             var profissional = new ProfissionalViewModel()
             {
@@ -441,9 +482,28 @@ namespace Admin.Controllers
                 Telefone = p.Profissional.Telefone.Numero,
                 Formacoes = p.Profissional.Formacoes.Select(f => f.Nome),
                 Referencia = p.Profissional.Descricao,
+                JobQuantidade = jobQuantidade,
             };
 
             return PartialView(profissional);
+        }
+
+        private int GetJobQuantidade(int iD)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpCheckIn/GetQuantidadeJobs/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                usuario.idCliente,
+                profissionalId = iD,
+            };
+
+            var helper = new ServiceHelper();
+            var r = helper.Post<object>(url, envio);
+
+            return Convert.ToInt32(r);
         }
 
         private ProfissionalServico GetProfissional(int id)
@@ -503,46 +563,46 @@ namespace Admin.Controllers
             return u;
         }
 
-        public ActionResult ModalCheckIn(int pId)
+        [HttpPost]
+        public string AvaliarProfissional(IEnumerable<AvaliacaoViewModel> viewModels)
         {
-            var p = GetProfissional(pId);
-            p.Profissional.Formacoes = GetFormacoes(p.Profissional.ID);
-            var u = GetUsuario(p.Profissional.IdUsuario);
-            var d = GetDadosBancarios(p.Profissional.ID);
-
-            var profissional = new ProfissionalViewModel()
+            try
             {
-                Nome = p.Profissional.Nome,
-                Avatar = u.Avatar,
-                AreaAtuacao = p.Servico.Nome,
-                Telefone = p.Profissional.Telefone.Numero,
-                Formacoes = p.Profissional.Formacoes.Select(f => f.Nome),
-                Referencia = p.Profissional.Descricao,
-                Agencia = d.Agencia,
-                Conta = d.Conta,
-                Banco = d.Banco,
-            };
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/wpProfissionais/CadastrarAvaliacoes/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
-            return PartialView(profissional);
-        }
+                foreach (var item in viewModels)
+                {
+                    item.Ativo = true;
+                    item.Status = 1;
+                    item.Nome = $"Avaliação do Profissional de ID: { item.UsuarioAvaliadoId }";
+                    item.UsuarioAvaliadorId = usuario.IdUsuario;
+                    item.UsuarioCriacao = usuario.IdUsuario;
+                    item.UsuarioEdicao = usuario.IdUsuario;
+                    item.IdCliente = usuario.idCliente;
+                    item.CodigoExterno = "1";
+                }
 
-        public DadosBancarios GetDadosBancarios(int profissionalId)
-        {
-            var usuario = PixCoreValues.UsuarioLogado;
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpFinanceiro/BuscarDadosBancariosPorUsuario/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+                var envio = new
+                {
+                    obj = viewModels,
+                };
 
-            var envio = new
+                var helper = new ServiceHelper();
+                var result = helper.Post<object>(url, envio);
+
+                if (Convert.ToBoolean(result))
+                {
+                    return "Usuários avaliados com sucesso!";
+                }
+
+                return "Não foi possível avaliar os usuários.";
+            }
+            catch (Exception e)
             {
-                usuario.idCliente,
-                codigoExterno = profissionalId
-            };
-
-            var helper = new ServiceHelper();
-            var dados = helper.Post<DadosBancarios>(url, envio);
-
-            return dados;
+                return "Não foi possível avaliar os profissionais";
+            }
         }
 
         private IEnumerable<CheckInViewModel> GetProfissionaisQueFizeramCheckIn(int oportunidadeId)
@@ -563,7 +623,6 @@ namespace Admin.Controllers
 
             var profissionais = GetProfissionais(result.Select(x => x.IdUsuario));
             var users = GetUsers(profissionais.Select(x => x.Profissional.IdUsuario));
-            var extratos = GetExtratos(oportunidadeId);
 
             IList<CheckInViewModel> response = new List<CheckInViewModel>();
 
@@ -571,7 +630,6 @@ namespace Admin.Controllers
             {
                 var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario));
                 var ck = result.FirstOrDefault(c => c.IdUsuario.Equals(item.Profissional.ID));
-                var extrato = extratos.FirstOrDefault(e => e.Destino.Equals(item.Profissional.ID.ToString()));
 
                 var checkin = new CheckInViewModel()
                 {
@@ -579,63 +637,12 @@ namespace Admin.Controllers
                     OportunidadeId = oportunidadeId,
                     Hora = ck.DataCriacao,
                     Nome = user.Nome,
-                    StatusPagamento = (int)extrato.StatusId,
                 };
 
                 response.Add(checkin);
             }
 
             return response;
-        }
-
-        private IEnumerable<Extrato> GetExtratos(int codigoExterno)
-        {
-            var usuario = PixCoreValues.UsuarioLogado;
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpFinanceiro/BuscaExtratos/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
-
-            var envio = new
-            {
-                extrato = new
-                {
-                    CodigoExterno = codigoExterno,
-                    TipoDestino = 1
-                },
-            };
-
-            var helper = new ServiceHelper();
-            var result = helper.Post<IEnumerable<Extrato>>(url, envio);
-
-            return result.Where(r => r.StatusId != Models.Financeiro.Status.Aguardando);
-        }
-
-        [HttpPost]
-        public string LiberarPagamentos(IEnumerable<CheckInViewModel> models)
-        {
-            var usuario = PixCoreValues.UsuarioLogado;
-            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpFinanceiro/LiberarPagto/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
-
-            var result = string.Empty;
-            foreach (var model in models)
-            {
-                var envio = new
-                {
-                    usuario.idCliente,
-                    codigoExterno = model.OportunidadeId,
-                    destino = model.Id,
-                    tipoDestino = 1
-                };
-
-                var helper = new ServiceHelper();
-                var response = helper.Post<object>(url, envio);
-
-                result = Convert.ToString(response);
-            }
-
-            return result;
         }
     }
 }

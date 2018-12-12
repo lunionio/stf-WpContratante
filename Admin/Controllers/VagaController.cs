@@ -338,8 +338,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/WpOportunidades/DeletarOportunidade/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/WpOportunidades/DeletarOportunidade/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var op = Oportundiade.Convert(model);
 
@@ -350,8 +349,9 @@ namespace Admin.Controllers
 
                 var helper = new ServiceHelper();
                 var resut = helper.Post<object>(url, envio);
+                GeraMultasPorCancelamento(usuario, op, resut);
 
-                var oportunidades = GetOportunidades(op.IdEmpresa);
+                //var oportunidades = GetOportunidades(op.IdEmpresa);
 
                 return View("Index");
             }
@@ -359,6 +359,45 @@ namespace Admin.Controllers
             {
                 ViewBag.ErrorMessage = "Não foi possível desativar a oportunidade.";
                 return View("Index");
+            }
+        }
+
+        private void GeraMultasPorCancelamento(LoginViewModel usuario, OportunidadeViewModel op, object resut)
+        {
+            var profissionais = GetProfissionaisQueFizeramCheckIn(op.ID);
+
+            foreach (var item in profissionais)
+            {
+                if (Convert.ToBoolean(resut))
+                {
+                    var horas = op.DataCriacao - DateTime.UtcNow;
+                    if (horas.TotalHours <= 12)
+                    {
+                        FinanceiroHelper.LancaTransacoes((op.Valor * -1), usuario.idEmpresa.ToString(), 3, usuario.idEmpresa.ToString(), 3, 10, 2,
+                            $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+
+                        FinanceiroHelper.LancaTransacoes(op.Valor, usuario.idEmpresa.ToString(), 3, item.Id.ToString(), 1, 10, 2,
+                           $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+                    }
+                    else if (horas.TotalHours > 12 && horas.TotalHours <= 36)
+                    {
+                        var valor = op.Valor / 2;
+                        FinanceiroHelper.LancaTransacoes((valor * -1), usuario.idEmpresa.ToString(), 3, usuario.idEmpresa.ToString(), 3, 10, 2,
+                           $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+
+                        FinanceiroHelper.LancaTransacoes(op.Valor, usuario.idEmpresa.ToString(), 3, item.Id.ToString(), 1, 10, 2,
+                          $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+                    }
+                    else if (horas.TotalHours > 36 && horas.TotalHours <= 72)
+                    {
+                        var valor = op.Valor / 5;
+                        FinanceiroHelper.LancaTransacoes((valor * -1), usuario.idEmpresa.ToString(), 3, usuario.idEmpresa.ToString(), 3, 10, 2,
+                           $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+
+                        FinanceiroHelper.LancaTransacoes(op.Valor, usuario.idEmpresa.ToString(), 3, item.Id.ToString(), 1, 10, 2,
+                           $"Pagamento de multa por cancelamento da oportunidade: { op.ID } - { op.Nome }", usuario, op.ID, Status.Aprovado);
+                    }
+                }
             }
         }
 

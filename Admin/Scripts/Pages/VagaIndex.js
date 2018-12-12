@@ -212,11 +212,7 @@ function aprovarProfissional(userXOpt, optId, userId) {
                     p.Endereco.Local,
                     p.Valor,
                     '<select id="' + p.Avaliacao + '" disabled>' +
-                        '<option' + Math.floor(p.Avaliacao) == 1 ? "selected" : "" + ' value = "1" > 1</option > ' +
-                        '<option' + Math.floor(p.Avaliacao) == 2 ? "selected" : "" + ' value = "2" > 1</option > ' +
-                        '<option' + Math.floor(p.Avaliacao) == 3 ? "selected" : "" + ' value = "3" > 1</option > ' +
-                        '<option' + Math.floor(p.Avaliacao) == 4 ? "selected" : "" + ' value = "4" > 1</option > ' +
-                        '<option' + Math.floor(p.Avaliacao) == 5 ? "selected" : "" + ' value = "5" > 1</option > ' +
+                        '<option value = "' + Math.floor(p.Avaliacao) + '" >' + p.Avaliacao + '</option > ' +
                     '</select>'
                 ]).draw(false);
             }
@@ -228,41 +224,46 @@ function aprovarProfissional(userXOpt, optId, userId) {
 }
 
 function reprovarProfissional(userXOpt, optId, userId) {
-    var obj = {
-        ID: userXOpt,
-        UserId: userId,
-        OportunidadeId: optId,
-        StatusId: 3 //Reprovado
-    };
+    try {
+        var obj = {
+            ID: userXOpt,
+            UserId: userId,
+            OportunidadeId: optId,
+            StatusId: 3 //Reprovado
+        };
 
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "/Vaga/Match",
-        "method": "POST",
-        "data": obj
-    };
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "/Vaga/Match",
+            "method": "POST",
+            "data": obj
+        };
 
-    Loading('body');
+        Loading('body');
 
-    $.ajax(settings).done(function (response) {
-        var p = $.parseJSON(response);
+        $.ajax(settings).done(function (response) {
+            var p = $.parseJSON(response);
 
-        if (typeof p == 'object') {
-            if (p.Id == undefined) {
-                swal(response, "", "ERROR");
+            if (typeof p == 'object') {
+                if (p.Id == undefined) {
+                    swal(response, "", "ERROR");
+                }
+                else {
+                    let table = $('#tbContratar').DataTable();
+                    table.row("#" + userId).remove().draw();
+                }
             }
             else {
-                let table = $('#tbContratar').DataTable();
-                table.row("#" + userId).remove().draw();
+                alert(response);
             }
-        }
-        else {
-            alert(response);
-        }
         
-        LoadingStop('body');
-    });
+            LoadingStop('body');
+            });
+        }
+    catch (e) {
+        alert(response);
+    }
 }
 
 function getProfissional(id) {

@@ -677,6 +677,7 @@ namespace Admin.Controllers
                     OportunidadeId = oportunidadeId,
                     Hora = ck.DataCriacao,
                     Nome = user.Nome,
+                    UsuarioID = user.ID,
                 };
 
                 response.Add(checkin);

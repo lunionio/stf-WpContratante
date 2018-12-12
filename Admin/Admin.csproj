@@ -190,6 +190,7 @@
     <Compile Include="Models\ProfissionalFormacao.cs" />
     <Compile Include="Models\ProfissionalServico.cs" />
     <Compile Include="Models\ProfissionalViewModel.cs" />
+    <Compile Include="Models\RelatorioFinanceiroViewModel.cs" />
     <Compile Include="Models\RelatorioModel.cs" />
     <Compile Include="Models\RelatorioViewModel.cs" />
     <Compile Include="Models\ResultadoViewModel.cs" />

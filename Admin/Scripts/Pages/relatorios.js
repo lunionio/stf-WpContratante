@@ -42,28 +42,66 @@ $('#mostrar').click(function () {
     $.ajax(settings).done(function (response) {
         $('#tbRelatorio tbody').empty();
         $("#tbRelatorio").removeAttr("hidden");
-        var result = response;
-        $.each(result, function (index, element, array) {
-            $("#tbRelatorio > tbody").append("<tr>" +
-                "<td>" + element.Codigo + "</td>" +
-                "<td>" + element.Titulo + "</td>" +
-                "<td>" + element.CriadoEm + "</td>" +
-                "<td>" + element.DataEvento + "</td>" +
-                "<td>" + element.Endereco + "</td>" +
-                "<td>" + element.Categoria + "</td>" +
-                "<td>" + element.Profissional + "</td>" +
-                "<td>" + element.Valor + "</td>" +
-                "<td>" + element.Quantidade + "</td>" +
-                "<td>" + element.Total + "</td>" +
-                "<td>" + element.Candidatos + "</td>" +
-                "<td>" + element.Aprovados + "</td>" +
-                "<td>" + element.Reprovados + "</td>" +
+
+        if (r == 2) {
+
+            $("#tbRelatorio > thead").append("<tr>" +
+                "<th>Codigo</th>" +
+                "<th>Titulo</th>" +
+                "<th>CriadoEm</th>" +
+                "<th>DataEvento</th>" +
+                "<th>Endereco</th>" +
+                "<th>Categoria</th>" +
+                "<th>Profissional</th>" +
+                "<th>Valor</th>" +
+                "<th>Quantidade</th>" +
+                "<th>Total</th>" +
+                "<th>Candidatos</th>" +
+                "<th>Aprovados</th>" +
+                "<th>Reprovados</th>" +
                 "</tr>");
 
+            var result1 = response;
+            $.each(result1, function (index, element, array) {
+                $("#tbRelatorio > tbody").append("<tr>" +
+                    "<td>" + element.Codigo + "</td>" +
+                    "<td>" + element.Titulo + "</td>" +
+                    "<td>" + element.CriadoEm + "</td>" +
+                    "<td>" + element.DataEvento + "</td>" +
+                    "<td>" + element.Endereco + "</td>" +
+                    "<td>" + element.Categoria + "</td>" +
+                    "<td>" + element.Profissional + "</td>" +
+                    "<td>" + element.Valor + "</td>" +
+                    "<td>" + element.Quantidade + "</td>" +
+                    "<td>" + element.Total + "</td>" +
+                    "<td>" + element.Candidatos + "</td>" +
+                    "<td>" + element.Aprovados + "</td>" +
+                    "<td>" + element.Reprovados + "</td>" +
+                    "</tr>");
+            });
+        }
+        else if (r == 7) {
 
+            $("#tbRelatorio > thead").append("<tr>" +
+                "<th>ID</th>" +
+                "<th>Nome</th>" +
+                "<th>Descricao</th>" +
+                "<th>Data Criacao</th>" +
+                "<th>Valor</th>" +
+                "</tr>");
 
-            $('body').loading('stop');
-        });
+            var result2 = response;
+
+            $.each(result2, function (index, element, array) {
+                $("#tbRelatorio > tbody").append("<tr>" +
+                    "<td>" + element.ID + "</td>" +
+                    "<td>" + element.Nome + "</td>" +
+                    "<td>" + element.Descricao + "</td>" +
+                    "<td>" + element.DataCriacao + "</td>" +
+                    "<td>" + element.Valor + "</td>" +
+                    "</tr>");
+            });
+        }
 
         $("#tbRelatorio").DataTable({
             "pagingType": "numbers",
@@ -88,5 +126,11 @@ $('#mostrar').click(function () {
           
         });
 
+        LoadingStop('body');
+
     });
 });
+
+function LoadingStop(elemento) {
+    $(elemento).loading('stop');
+}

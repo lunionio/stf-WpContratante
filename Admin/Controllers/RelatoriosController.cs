@@ -25,33 +25,38 @@ namespace Admin.Controllers
 
         public ActionResult Gerar(int relatorioId)
         {
+            var result = default(object);
             if (relatorioId == 2)
             {
-                var result = GetOptRelatorios();
+                result = GetOptRelatorios();
+            }
+            else if (relatorioId == 7)
+            {
+                result = GetFinanceiro();
+            }
 
-                var json = JsonConvert.SerializeObject(result);
-                var dt = (DataTable)JsonConvert.DeserializeObject(json, typeof(DataTable));
+            var json = JsonConvert.SerializeObject(result);
+            var dt = (DataTable)JsonConvert.DeserializeObject(json, typeof(DataTable));
 
-                var sb = new StringBuilder();
-                var columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
-                sb.AppendLine(string.Join(",", columnNames));
+            var sb = new StringBuilder();
+            var columnNames = dt.Columns.Cast<DataColumn>().Select(column => column.ColumnName);
+            sb.AppendLine(string.Join(",", columnNames));
 
-                foreach (DataRow row in dt.Rows)
-                {
-                    var fields = row.ItemArray.Select(field => field.ToString());
-                    sb.AppendLine(string.Join(",", fields));
-                }
+            foreach (DataRow row in dt.Rows)
+            {
+                var fields = row.ItemArray.Select(field => field.ToString());
+                sb.AppendLine(string.Join(",", fields));
+            }
 
-                var fileBytes = Encoding.UTF8.GetBytes(sb.ToString());
-                using (var ms = new MemoryStream(fileBytes))
-                {
-                    var bytes = ms.ToArray();
-                    Response.Clear();
-                    Response.ContentType = "application/force-download";
-                    Response.AddHeader("content-disposition", "attachment;    filename=Relatorio.csv");
-                    Response.BinaryWrite(bytes);
-                    Response.End();
-                }
+            var fileBytes = Encoding.UTF8.GetBytes(sb.ToString());
+            using (var ms = new MemoryStream(fileBytes))
+            {
+                var bytes = ms.ToArray();
+                Response.Clear();
+                Response.ContentType = "application/force-download";
+                Response.AddHeader("content-disposition", "attachment;    filename=Relatorio.csv");
+                Response.BinaryWrite(bytes);
+                Response.End();
             }
 
             var relatorios = GetRelatorios();
@@ -100,8 +105,29 @@ namespace Admin.Controllers
                 var result = Json(GetOptRelatorios().ToList(), JsonRequestBehavior.AllowGet);
                 return result;
             }
+            else if (relatorioId == 7)
+            {
+                var result = Json(GetFinanceiro().ToList(), JsonRequestBehavior.AllowGet);
+                return result;
+            }
 
             return Json("Nenhum relatório gerado.", JsonRequestBehavior.AllowGet);
+        }
+
+        private static IEnumerable<RelatorioFinanceiroViewModel> GetFinanceiro()
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpRelatorios/FinanceiroContratante/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                contratanteId = usuario.idEmpresa,
+            };
+
+            var helper = new ServiceHelper();
+            var relatorios = helper.Post<IList<RelatorioFinanceiroViewModel>>(url, envio);
+            return relatorios;
         }
     }
 }

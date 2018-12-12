@@ -13,5 +13,6 @@ namespace Admin.Models
         public DateTime Hora { get; set; }
         public string Status { get; set; }
         public int StatusPagamento { get; set; }
+        public int UsuarioID { get; set; }
     }
 }

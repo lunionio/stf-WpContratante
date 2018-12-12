@@ -479,6 +479,7 @@ namespace Admin.Controllers
                         pServico.Profissional.Telefone.ID, pServico.Profissional.DataNascimento.ToShortDateString(), pServico.Profissional.Email, pServico.Profissional.IdUsuario, pServico.Profissional.Endereco)
                     {
                         Valor = op.Valor,
+                        Avaliacao = pServico.Profissional.Avaliacao,
                     });
                 }
 

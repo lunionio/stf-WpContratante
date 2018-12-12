@@ -114,6 +114,7 @@ function getModalMatch(idOpt) {
     };
 
     $.ajax(settings).done(function (response) {
+        LoadingStop('body');
 
         $('#modal').html(response);
         $('#myModal').modal('show');
@@ -172,8 +173,6 @@ function getModalMatch(idOpt) {
         //        readonly: true
         //    });
         //});
-
-        LoadingStop('body');
     });
 }
 
@@ -285,6 +284,7 @@ function getProfissional(id) {
 }
 
 function guardaCache(profissionalId, optId) {
+    console.log(profissionalId);
     avaliacoes.forEach(function (item, index, array) {
         if (item.UsuarioAvaliadoId === profissionalId) {
             array.splice(index, 1);

@@ -114,6 +114,8 @@ namespace Admin.Controllers
                 vaga.IdEmpresa = PixCoreValues.UsuarioLogado.idEmpresa;
 
                 var op = Oportundiade.Convert(vaga);
+                var empresa = GetEmpresa(op.IdEmpresa);
+                op.EmailEmpresa = empresa.Email;
 
                 var envio = new
                 {
@@ -150,6 +152,23 @@ namespace Admin.Controllers
             {
                 throw new Exception("Não foi possível salvar o usuário.", e);
             }
+        }
+
+        private EmpresaViewModel GetEmpresa(int empresaId)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/wpEmpresas/BuscarPorId/" + usuario.idCliente + "/" + PixCoreValues.UsuarioLogado.IdUsuario;
+            object envio = new
+            {
+                usuario.idCliente,
+                id = empresaId,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<EmpresaViewModel>(url, envio);
+
+            return result;
         }
 
         public PartialViewResult ModalMatch(int optId)
@@ -458,6 +477,11 @@ namespace Admin.Controllers
                         return "Saldo insuficiente para a contratação.";
                     }
 
+                    var empresa = GetEmpresa(usuario.idEmpresa);
+
+                    userXOportunidade.NomeContratado = pServico.Profissional.Nome;
+                    userXOportunidade.EmailContratado = pServico.Profissional.Email;
+                    userXOportunidade.EmailContratante = empresa.Email;
                     var envio = new
                     {
                         userXOportunidade,

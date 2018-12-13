@@ -23,6 +23,7 @@ namespace Admin.Models
         public string Referencia { get; set; }
         public int status { get; set; }
         public int IdCliente { get; set; }
+        public string Email { get; set; }
 
         public int UsuarioCriacao { get; set; }
         public int UsuarioEdicao { get; set; }

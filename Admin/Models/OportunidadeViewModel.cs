@@ -17,6 +17,7 @@ namespace Admin.Models
         public Endereco Endereco { get; set; }
         public int OportunidadeStatusID { get; set; }
         public int IdEmpresa { get; set; }
+        public string EmailEmpresa { get; set; }
 
         public OportunidadeViewModel()
         {

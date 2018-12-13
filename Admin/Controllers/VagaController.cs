@@ -306,7 +306,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
+                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorUsersIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var envio = new
                 {
@@ -460,8 +460,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/WpOportunidades/CanditarOportunidade/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/WpOportunidades/CanditarOportunidade/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var pServico = GetProfissionais(new List<int>() { userXOportunidade.UserId }).SingleOrDefault();
                 var user = GetUsers(new List<int>() { pServico.Profissional.IdUsuario }).SingleOrDefault();
@@ -496,7 +495,7 @@ namespace Admin.Controllers
                             "16", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
 
                         FinanceiroHelper.LancaTransacoes(op.Valor, "16", 3,
-                            pServico.Profissional.ID.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id, Status.Bloqueado);
+                            pServico.Profissional.IdUsuario.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id, Status.Bloqueado);
                     }
 
                     return JsonConvert.SerializeObject(new ProfissionalViewModel(pServico.Profissional.ID, user.Nome, pServico.Servico.Nome, pServico.Profissional.Telefone.Numero,

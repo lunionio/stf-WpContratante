@@ -54,7 +54,7 @@
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
-                                                                        @item.Id
+                                                                        @item.UsuarioId
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <img src="@item.Avatar" class="img-circle img-responsive img-rounded" width="25" height="25" />
@@ -83,10 +83,10 @@
                                                                 </select>
                                                             </td>
                                                             <td>
-                                                                <a class="btn btn-link btn-success table-action view" onclick="aprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.Id)">
+                                                                <a class="btn btn-link btn-success table-action view" onclick="aprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.UsuarioId)">
                                                                     <i class="nc-icon nc-circle-09" />
                                                                 </a>
-                                                                <a class="btn btn-link btn-danger table-action view" onclick="reprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.Id)">
+                                                                <a class="btn btn-link btn-danger table-action view" onclick="reprovarProfissional(@item.UserXOportunidadeId, @item.OportunidadeId, @item.UsuarioId)">
                                                                     <i class="nc-icon nc-simple-remove" />
                                                                 </a>
                                                             </td>
@@ -122,11 +122,11 @@
                                                 {
                                                     if (item.StatusId != null && item.StatusId == 1) //Aprovado
                                                     {
-                                                        <tr id="@item.Id">
+                                                        <tr id="@item.UsuarioId">
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-sm-6">
-                                                                        @item.Id
+                                                                        @item.UsuarioId
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <img src="@item.Avatar" class="img-circle img-responsive img-rounded" width="25" height="25" />
@@ -183,7 +183,7 @@
                                                 {
                                                     <tr>
                                                         <td>
-                                                            @item.Id
+                                                            @item.UsuarioID
                                                         </td>
                                                         <td>
                                                             @item.Nome

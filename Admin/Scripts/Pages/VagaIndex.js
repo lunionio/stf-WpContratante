@@ -205,7 +205,7 @@ function aprovarProfissional(userXOpt, optId, userId) {
                 table.row("#" + userId).remove().draw();
                 var contratados = $('#tbContratados').DataTable();
                 var row = contratados.row.add([
-                    p.Id,
+                    p.IdUsuario,
                     p.Nome,
                     p.Especialidade,
                     p.Endereco.Local,

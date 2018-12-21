@@ -30,19 +30,17 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarUsuariosPorOportunidade/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarUsuariosPorOportunidade/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
-                idOpt = _opId
+                idOpt = _opId,
             };
 
             var helper = new ServiceHelper();
             var result = helper.Post<IEnumerable<UserXOportunidade>>(url, envio);
 
-            url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorIds/" + usuario.idCliente + "/" +
-               PixCoreValues.UsuarioLogado.IdUsuario;
+            url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorUsersIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var ids = result.Select(x => x.UserId);
 
@@ -56,7 +54,7 @@ namespace Admin.Controllers
 
             foreach (var item in result)
             {
-                item.Profissional = response.FirstOrDefault(p => p.UsuarioId.Equals(item.UserId))?.Profissional;
+                item.Profissional = response.FirstOrDefault(p => p.Profissional.IdUsuario.Equals(item.UserId))?.Profissional;
             }
 
             return JsonConvert.SerializeObject(result);

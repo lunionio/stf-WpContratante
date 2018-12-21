@@ -190,8 +190,8 @@ namespace Admin.Controllers
                     item.Profissional.Telefone.ID, item.Profissional.DataNascimento.ToShortDateString(),
                     item.Profissional.Email, item.Profissional.IdUsuario, item.Profissional.Endereco)
                 {
-                    StatusId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.Status.ID,
-                    UserXOportunidadeId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.ID))?.ID,
+                    StatusId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.IdUsuario))?.Status.ID,
+                    UserXOportunidadeId = userXOportunidades.FirstOrDefault(x => x.UserId.Equals(item.Profissional.IdUsuario))?.ID,
                     OportunidadeId = op.Id,
                     Valor = op.Valor,
                     Avatar = user?.Avatar,
@@ -252,8 +252,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/WpOportunidades/BuscarUsuariosPorOportunidade/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/WpOportunidades/BuscarUsuariosPorOportunidade/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var envio = new
                 {
@@ -424,8 +423,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorEmpresa/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorEmpresa/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
@@ -672,8 +670,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpCheckIn/BuscarPorIdExterno/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/WpCheckIn/BuscarPorIdExterno/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
@@ -692,7 +689,7 @@ namespace Admin.Controllers
             foreach (var item in profissionais)
             {
                 var user = users.FirstOrDefault(u => u.ID.Equals(item.Profissional.IdUsuario));
-                var ck = result.FirstOrDefault(c => c.IdUsuario.Equals(item.Profissional.ID));
+                var ck = result.FirstOrDefault(c => c.IdUsuario.Equals(item.Profissional.IdUsuario));
 
                 var checkin = new CheckInViewModel()
                 {

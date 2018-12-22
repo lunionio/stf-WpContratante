@@ -14,5 +14,6 @@ namespace Admin.Models
         public string Status { get; set; }
         public int StatusPagamento { get; set; }
         public int UsuarioID { get; set; }
+        public string Telefone { get; set; }
     }
 }

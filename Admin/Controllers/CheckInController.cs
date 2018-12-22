@@ -38,26 +38,36 @@ namespace Admin.Controllers
             };
 
             var helper = new ServiceHelper();
-            var result = helper.Post<IEnumerable<UserXOportunidade>>(url, envio);
+            var result = helper.Post<IEnumerable<UserXOportunidade>>(url, envio);            
 
-            url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorUsersIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
+            var checkins = GetProfissionaisQueFizeramCheckIn(_opId);
 
-            var ids = result.Select(x => x.UserId);
+            var profissionais = GetProfissionais(result.Select(x => x.UserId));
+            var users = GetUsers(profissionais.Select(x => x.Profissional.IdUsuario));
 
-            var obj = new
-            {
-                usuario.idCliente,
-                ids,
-            };
+            var ids = checkins.Select(c => c.IdUsuario);
 
-            var response = helper.Post<IEnumerable<ProfissionalServico>>(url, obj);
-
+            IList<object> objects = new List<object>();
             foreach (var item in result)
             {
-                item.Profissional = response.FirstOrDefault(p => p.Profissional.IdUsuario.Equals(item.UserId))?.Profissional;
+                item.Profissional = profissionais.FirstOrDefault(p => p.Profissional.IdUsuario.Equals(item.UserId))?.Profissional;
+
+                if (item.Profissional != null)
+                {
+                    var confirmado = ids.Contains(item.UserId);
+
+                    var resposta = new
+                    {
+                        Confirmado = confirmado,
+                        item.Profissional.Nome,
+                        Telefone = item.Profissional.Telefone.Numero,
+                    };
+
+                    objects.Add(resposta);
+                }
             }
 
-            return JsonConvert.SerializeObject(result);
+            return JsonConvert.SerializeObject(objects);
         }
 
         [HttpGet]
@@ -92,6 +102,74 @@ namespace Admin.Controllers
             {
                 var result = streamReader.ReadToEnd();
                 return result;
+            }
+        }
+
+        private IEnumerable<CheckIn> GetProfissionaisQueFizeramCheckIn(int oportunidadeId)
+        {
+            var usuario = PixCoreValues.UsuarioLogado;
+            var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+            var url = keyUrl + "/Seguranca/WpCheckIn/BuscarPorIdExterno/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+            var envio = new
+            {
+                idCliente = 1,
+                idExterno = oportunidadeId,
+            };
+
+            var helper = new ServiceHelper();
+            var result = helper.Post<IEnumerable<CheckIn>>(url, envio);
+
+            return result;
+        }
+
+        private IEnumerable<ProfissionalServico> GetProfissionais(IEnumerable<int> ids)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorUsersIds/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+                var envio = new
+                {
+                    idCliente = 1,
+                    ids,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<ProfissionalServico>>(url, envio);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível completar a operação.", e);
+            }
+        }
+
+        private IEnumerable<UsuarioViewModel> GetUsers(IEnumerable<int> ids)
+        {
+            try
+            {
+                var usuario = PixCoreValues.UsuarioLogado;
+                var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
+                var url = keyUrl + "/Seguranca/Principal/BuscarUsuarios/" + usuario.idCliente + "/" + usuario.IdUsuario;
+
+                var envio = new
+                {
+                    idCliente = 1,
+                    ids,
+                };
+
+                var helper = new ServiceHelper();
+                var result = helper.Post<IEnumerable<UsuarioViewModel>>(url, envio);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Não foi possível completar a operação.", e);
             }
         }
     }

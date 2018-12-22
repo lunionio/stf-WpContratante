@@ -107,8 +107,7 @@ namespace Admin.Controllers
                 var usuario = PixCoreValues.UsuarioLogado;
                 var jss = new JavaScriptSerializer();
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/WpOportunidades/SalvarOportunidade/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/WpOportunidades/SalvarOportunidade/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 vaga.status = 1;
                 vaga.IdEmpresa = PixCoreValues.UsuarioLogado.idEmpresa;
@@ -158,7 +157,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/wpEmpresas/BuscarPorId/" + usuario.idCliente + "/" + PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/wpEmpresas/BuscarPorId/" + usuario.idCliente + "/" + usuario.IdUsuario;
             object envio = new
             {
                 usuario.idCliente,
@@ -274,8 +273,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorID/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/WpOportunidades/BuscarOportunidadePorID/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
@@ -330,8 +328,7 @@ namespace Admin.Controllers
             {
                 var usuario = PixCoreValues.UsuarioLogado;
                 var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-                var url = keyUrl + "/Seguranca/Principal/BuscarUsuarios/" + usuario.idCliente + "/" +
-                    PixCoreValues.UsuarioLogado.IdUsuario;
+                var url = keyUrl + "/Seguranca/Principal/BuscarUsuarios/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
                 var envio = new
                 {
@@ -571,8 +568,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorId/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/wpProfissionais/BuscarPorId/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
@@ -590,8 +586,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/wpProfissionais/buscarFormacoes/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/wpProfissionais/buscarFormacoes/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {
@@ -609,8 +604,7 @@ namespace Admin.Controllers
         {
             var usuario = PixCoreValues.UsuarioLogado;
             var keyUrl = ConfigurationManager.AppSettings["UrlAPI"].ToString();
-            var url = keyUrl + "/Seguranca/Principal/BuscarUsuarioPorId/" + usuario.idCliente + "/" +
-                PixCoreValues.UsuarioLogado.IdUsuario;
+            var url = keyUrl + "/Seguranca/Principal/BuscarUsuarioPorId/" + usuario.idCliente + "/" + usuario.IdUsuario;
 
             var envio = new
             {

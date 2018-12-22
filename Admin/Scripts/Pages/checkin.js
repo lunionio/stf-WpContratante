@@ -23,11 +23,11 @@ function getProfissionaisByOpt() {
 
         let result = $.parseJSON(response);
         $.each(result, function (index, item, array) {
-            if (item.Status.ID == 1) { //Aprovado
-                $('#confirmados').find('tbody').append('<tr><td>' + item.Profissional.Nome + '</td><td>' + item.Profissional.Telefone.Numero + '</td></tr>');
+            if (item.Confirmado == true) { //Aprovado
+                $('#confirmados').find('tbody').append('<tr><td>' + item.Nome + '</td><td>' + item.Telefone + '</td></tr>');
             }
-            else if (item.Status.ID == 2) { //Aguardando
-                $('#aguardando').find('tbody').append('<tr><td>' + item.Profissional.Nome + '</td><td>' + item.Profissional.Telefone.Numero + '</td></tr>');
+            else if (item.Confirmado == false) { //Aguardando
+                $('#aguardando').find('tbody').append('<tr><td>' + item.Nome + '</td><td>' + item.Telefone + '</td></tr>');
             }
         });
     });

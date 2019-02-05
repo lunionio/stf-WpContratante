@@ -177,6 +177,9 @@ function getModalMatch(idOpt) {
 }
 
 function aprovarProfissional(userXOpt, optId, userId) {
+
+    Loading('#myModal');
+
     var obj = {
         ID: userXOpt,
         UserId: userId,
@@ -219,11 +222,14 @@ function aprovarProfissional(userXOpt, optId, userId) {
         catch (e) {
             alert(response);
         }
+
+        LoadingStop('#myModal');
     });
 }
 
 function reprovarProfissional(userXOpt, optId, userId) {
     try {
+        Loading('myModal');
         var obj = {
             ID: userXOpt,
             UserId: userId,
@@ -239,7 +245,6 @@ function reprovarProfissional(userXOpt, optId, userId) {
             "data": obj
         };
 
-        Loading('body');
 
         $.ajax(settings).done(function (response) {
             var p = $.parseJSON(response);
@@ -257,7 +262,8 @@ function reprovarProfissional(userXOpt, optId, userId) {
                 alert(response);
             }
         
-            LoadingStop('body');
+            LoadingStop('#myModal');
+
             });
         }
     catch (e) {

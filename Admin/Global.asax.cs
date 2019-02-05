@@ -44,7 +44,7 @@ namespace Admin
                     Response.Cookies["IdCliente"].Value = idCliente.ToString();
                     Response.Cookies["IdCliente"].Expires = DateTime.Now.AddMinutes(1); // add expiry time
                 }
-                PixCoreValues.RenderUrlPage(HttpContext.Current);
+                //PixCoreValues.RenderUrlPage(HttpContext.Current);
             }
             else
             {                

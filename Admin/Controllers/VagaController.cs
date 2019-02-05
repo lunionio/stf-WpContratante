@@ -35,24 +35,31 @@ namespace Admin.Controllers
         [HttpPost]
         public ActionResult PublicarAgora(VagaViewModel vaga)
         {
-            vaga.status = 1;
-            vaga.DataEvento = Convert.ToDateTime(vaga.Date);
-
-            if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
+            try
             {
-                var op = SaveVaga(vaga);
-                if (op != null && op.ID > 0)
+                vaga.status = 1;
+                vaga.DataEvento = Convert.ToDateTime(vaga.Date);
+
+                if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
                 {
-                    FinanceiroHelper.LancaTransacoes(op, PixCoreValues.UsuarioLogado);
-                    return Json("ok");
+                    var op = SaveVaga(vaga);
+                    if (op != null && op.ID > 0)
+                    {
+                        FinanceiroHelper.LancaTransacoes(op, PixCoreValues.UsuarioLogado);
+                        return Json("ok");
+                    }
+                    else
+                        return Json("Desculpe, o sistema encontrou um erro ao efetuar sua solicitação." +
+                            " Entre em contato com nosso suporte técnico.");
                 }
                 else
-                    return Json("Desculpe, o sistema encontrou um erro ao efetuar sua solicitação." +
-                        " Entre em contato com nosso suporte técnico.");
+                {
+                    return Json("Saldo insuficiente.");
+                }
             }
-            else
+            catch(Exception e)
             {
-                return Json("Saldo insuficiente.");
+                return Json(e);
             }
         }
 
@@ -486,10 +493,10 @@ namespace Admin.Controllers
 
                     if (userXOportunidade.StatusID == 1) //Aprovado
                     {
-                        FinanceiroHelper.LancaTransacoes(op.Valor * -1, "16", 3,
-                            "16", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
+                        FinanceiroHelper.LancaTransacoes(op.Valor * -1, "50", 3,
+                            "50", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
 
-                        FinanceiroHelper.LancaTransacoes(op.Valor, "16", 3,
+                        FinanceiroHelper.LancaTransacoes(op.Valor, "50", 3,
                             pServico.Profissional.IdUsuario.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id, Status.Bloqueado);
                     }
 

@@ -17,7 +17,7 @@ $('#btnAgora').on('click', function () {
 
 function PublicarAgora() {
 
-    LoadingInitBase('body');
+    LoadingInitBase('#modal');
     var vaga = VagaViewModel();
     var settings = {
         "async": true,
@@ -34,7 +34,7 @@ function PublicarAgora() {
         }
         else {
             alert(response);
-            LoadingStop('body');
+            LoadingStop('#modal');
         }
     });
 }
@@ -156,6 +156,8 @@ function getProfissionalPorAtuacao(id) {
             }
 
         }
+
+        LoadingStop('body');
     });
 }
 
@@ -327,7 +329,6 @@ function controlarPaineis() {
         LoadingInitBase('body');
         getProfissionalPorAtuacao($(this).val());
         $(".pnProfissional").fadeIn();
-        LoadingStop('body');
     });
 
     getForm().profissional.on("change", function () {

@@ -107,19 +107,20 @@ namespace Admin.Controllers
 
         public ActionResult Editar(int? id)
         {
-            var result = GetPerfis().Select(p => p.Nome);
-            ViewBag.Perfis = new SelectList(result);
+            var result = GetPerfis();
+            ViewBag.Perfis = new SelectList(result.Select(p => p.Nome));
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var usuarios = GetUsuarios(_idCliente);
+            var usuario = GetUsuario((int)id, _idCliente);
 
-            var usuarioFiltrado = usuarios.FirstOrDefault(x => x.ID.Equals(id));
+            var perfil = GetPerfilUsuario(usuario.ID);
+            usuario.Perfil = result.FirstOrDefault(r => r.ID.Equals(perfil.IdPerfil))?.Nome;
 
-            return View("Cadastro", usuarioFiltrado);
+            return View("Cadastro", usuario);
         }
 
         public ActionResult Excluir(int? id)

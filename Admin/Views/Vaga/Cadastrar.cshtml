@@ -10,7 +10,7 @@
     <div class="col-md-12">
         <div id="miolo" class="card strpied-tabled-with-hover card-wizard">
             <div class="card-header text-center">
-                <h4 class="text-center">CADASTRAR EVENTO</h4>
+                <h4 class="text-center">Informe os dados</h4>
                 <input type="hidden" id="vagaId" value="@Model.Id" />
                 <input type="hidden" id="vagaData" value="@Model.DataCriacao" />
                 <input type="hidden" id="enderecoData" value="@Model.EnderecoDataCriacao" />
@@ -23,7 +23,7 @@
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">NOME DO EVENTO</label>
+                                        <label class="col-sm-2 control-label">NOME DO EVENTO (*)</label>
                                         <div class="col-sm-10">
                                             <input type="text" id="nome" name="Nome" value="@Model.Nome" placeholder="Digite o nome do evento" class="form-control">
                                             @*<small class="form-text text-muted">A block of help text that breaks onto a new line.</small>*@
@@ -35,13 +35,13 @@
                             <fieldset class="pnEndereco">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">CEP</label>
+                                        <label class="col-sm-2 control-label">CEP< (*)</label>
                                         <div class="col-sm-2">
                                             <input type="hidden" id="endId" value="@Model.EnderecoId" />
                                             <input type="text" id="cep" value="@Model.Cep" name="CEP" placeholder="00000-000" class="form-control">
                                             @*<small class="form-text text-muted">A block of help text that breaks onto a new line.</small>*@
                                         </div>
-                                        <label class="col-sm-3 control-label">ENDEREÇO</label>
+                                        <label class="col-sm-3 control-label">ENDEREÇO (*)</label>
                                         <div class="col-sm-5">
                                             <input type="text" id="rua" value="@Model.Rua" name="Rua" placeholder="" class="form-control">
                                         </div>
@@ -52,7 +52,7 @@
                             <fieldset class="pnEndereco">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">NÚMERO </label>
+                                        <label class="col-sm-2 control-label">NÚMERO (*)</label>
                                         <div class="col-sm-2">
                                             <input type="text" value="@Model.Numero" id="numero" name="Numero" placeholder="EX 500" class="form-control">
                                         </div>
@@ -78,15 +78,15 @@
                             <fieldset class="pnEndereco">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">BAIRRO</label>
+                                        <label class="col-sm-2 control-label">BAIRRO (*)</label>
                                         <div class="col-sm-2">
                                             <input type="text" id="bairro" value="@Model.Bairro" name="Bairro" placeholder="" class="form-control">
                                         </div>
-                                        <label class="col-sm-2 control-label">CIDADE</label>
+                                        <label class="col-sm-2 control-label">CIDADE (*)</label>
                                         <div class="col-sm-2">
                                             <input type="text" id="cidade" value="@Model.Cidade" name="CIdade" placeholder="São Paulo" disabled="disabled" class="form-control">
                                         </div>
-                                        <label class="col-sm-2 control-label">UF</label>
+                                        <label class="col-sm-2 control-label">UF (*)</label>
                                         <div class="col-sm-2">
                                             <input type="text" id="uf" value="@Model.Uf" name="UF" placeholder="SP" disabled="disabled" class="form-control">
                                         </div>
@@ -98,7 +98,7 @@
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">DATA</label>
+                                        <label class="col-sm-2 control-label">DATA (*)</label>
                                         <div class="col-md-2">
                                             <input type="date" id="data" required name="Data" class="form-control datepicker">
                                         </div>
@@ -112,7 +112,7 @@
                             <fieldset class="">
                                 <div class="form-group">
                                     <div id="loadSelect" class="row">
-                                        <label class="col-sm-2 control-label">ÁREA DE ATUAÇÃO</label>
+                                        <label class="col-sm-2 control-label">ÁREA DE ATUAÇÃO (*)</label>
                                         <div class="col-md-4">
                                             <input type="hidden" id="areaSelected" value="@Model.AreaAtuacao" />
                                             <select id="atuacao" data-title="Selecione" name="currency"
@@ -121,7 +121,7 @@
                                                 <option value="0">Selecione</option>
                                             </select>
                                         </div>
-                                        <label class="col-sm-2 pnProfissional control-label">PROFISSIONAL</label>
+                                        <label class="col-sm-2 pnProfissional control-label">PROFISSIONAL (*)</label>
                                         <div class="col-md-4">
                                             <input type="hidden" id="profissionalSelected" value="@Model.Profissional" />
                                             <select id="profissional" name="Profissional" data-title="Selecione"
@@ -138,11 +138,11 @@
                             <fieldset>
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="pnValores col-sm-1 control-label">VALOR</label>
+                                        <label class="pnValores col-sm-1 control-label">VALOR (*)</label>
                                         <div class="pnValores col-md-2">
                                             <input type="text" id="valor" value="@Model.Valor" required name="Valor" class="form-control">
                                         </div>
-                                        <label class="pnValores col-sm-3 control-label">QTD PROFISSIONAIS</label>
+                                        <label class="pnValores col-sm-3 control-label">QTD PROFISSIONAIS (*)</label>
                                         <div class="pnValore[s col-md-1">
                                             <input type="number" id="qtd" placeholder="1" value="@Model.Qtd" required ame="Qtd" class="form-control">
                                         </div>

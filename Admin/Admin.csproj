@@ -150,9 +150,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Attributes\NoDirectAccessAttribute.cs" />
     <Compile Include="Controllers\CheckInController.cs" />
+    <Compile Include="Controllers\EnderecosController.cs" />
     <Compile Include="Controllers\FaleConoscoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ProfissionaisController.cs" />
     <Compile Include="Controllers\RelatoriosController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
@@ -160,6 +162,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helppers\Endereco.cs" />
     <Compile Include="Helppers\FaleConosco.cs" />
     <Compile Include="Helppers\FinanceiroHelper.cs" />
     <Compile Include="Helppers\Oportundiade.cs" />

@@ -38,8 +38,8 @@ namespace Admin.Helppers
             {
                 var valor1 = (vaga.Valor) * -1;
 
-                var extrato1 = new Extrato(valor1, 2, 1, usuario.idEmpresa.ToString(),
-                    usuario.idEmpresa.ToString(), vaga.ID, Status.Aprovado)
+                var extrato1 = new Extrato(valor1, 2, 1, vaga.IdEmpresa.ToString(),
+                    vaga.IdEmpresa.ToString(), vaga.ID, Status.Aprovado)
                 {
                     Ativo = true,
                     DataCriacao = DateTime.UtcNow,
@@ -56,8 +56,8 @@ namespace Admin.Helppers
 
                 var valor2 = vaga.Valor;
 
-                var extrato2 = new Extrato(valor2, 2, 1, usuario.idEmpresa.ToString(),
-                    "16", vaga.ID, Status.Bloqueado)
+                var extrato2 = new Extrato(valor2, 2, 1, vaga.IdEmpresa.ToString(),
+                    "52", vaga.ID, Status.Bloqueado)
                 {
                     Ativo = true,
                     DataCriacao = DateTime.UtcNow,

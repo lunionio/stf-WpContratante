@@ -493,10 +493,10 @@ namespace Admin.Controllers
 
                     if (userXOportunidade.StatusID == 1) //Aprovado
                     {
-                        FinanceiroHelper.LancaTransacoes(op.Valor * -1, "50", 3,
-                            "50", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
+                        FinanceiroHelper.LancaTransacoes(op.Valor * -1, "52", 3,
+                            "52", 3, 2, 2, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id);
 
-                        FinanceiroHelper.LancaTransacoes(op.Valor, "50", 3,
+                        FinanceiroHelper.LancaTransacoes(op.Valor, "52", 3,
                             pServico.Profissional.IdUsuario.ToString(), 1, 2, 1, "Pagando contratado.", PixCoreValues.UsuarioLogado, op.Id, Status.Bloqueado);
                     }
 

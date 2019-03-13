@@ -155,22 +155,24 @@ namespace Admin.Helppser
 
         public static int VerificaUrlCliente(string urlDoCliente)
         {
-            var keyUrlIn = ConfigurationManager.AppSettings["UrlAPIIn"].ToString();
-            var urlAPIIn = keyUrlIn + "cliente";
-            var client = new WebClient { Encoding = System.Text.Encoding.UTF8 };
-            var result = client.DownloadString(string.Format(urlAPIIn));
-            var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
-            ClienteViewModel[] Cliente = jss.Deserialize<ClienteViewModel[]>(result);
+            //var keyUrlIn = ConfigurationManager.AppSettings["UrlAPIIn"].ToString();
+            //var urlAPIIn = keyUrlIn + "cliente";
+            //var client = new WebClient { Encoding = System.Text.Encoding.UTF8 };
+            //var result = client.DownloadString(string.Format(urlAPIIn));
+            //var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+            //ClienteViewModel[] Cliente = jss.Deserialize<ClienteViewModel[]>(result);
 
-            var clienteLol = Cliente.Where(x => urlDoCliente.Contains(x.Url)).FirstOrDefault();
-            if (clienteLol != null)
-            {
-                return clienteLol.ID;
-            }
-            else
-            {
-                return 0;
-            }
+            //var clienteLol = Cliente.Where(x => urlDoCliente.Contains(x.Url)).FirstOrDefault();
+            //if (clienteLol != null)
+            //{
+            //    return clienteLol.ID;
+            //}
+            //else
+            //{
+            //    return 0;
+            //}
+
+            return 1;
         }
 
         public static void RenderUrlPage(HttpContext context)

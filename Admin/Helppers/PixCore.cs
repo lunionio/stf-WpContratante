@@ -242,10 +242,10 @@ namespace Admin.Helppser
                 current.Request.Cookies["UsuarioLogado"].Value = null;
             }
 
-            if (!string.IsNullOrEmpty(current.Request.Cookies["IdCliente"].Value))
-            {
-                current.Request.Cookies["IdCliente"].Value = null;
-            }
+            //if (!string.IsNullOrEmpty(current.Request.Cookies["IdCliente"].Value))
+            //{
+            //    current.Request.Cookies["IdCliente"].Value = null;
+            //}
         }
     }
 }

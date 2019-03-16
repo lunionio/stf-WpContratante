@@ -40,7 +40,11 @@ $('#mostrar').click(function () {
     };
 
     $.ajax(settings).done(function (response) {
+        if ($.fn.DataTable.isDataTable("#tbRelatorio")) {
+            $('#tbRelatorio').DataTable().clear().destroy();
+        }
         $('#tbRelatorio tbody').empty();
+        $('#tbRelatorio thead').empty();
         $("#tbRelatorio").removeAttr("hidden");
 
         if (r == 2) {
@@ -66,8 +70,8 @@ $('#mostrar').click(function () {
                 $("#tbRelatorio > tbody").append("<tr>" +
                     "<td>" + element.Codigo + "</td>" +
                     "<td>" + element.Titulo + "</td>" +
-                    "<td>" + element.CriadoEm + "</td>" +
-                    "<td>" + element.DataEvento + "</td>" +
+                    "<td>" + element.Criado + "</td>" +
+                    "<td>" + element.Data + "</td>" +
                     "<td>" + element.Endereco + "</td>" +
                     "<td>" + element.Categoria + "</td>" +
                     "<td>" + element.Profissional + "</td>" +
@@ -97,7 +101,7 @@ $('#mostrar').click(function () {
                     "<td>" + element.ID + "</td>" +
                     "<td>" + element.Nome + "</td>" +
                     "<td>" + element.Descricao + "</td>" +
-                    "<td>" + element.DataCriacao + "</td>" +
+                    "<td>" + element.Data + "</td>" +
                     "<td>" + element.Valor + "</td>" +
                     "</tr>");
             });
@@ -107,7 +111,7 @@ $('#mostrar').click(function () {
             "pagingType": "numbers",
             "columnDefs": [{
                 "targets": '_all',
-                "orderable": false,
+                "orderable": false
             }],
             "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
                 "<'row'" +
@@ -121,9 +125,8 @@ $('#mostrar').click(function () {
                 "sInfo": "Mostrando oágina _PAGE_ de _PAGES_",
                 "sInfoEmpty": "Nenhum dado para mostrar",
                 "sInfoFiltered": "(Filtrado de _MAX_ registros)",
-                "sSearch": "Pesquisar:",
-            },
-          
+                "sSearch": "Pesquisar:"
+            }          
         });
 
         LoadingStop('body');

@@ -178,7 +178,7 @@ function getModalMatch(idOpt) {
 
 function aprovarProfissional(userXOpt, optId, userId) {
 
-    Loading('#myModal');
+    Loading('#modal');
 
     var obj = {
         ID: userXOpt,
@@ -223,13 +223,13 @@ function aprovarProfissional(userXOpt, optId, userId) {
             alert(response);
         }
 
-        LoadingStop('#myModal');
+        LoadingStop('#modal');
     });
 }
 
 function reprovarProfissional(userXOpt, optId, userId) {
     try {
-        Loading('myModal');
+        Loading('modal');
         var obj = {
             ID: userXOpt,
             UserId: userId,
@@ -262,7 +262,7 @@ function reprovarProfissional(userXOpt, optId, userId) {
                 alert(response);
             }
         
-            LoadingStop('#myModal');
+            LoadingStop('#modal');
 
             });
         }

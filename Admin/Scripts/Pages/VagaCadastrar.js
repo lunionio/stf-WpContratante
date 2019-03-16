@@ -86,7 +86,7 @@ function VagaViewModel() {
         Complemento: $('#complemento').val(),
         Referencia: $('#complemento').val(),
         Uf: $('#uf').val(),
-        DataEvento: dataEvento,
+        DataEvento: data,
         Hora: $('#txtHoraInicio').val(),
         Qtd: $('#qtd').val(),
         Valor: $('#valor').val(),
@@ -270,7 +270,7 @@ function preencherEndereco(cep) {
             limpaEndereco();
             desbloqueiaEndereco();
             $("#cep").focus();
-            LoadingStop('body');
+            //LoadingStop('body');
         }
         else {
             $('#rua').val(response.endereco);
@@ -279,9 +279,11 @@ function preencherEndereco(cep) {
             $('#uf').val(response.uf);
 
             bloqueiaEndereco();
-            LoadingStop('body');
+            //LoadingStop('body');
         }
 
+    }).always(function () {
+        LoadingStop('body');
     });
 
 

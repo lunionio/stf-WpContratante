@@ -12,57 +12,59 @@
             <h4 class="card-title">Escolha o evento</h4>
         </div>
         <div class="card-body table-full-width table-responsive">
-            <table id="tbOportunidades" class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Data</th>
-                        <th>Horário</th>
-                        <th>Nome</th>
-                        <th>Profissional</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var item in Model)
-                    {
-
+            <div class="col-md-12">
+                <table id="tbOportunidades" class="table table-hover table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                @item.Id
-                            </td>
-                            <td>
-                                @item.DataEvento.ToShortDateString()
-                            </td>
-                            <td>
-                                @item.Hora
-                            </td>
-                            <td>
-                                @item.Nome
-                            </td>
-                            <td>
-                                @item.ProfissionalNome
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" href="/CheckIn/Index?optId=@item.Id">CheckIn</a>
-                            </td>
-                            <td class="td-actions text-right">
-                                <a onclick="getModalMatch(@item.Id)" class="btn btn-link btn-primary table-action view">
-                                    <i class="nc-icon nc-single-02" />
-                                </a>
-                                <a class="btn btn-link btn-success table-action view" href="@Url.Action("Cadastrar", "Vaga", item)">
-                                    <i class="nc-icon nc-tap-01" />
-                                </a>
-                                <a class="btn btn-link btn-danger table-action view" href="@Url.Action("Remover", "Vaga", item)">
-                                    <i class="nc-icon nc-simple-remove" />
-                                </a>
-                            </td>
+                            <th>ID</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Nome</th>
+                            <th>Profissional</th>
+                            <th></th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td>
+                                    @item.Id
+                                </td>
+                                <td>
+                                    @item.DataEvento.ToShortDateString()
+                                </td>
+                                <td>
+                                    @item.Hora
+                                </td>
+                                <td>
+                                    @item.Nome
+                                </td>
+                                <td>
+                                    @item.ProfissionalNome
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary" href="/CheckIn/Index?optId=@item.Id">Check in</a>
+                                </td>
+                                <td class="td-actions text-right">
+                                    <a onclick="getModalMatch(@item.Id)" class="btn btn-link btn-primary table-action view" href="#" rel="tooltip" title="Aprovar Profissionais">
+                                        <i class="nc-icon nc-single-02 icon-bold" />
+                                    </a>
+                                    <a class="btn btn-link btn-success table-action view" rel="tooltip" title="Editar Evento" href="@Url.Action("Cadastrar", "Vaga", item)">
+                                        <i class="nc-icon nc-tap-01 icon-bold" />
+                                    </a>
+                                    <a class="btn btn-link btn-danger table-action view" rel="tooltip" title="Remover Evento" href="@Url.Action("Remover", "Vaga", item)">
+                                        <i class="nc-icon nc-simple-remove icon-bold" />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="card-footer ">
         </div>

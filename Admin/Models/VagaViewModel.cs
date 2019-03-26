@@ -9,6 +9,9 @@ namespace Admin.Models
     }
     public class VagaViewModel
     {
+        private DateTime _dataEvento;
+        private string _numeroString;
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Cep { get; set; }
@@ -22,11 +25,23 @@ namespace Admin.Models
         public int Profissional { get; set; }
         public string ProfissionalNome { get; set; }
         public int Numero { get; set; }
+        public string NumeroString
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_numeroString) && Numero > 0)
+                {
+                    return Numero.ToString();
+                }
+
+                return _numeroString;
+            }
+            set => _numeroString = value; }
         public string Total { get; set; }
         public int Qtd { get; set; }
         public string Complemento { get; set; }
         public string Referencia { get; set; }
-        public DateTime DataEvento { get; set; }
+        public DateTime DataEvento { get => Convert.ToDateTime(_dataEvento.ToString("dd/MM/yyyy")); set => _dataEvento = value; }
         public int status { get; set; }
         public int IdEmpresa { get; set; }
         public int IdCliente { get; set; }

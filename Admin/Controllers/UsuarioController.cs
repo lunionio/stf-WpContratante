@@ -242,7 +242,7 @@ namespace Admin.Controllers
                 };
 
                 var helper = new ServiceHelper();
-                var result = helper.Post<IEnumerable<UsuarioViewModel>>(serverUrl, envio);
+                var result = helper.Post<IEnumerable<UsuarioViewModel>>(serverUrl, envio).Where(x => x.IdEmpresa.Equals(PixCoreValues.UsuarioLogado.idEmpresa));
 
                 var usuariosXPerfis = GetPerfisUsuarios(result.Select(u => u.ID));
                 var perfis = GetPerfis();

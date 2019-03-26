@@ -61,7 +61,8 @@ function getFormData() {
         assunto: $('#assunto option:selected').val(),
         assuntoNome: $('#assunto option:selected').text(),
         email: $('#email').val(),
-        mensagem: $('#mensagem').val()
+        mensagem: $('#mensagem').val(),
+        tipoId: $('#assunto option:selected').prop('id')
     }
 }
 
@@ -88,7 +89,7 @@ function enviar() {
     };    
 
     $.ajax(settings).done(function (response) {
-        var mensagem = "#" + response;
+        var mensagem = response;
        
         swal(mensagem, "Recebemos sua solicitação, em breve entraremos em contato", "success");
         //LoadingStop('body');

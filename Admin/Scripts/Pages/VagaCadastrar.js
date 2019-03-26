@@ -368,7 +368,18 @@ function valiidarData() {
     var data = getFormData().data;
     var date = new Date();
     var hoje = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay();
-    if (Date.parse(data) <= Date.parse(hoje)) {
+
+
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+
+    var output = date.getFullYear() + '/' +
+        (month < 10 ? '0' : '') + month + '/' +
+        (day < 10 ? '0' : '') + day;
+
+    console.log(output);
+    console.log(Date.parse(hoje));
+    if (Date.parse(data) <= Date.parse(output)) {
         demo.showNotification('top', 'right', 'Não é possível cadastrar oportunidades retroativas!');
         $('#data').val(" ");
         $('#data').focus();
@@ -393,12 +404,12 @@ function validarCampos() {
         $('#cep').focus();
         return false;
     }
-    else if (form.numero == "" || form.numero == null) {
-        demo.showNotification('top', 'right', 'Digite um numero para o endereço!');
-        $('#numero').focus();
+    //else if (form.numero == "" || form.numero == null) {
+    //    demo.showNotification('top', 'right', 'Digite um numero para o endereço!');
+    //    $('#numero').focus();
 
-        return null;
-    }
+    //    return null;
+    //}
 
     //else if (valiidarData() == false) {
     //    return false;

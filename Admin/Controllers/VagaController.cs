@@ -40,6 +40,8 @@ namespace Admin.Controllers
                 vaga.status = 1;
                 vaga.DataEvento = Convert.ToDateTime(vaga.Date);
 
+                vaga.Numero = Convert.ToInt32(vaga.NumeroString);
+
                 if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
                 {
                     var op = SaveVaga(vaga);
@@ -66,6 +68,7 @@ namespace Admin.Controllers
         [HttpPost]
         public ActionResult PublicarMaisTarde(VagaViewModel vaga)
         {
+            vaga.Numero = Convert.ToInt32(vaga.NumeroString);
             vaga.status = 2;
             if (FinanceiroHelper.VerifcaSaldoCliente(vaga.Valor, PixCoreValues.UsuarioLogado))
             {
@@ -130,29 +133,10 @@ namespace Admin.Controllers
 
                 var data = jss.Serialize(envio);
 
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
+                var helper = new ServiceHelper();
+                var resut = helper.Post<OportunidadeViewModel>(url, envio);
 
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    streamWriter.Write(data);
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                }
-
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    if (string.IsNullOrEmpty(result)
-                        || "null".Equals(result.ToLower()))
-                    {
-                        throw new Exception("Ouve um erro durante o processo.");
-                    }
-
-                    return jss.Deserialize<OportunidadeViewModel>(result);
-                }
+                return resut;
             }
             catch (Exception e)
             {
@@ -442,7 +426,7 @@ namespace Admin.Controllers
             foreach (var o in oportunidades)
             {
                 vagas.Add(new VagaViewModel(o.ID, o.Nome, o.Endereco.CEP, o.Endereco.Local, o.Endereco.Bairro, o.Endereco.Cidade,
-                    o.Endereco.Estado, o.HoraInicio, o.Valor, o.TipoProfissional, o.DescProfissional, o.Endereco.NumeroLocal,
+                    o.Endereco.Estado, TimeSpan.Parse(o.HoraInicio).ToString(@"hh\:mm"), o.Valor, o.TipoProfissional, o.DescProfissional, o.Endereco.NumeroLocal,
                     (o.Valor * o.Quantidade).ToString(), o.Quantidade, o.Endereco.Complemento, o.Endereco.Complemento,
                     o.DataOportunidade.ToShortDateString(), o.Status, o.IdEmpresa, o.IdCliente, o.TipoServico)
                 {

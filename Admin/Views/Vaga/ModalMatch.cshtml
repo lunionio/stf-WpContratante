@@ -52,14 +52,14 @@
                                                     {
                                                         <tr id="@item.UsuarioId">
                                                             <td>
-                                                                <div class="row">
+                                                                @item.UsuarioId
+                                                                @*<div class="row">
                                                                     <div class="col-sm-6">
-                                                                        @item.UsuarioId
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <img src="@item.Avatar" class="img-circle img-responsive img-rounded" width="25" height="25" />
                                                                     </div>
-                                                                </div>
+                                                                </div>*@
                                                             </td>
                                                             <td onclick="getProfissional(@item.Id)">
                                                                 @item.Nome
@@ -71,7 +71,7 @@
                                                                 @item.Endereco.Local
                                                             </td>
                                                             <td>
-                                                                @item.Valor
+                                                                R$: @item.Valor
                                                             </td>
                                                             <td>
                                                                 <select id="@item.Avaliacao" disabled>

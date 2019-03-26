@@ -35,7 +35,7 @@
                             <fieldset class="pnEndereco">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">CEP (*)</label>
+                                        <label class="col-sm-2 control-label">CEP - Localiza automaticamente (*)</label>
                                         <div class="col-sm-2">
                                             <input type="hidden" id="endId" value="@Model.EnderecoId" />
                                             <input type="text" id="cep" value="@Model.Cep" name="CEP" placeholder="00000-000" class="form-control">
@@ -52,9 +52,9 @@
                             <fieldset class="pnEndereco">
                                 <div class="form-group">
                                     <div class="row">
-                                        <label class="col-sm-2 control-label">NÚMERO (*)</label>
+                                        <label class="col-sm-2 control-label">NÚMERO</label>
                                         <div class="col-sm-2">
-                                            <input type="text" value="@Model.Numero" id="numero" name="Numero" placeholder="EX 500" class="form-control">
+                                            <input type="text" value="@Model.NumeroString" id="numero" name="Numero" placeholder="EX 500" class="form-control">
                                         </div>
                                         <label class="col-sm-3 control-label">COMPLEMENTO</label>
                                         <div class="col-sm-5">
@@ -84,11 +84,11 @@
                                         </div>
                                         <label class="col-sm-2 control-label">CIDADE (*)</label>
                                         <div class="col-sm-2">
-                                            <input type="text" id="cidade" value="@Model.Cidade" name="CIdade" placeholder="São Paulo" disabled="disabled" class="form-control">
+                                            <input type="text" id="cidade" value="@Model.Cidade" name="CIdade" placeholder="Ex. São Paulo" disabled="disabled" class="form-control">
                                         </div>
                                         <label class="col-sm-2 control-label">UF (*)</label>
                                         <div class="col-sm-2">
-                                            <input type="text" id="uf" value="@Model.Uf" name="UF" placeholder="SP" disabled="disabled" class="form-control">
+                                            <input type="text" id="uf" value="@Model.Uf" name="UF" placeholder="Ex. SP" disabled="disabled" class="form-control">
                                         </div>
 
                                     </div>
@@ -100,7 +100,10 @@
                                     <div class="row">
                                         <label class="col-sm-2 control-label">DATA (*)</label>
                                         <div class="col-md-2">
-                                            <input type="date" id="data" required name="Data" class="form-control datepicker">
+                                            @*@Html.TextBoxFor(m => m.DataEvento, "{0:dd/MM/yyyy}", new { type = "date", id = "data", @class = "form-control datepicker", required = true })*@
+                                            @Html.TextBoxFor(u => u.DataEvento, "{0:dd-MM-yyyy}", new { name = "data", id = "data", type = "date", @class = "form-control", @value = Model.DataEvento.ToString("yyyy-MM-dd") })
+
+                                            @*<input type="date" value="@Model.DataEvento.ToShortDateString()" id="data" required name="Data" class="form-control datepicker">*@
                                         </div>
                                         <label class="col-sm-3 control-label">HORA DE INÍCIO</label>
                                         <div class="col-md-2">
@@ -143,7 +146,7 @@
                                             <input type="text" id="valor" value="@Model.Valor" required name="Valor" class="form-control">
                                         </div>
                                         <label class="pnValores col-sm-3 control-label">QTD PROFISSIONAIS (*)</label>
-                                        <div class="pnValore[s col-md-1">
+                                        <div class="pnValores col-md-1">
                                             <input type="number" id="qtd" placeholder="1" value="@Model.Qtd" required ame="Qtd" class="form-control">
                                         </div>
                                         <label class=" pnValores col-sm-3 control-label"><strong>VALOR TOTAL</strong></label>

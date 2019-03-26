@@ -75,9 +75,9 @@ $('#mostrar').click(function () {
                     "<td>" + element.Endereco + "</td>" +
                     "<td>" + element.Categoria + "</td>" +
                     "<td>" + element.Profissional + "</td>" +
-                    "<td>" + element.Valor + "</td>" +
+                    "<td>R$: " + element.Valor + "</td>" +
                     "<td>" + element.Quantidade + "</td>" +
-                    "<td>" + element.Total + "</td>" +
+                    "<td>R$: " + element.Total + "</td>" +
                     "<td>" + element.Candidatos + "</td>" +
                     "<td>" + element.Aprovados + "</td>" +
                     "<td>" + element.Reprovados + "</td>" +
@@ -102,7 +102,7 @@ $('#mostrar').click(function () {
                     "<td>" + element.Nome + "</td>" +
                     "<td>" + element.Descricao + "</td>" +
                     "<td>" + element.Data + "</td>" +
-                    "<td>" + element.Valor + "</td>" +
+                    "<td>R$: " + element.Valor + "</td>" +
                     "</tr>");
             });
         }
@@ -111,7 +111,7 @@ $('#mostrar').click(function () {
             "pagingType": "numbers",
             "columnDefs": [{
                 "targets": '_all',
-                "orderable": false
+                "orderable": true
             }],
             "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
                 "<'row'" +

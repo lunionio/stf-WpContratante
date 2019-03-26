@@ -42,7 +42,7 @@ function getOportunidades() {
             "pagingType": "numbers",
             "columnDefs": [{
                 "targets": '_all',
-                "orderable": false,
+                "orderable": true,
             }],
             "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
                 "<'row'" +
@@ -123,7 +123,7 @@ function getModalMatch(idOpt) {
             "pagingType": "numbers",
             "columnDefs": [{
                 "targets": "_all",
-                "orderable": false,
+                "orderable": true,
             }],
             "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
                 "<'row'" +
@@ -145,7 +145,7 @@ function getModalMatch(idOpt) {
             "pagingType": "numbers",
             "columnDefs": [{
                 "targets": "_all",
-                "orderable": false,
+                "orderable": true,
             }],
             "dom": '<"top"f>rt' + "<'bottom col-sm-12'" +
                 "<'row'" +

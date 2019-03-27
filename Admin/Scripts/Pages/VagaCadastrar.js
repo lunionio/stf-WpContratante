@@ -293,6 +293,7 @@ function carregaModal() {
 
     LoadingInit('body');
     var vagaViewModel = VagaViewModel();
+    console.log(vagaViewModel);
     var settings = {
         "url": "/Vaga/ModalConfirmarVaga",
         "method": "POST",

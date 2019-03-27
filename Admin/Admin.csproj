@@ -529,7 +529,7 @@
     <Content Include="Scripts\Pages\checkin.js" />
     <Content Include="Scripts\Pages\FaleConosco.js" />
     <Content Include="Scripts\Pages\relatorios.js" />
-    <Content Include="Scripts\Pages\VagaCadastrar.js" />
+    <Content Include="Scripts\Pages\Vaga.js" />
     <Content Include="Scripts\Pages\VagaIndex.js" />
     <Content Include="Scripts\perfect-scrollbar.jquery.min.js" />
     <Content Include="Scripts\Plugins\bootstrap-datetimepicker.js" />

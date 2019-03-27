@@ -15,6 +15,39 @@ $('#btnAgora').on('click', function () {
     PublicarAgora();
 });
 
+function VagaViewModel() {
+    var data = $('#data').val();
+    var dataEvento = Date.parse(data);
+    var VagaViewModel = {
+        id: $('#vagaId').val(),
+        nome: $('#nome').val(),
+        cep: $('#cep').val(),
+        Rua: $('#rua').val(),
+        Bairro: $('#bairro').val(),
+        Numero: $('#numero').val(),
+        Cidade: $('#cidade').val(),
+        Date: data,
+        Complemento: $('#complemento').val(),
+        Referencia: $('#complemento').val(),
+        Uf: $('#uf').val(),
+        DataEvento: data,
+        Hora: $('#txtHoraInicio').val(),
+        Qtd: $('#qtd').val(),
+        Valor: $('#valor').val(),
+        Atuacao: $('#atuacao').val(),
+        Profissional: $('#profissional option:selected').val(),
+        ProfissionalNome: $('#profissional option:selected').text(),
+        //Qtd: $('#qtd').val(),
+        Total: $('#total').val(),
+        //IdEmpresa: $('#empresas option:selected').val(),
+        EnderecoId: $('#endId').val(),
+        DataCriacao: $('#vagaData').val(),
+        EnderecoDataCriacao: $('#enderecoData').val()
+    };
+
+    return VagaViewModel;
+}
+
 function PublicarAgora() {
 
     LoadingInitBase('#modal');
@@ -69,39 +102,6 @@ function aplicarMascaras() {
     $('#data').mask('00/00/0000');
     $('#numero').mask('9999');
     $('#cep').mask('99999-999');
-}
-
-function VagaViewModel() {
-    var data = $('#data').val();
-    var dataEvento = Date.parse(data);
-    var VagaViewModel = {
-        Id: $('#vagaId').val(),
-        Nome: $('#nome').val(),
-        Cep: $('#cep').val(),
-        Rua: $('#rua').val(),
-        Bairro: $('#bairro').val(),
-        Numero: $('#numero').val(),
-        Cidade: $('#cidade').val(),
-        Date: data,
-        Complemento: $('#complemento').val(),
-        Referencia: $('#complemento').val(),
-        Uf: $('#uf').val(),
-        DataEvento: data,
-        Hora: $('#txtHoraInicio').val(),
-        Qtd: $('#qtd').val(),
-        Valor: $('#valor').val(),
-        Atuacao: $('#atuacao').val(),
-        Profissional: $('#profissional option:selected').val(),
-        ProfissionalNome: $('#profissional option:selected').text(),
-        //Qtd: $('#qtd').val(),
-        Total: $('#total').val(),
-        IdEmpresa: $('#empresas option:selected').val(),
-        EnderecoId: $('#endId').val(),
-        DataCriacao: $('#vagaData').val(),
-        EnderecoDataCriacao: $('#enderecoData').val()
-    };
-
-    return VagaViewModel;
 }
 
 function getAreaAtuacao() {
@@ -293,18 +293,21 @@ function carregaModal() {
 
     LoadingInit('body');
     var vagaViewModel = VagaViewModel();
-    console.log(vagaViewModel);
-    var settings = {
-        "url": "/Vaga/ModalConfirmarVaga",
-        "method": "POST",
-        "data": vagaViewModel
-    }
+    console.log(JSON.stringify(vagaViewModel));
 
-    $.ajax(settings).done(function (response) {
-
-        $('#modal').html(response);
-        $('#myModal').modal('show');
-        LoadingBodyStop();
+    $.ajax({
+        url: "/Vaga/ModalConfirmarVaga",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(vagaViewModel),
+        success: function (response) {
+            $('#modal').html(response);
+            $('#myModal').modal('show');
+            LoadingBodyStop();
+        },
+        error: function (erro) {
+            console.log(erro);
+        }
     });
   
     return true;

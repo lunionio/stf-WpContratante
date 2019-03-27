@@ -88,8 +88,10 @@ namespace Admin.Controllers
             }
         }
 
+        [HttpPost]
         public PartialViewResult ModalConfirmarVaga(VagaViewModel model)
         {
+            //model.DataEvento = Convert.ToDateTime(model.Date);
             return PartialView(model);
         }
 

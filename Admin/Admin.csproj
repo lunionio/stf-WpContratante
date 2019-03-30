@@ -231,6 +231,7 @@
     <Content Include="Content\site.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\nucleo-icons.svg" />
     <Content Include="fonts\Pe-icon-7-stroke.svg" />
     <Content Include="Global.asax" />
     <Content Include="Img\apple-icon.png" />
@@ -499,6 +500,9 @@
     <Content Include="Content\fontawesome-stars.less" />
     <Content Include="Content\mixins.less" />
     <Content Include="Content\variables.less" />
+    <Content Include="fonts\nucleo-icons.eot" />
+    <Content Include="fonts\nucleo-icons.ttf" />
+    <Content Include="fonts\nucleo-icons.woff" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\chartist.min.js" />

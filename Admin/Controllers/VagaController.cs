@@ -629,7 +629,8 @@ namespace Admin.Controllers
                     item.UsuarioCriacao = usuario.IdUsuario;
                     item.UsuarioEdicao = usuario.IdUsuario;
                     item.IdCliente = usuario.idCliente;
-                    item.CodigoExterno = "1";
+                    //item.CodigoExterno = "1";
+                    item.CodigoExterno = item.UsuarioAvaliadoId.ToString();
                 }
 
                 var envio = new
